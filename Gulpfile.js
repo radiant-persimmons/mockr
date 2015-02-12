@@ -208,11 +208,6 @@ gulp.task('mocha', function (cb) {
  */
 gulp.task('coveralls', tasks.coveralls);
 
-// gulp.task('coveralls', function () {
-//   if (!process.env.CI) return;
-//   return gulp.src('./coverage/lcov.info')
-//     .pipe(coveralls());
-// });
 
 /******************************************************************************
  * Environment configuration
