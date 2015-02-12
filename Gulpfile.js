@@ -119,82 +119,26 @@ gulp
  * Testing suite
  *****************************************************************************/
 
-// Run testing suite: lint, karma (client-side) and mocha (server-side)
-gulp.task('test', function(callback) {
-  /**
-   * Use `runSequence` to call tasks synchronously, otherwise
-   * messages from both will be potentially interleaved.
-   */
-  runningTests = true;
-  runSequence('lint', 'karma', 'mocha', callback);
-});
 
-gulp.task('lint', tasks.lint);
+// // Run testing suite: lint, karma (client-side) and mocha (server-side)
+// gulp.task('test', function(callback) {
+//   *
+//    * Use `runSequence` to call tasks synchronously, otherwise
+//    * messages from both will be potentially interleaved.
 
-gulp.task('karma', tasks.karma);
-// gulp.task('karma', function (done) {
-//   return karma.start({
-//     configFile: paths.karmaConf,
-//     singleRun: true
-//   }, done);
+//   runningTests = true;
+//   runSequence('lint', 'karma', 'mocha', callback);
 // });
 
-/**
- * mocha
- * =====
- * Runs the mocha tests. Because gulp-mocha is stupid, this task must be
- * forcibly exited using `process.exit()`. As such, **no other tasks will
- * successfully be reached after this task.** Do whatever hair-brained
- * workarounds are necessary to not have any tasks be dependent on this one.
- */
-
-var handleMochaError = function (err) {
-  console.log('Mocha encountered an error, exiting with status 1');
-  console.log('Error:', err.message);
-  process.exit(1);
-};
-
-gulp.task('mocha', function (cb) {
-  var mochaErr;
-  // Track src files that should be covered
-  gulp.src(serverFiles)
-    .pipe(istanbul({ includeUntested: true })) // Covering files
-    .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-    .on('finish', function() {
-      // Specify server specs
-      gulp.src(paths.serverSpec, {read: false})
-        .pipe(plumber())
-        .pipe(mocha({
-          reporter: 'spec',
-          timeout: 20000
-        }))
-        /**
-         * Keep track of latest error on Mocha. Because a failed test counts
-         * as an error, the process should not be exited until end of tests.
-         */
-        .on('error', function(err) {
-          /**
-           * This intermediate log is useful for when mocha crashes (as opposed
-           * to a test failing). Can be commented out if needed.
-           */
-          console.error('ERROR:', err.message);
-          console.error('Stack:', err.stack);
-          mochaErr = err;
-        })
-        // Write reports to Istanbul
-        .pipe(istanbul.writeReports())
-        /**
-         * The methods below are a hack to get gulp to exit after mocha tests
-         * finish. Without them, `gulp mocha` doesn't exit and Travis
-         * never finishes running the tests.
-         */
-        .on('end', function () {
-          if (mochaErr) return handleMochaError(mochaErr);
-          // Force mocha to exit, because gulp-mocha is stupid.
-          process.exit();
-        });
-    });
-});
+gulp
+  .task('lint', tasks.lint)
+  .task('karma', tasks.karma)
+  .task('mocha', tasks.mocha)
+  .task('test',
+    $.sequence('lint',
+               'karma',
+               'mocha')
+  );
 
 /**
  * coveralls
