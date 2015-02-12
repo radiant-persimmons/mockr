@@ -119,15 +119,6 @@ gulp
  * Testing suite
  *****************************************************************************/
 
-// var karma = require('karma').server;
-
-// gulp.task('karma', function (done) {
-//   return karma.start({
-//     configFile: 'src/spec/karma.conf.js',
-//     singleRun: true
-//   }, done);
-// });
-
 gulp
   .task('lint', tasks.lint)
   .task('karma', tasks.karma)
