@@ -1,0 +1,25 @@
+{
+  "name": "mockr",
+  "version": "0.0.1",
+  "homepage": "https://github.com/radiant-persimmons/mockr",
+  "authors": [
+    "Andrew Smith <andrewsmith@alumni.stanford.edu>"
+  ],
+  "main": "Gulpfile.js",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
