@@ -5,7 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/archivr-dev'
+    uri: 'mongodb://localhost/mockr-dev'
   },
 
   seedDB: false

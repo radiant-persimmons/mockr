@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-//var config = require('../config/environment');
+var config = require('../config/env');
 
-//mongoose.connect(config.mongo.uri);
+mongoose.connect(config.mongo.uri);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));

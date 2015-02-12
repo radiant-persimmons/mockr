@@ -2,8 +2,9 @@
 
 var express  = require('express');
 var app = express();
+var config = require('./config/env');
 
-require('./env')(app);
+require('./config/express')(app);
 require('./routes')(app);
 
 app.listen(app.get('port'), function() {
