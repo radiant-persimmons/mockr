@@ -10,7 +10,7 @@
     "latedef": true,
     "newcap": true,
     "noarg": true,
-    "predef": ["window"],
+    "predef": ["window", "angular"],
     "quotmark": "single",
     "regexp": true,
     "undef": true,
