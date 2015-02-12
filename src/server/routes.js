@@ -1,5 +1,3 @@
-function() {
-
 var router = require('express').Router();
 
 module.exports = function applicationRouter(app) {
@@ -9,4 +7,3 @@ module.exports = function applicationRouter(app) {
 
   app.use(router);
 };
-}();
