@@ -206,11 +206,13 @@ gulp.task('mocha', function (cb) {
  * =========
  * Sends code coverage data to Coveralls.
  */
-gulp.task('coveralls', function () {
-  if (!process.env.CI) return;
-  return gulp.src('./coverage/lcov.info')
-    .pipe(coveralls());
-});
+gulp.task('coveralls', tasks.coveralls);
+
+// gulp.task('coveralls', function () {
+//   if (!process.env.CI) return;
+//   return gulp.src('./coverage/lcov.info')
+//     .pipe(coveralls());
+// });
 
 /******************************************************************************
  * Environment configuration
@@ -220,23 +222,25 @@ gulp.task('coveralls', function () {
  * with the proper environment. Arguments are passed into the preprocess
  * task to insert variables into files. For example, the base href needs
  * to be dynamically set based on the environment.
+ *
+ * TODO: currently copied from previous project. May not be needed. keep for now
+ * and delete later.
  */
-var envConfig;
+// var envConfig;
 
-var envConfigDevelopment = {
-  BASE_HREF: 'localhost:3000'
-};
+// var envConfigDevelopment = {
+//   BASE_HREF: 'localhost:3000'
+// };
 
-var envConfigProduction = {
-  BASE_HREF: 'pathlete.herokuapp.com'
-};
+// var envConfigProduction = {
+//   BASE_HREF: 'pathlete.herokuapp.com'
+// };
 
-gulp.task('processEnv', function() {
-  gulp.src('./server/views/index_template.ejs')
-    .pipe(preprocess({context: envConfig}))
-    .pipe(concat('index.ejs'))
-    .pipe(gulp.dest('./server/views'));
-});
-
+// gulp.task('processEnv', function() {
+//   gulp.src('./server/views/index_template.ejs')
+//     .pipe(preprocess({context: envConfig}))
+//     .pipe(concat('index.ejs'))
+//     .pipe(gulp.dest('./server/views'));
+// });
 
 })();
