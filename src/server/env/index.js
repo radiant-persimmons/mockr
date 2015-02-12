@@ -1,6 +1,7 @@
 (function() {
 
   var join = require('path').join;
+  var nconf = require('nconf');
 
   module.exports = function(app) {
 
