@@ -26,6 +26,7 @@
     "mongoose": "^3.8.23",
     "morgan": "^1.5.1",
     "nconf": "^0.7.1"
+    "jshint-stylish": "^1.0.0"
   },
   "devDependencies": {
     "connect-livereload": "^0.5.2",
@@ -52,7 +53,6 @@
     "gulp-strip-debug": "^1.0.2",
     "gulp-stylus": "^2.0.0",
     "gulp-uglify": "^1.1.0",
-    "jshint-stylish": "^1.0.0",
     "main-bower-files": "^2.5.0"
   }
 }

@@ -129,13 +129,15 @@ gulp.task('test', function(callback) {
   runSequence('lint', 'karma', 'mocha', callback);
 });
 
-gulp.task('lint', function() {
-  return gulp.src(jsFilesForLint)
-    .pipe(jshint())
-    .pipe(jshint.reporter(stylish))
-    // Error out if any warnings appear
-    .pipe(jshint.reporter('fail'));
-});
+// gulp.task('lint', function() {
+//   return gulp.src(jsFilesForLint)
+//     .pipe(jshint())
+//     .pipe(jshint.reporter(stylish))
+//     // Error out if any warnings appear
+//     .pipe(jshint.reporter('fail'));
+// });
+
+gulp.task('lint', tasks.lint);
 
 gulp.task('karma', function (done) {
   return karma.start({
