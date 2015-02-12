@@ -5,6 +5,11 @@
 logs
 *.log
 
+# Build stuff
+lib/bower_components
+build
+paths.json
+
 # Runtime data
 pids
 *.pid
