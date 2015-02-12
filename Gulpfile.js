@@ -119,15 +119,13 @@ gulp
  * Testing suite
  *****************************************************************************/
 
+// var karma = require('karma').server;
 
-// // Run testing suite: lint, karma (client-side) and mocha (server-side)
-// gulp.task('test', function(callback) {
-//   *
-//    * Use `runSequence` to call tasks synchronously, otherwise
-//    * messages from both will be potentially interleaved.
-
-//   runningTests = true;
-//   runSequence('lint', 'karma', 'mocha', callback);
+// gulp.task('karma', function (done) {
+//   return karma.start({
+//     configFile: 'src/spec/karma.conf.js',
+//     singleRun: true
+//   }, done);
 // });
 
 gulp

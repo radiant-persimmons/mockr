@@ -16,6 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // src files
+      // 'client/app/core/controllers/app.controller.js',
       // TODO: set src files
 
       // spec files
@@ -35,13 +36,13 @@ module.exports = function(config) {
        * (these files will be instrumented by Istanbul)
        */
       // TODO set source files for coverage
-      // 'public/scripts/**/*.js': ['coverage']
+      'client/**/*.js': ['coverage']
     },
 
     // optionally, configure the coverage reporter
     coverageReporter: {
       type : 'lcov',
-      dir : 'coverage/client',
+      dir : '../coverage/client',
       subdir: '.'
     },
 
