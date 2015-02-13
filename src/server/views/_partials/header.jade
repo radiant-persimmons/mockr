@@ -1,0 +1,17 @@
+//- partial for the header bar
+header(role="header" id="header" ng-controller="NavController as NavCtrl")
+  nav.navbar.navbar-inverse.navbar-fixed-top
+    .container-fluid
+      .navbar-header
+        button(type="button" class="navbar-toggle collapsed")
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a(class="navbar-brand" href="/") Archivr
+      ul(class="nav navbar-nav navbar-right")
+        li(ng-hide="NavCtrl.loggedIn")
+          a(href="/login") Login
+        li(ng-hide="NavCtrl.loggedIn")
+          a(href="/signup") Signup
+        li(ng-show="NavCtrl.loggedIn")
+          a(href="#" ng-click="NavCtrl.logout()") Logout
