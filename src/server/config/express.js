@@ -21,10 +21,10 @@ module.exports = function expressConfig(app) {
   app.set('view engine', 'jade');
 
   // set static asset dir
-  app.use(express.static(__dirname + '/../../client/app/dist'));
+  app.use(express.static(__dirname + '/../../../build/'));
 
   app.use(session({
-    secret: config.expressSessionSecret,
+    secret: config.expressSessionSecret || 'meow',
     resave: false,
     saveUninitialized: true
   }));
