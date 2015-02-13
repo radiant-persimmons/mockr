@@ -1,18 +1,27 @@
 var passport = require('passport');
-var FitbitApiClient = require('fitbit-node');
-var Fitbit = require('../../utils/fitbit.js');
 
-passport.use(fitbit.fitbitStrategy);
-
-var signup = function(req, res, next) {
-  
-};
 
 var login = function(req, res, next) {
+  res.redirect('/auth/github');
+};
 
+var authentication = function(req, res, next) {
+  passport.authenticate('github', { failureRedirect: '/login' }), 
+  function(req, res){
+    // The request will be redirected to GitHub for authentication, so this
+    // function will not be called.
+  }
+};
+
+var authenticationCallback = function(req, res, next) {
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  }
 };
 
 module.exports = {
-  signup: signup,
-  login: login
+  login: login,
+  authentication: authentication,
+  authenticationCallback: authenticationCallback
 }
