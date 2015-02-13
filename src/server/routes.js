@@ -8,7 +8,7 @@ module.exports = function applicationRouter(app) {
 
   router.get('/:user/:path', function(req, res, next) {
   
-  })
+  });
   
   router.get('/*', function(req, res, next) {
     res.render('index');

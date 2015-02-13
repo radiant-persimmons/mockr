@@ -42,8 +42,8 @@ var nconf = require('nconf');
     expressSessionSecret: nconf.get('EXPRESS_SESSION_SECRET'),
 
     github: {
-      id: nconf.get('GITHUB_ID'),
-      secret: nconf.get('GITHUB_SECRET')
+      clientID: nconf.get('GITHUB_KEY'),
+      clientSecret: nconf.get('GITHUB_SECRET')
     }
 
   };
