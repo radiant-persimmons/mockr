@@ -8,14 +8,13 @@
 <!-- app:css -->
 <!-- endinject -->
 </head>
-<body data-ng-controller="AppController">
+<body>
 
   <div class="title">
-    <h1>
-      <img src="images/hackreactor.png">
-      <span>Hack Reactor</span>
-     </h1>
-  </h1>
+    <h1>mockr</h1>
+    <div ng-app="app" ng-controller="LoginController">
+      <button ng-click="login()">Login with Github</button>
+    </div>
 
 <!-- vendor:js -->
 <!-- endinject -->
@@ -25,5 +24,7 @@
 
 <!-- templates:js -->
 <!-- endinject -->
+
+
 </body>
 </html>
