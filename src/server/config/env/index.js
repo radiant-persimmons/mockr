@@ -39,7 +39,12 @@ var nconf = require('nconf');
     jwtTokenSecret: nconf.get('JWT_TOKEN_SECRET'),
 
     // Express session
-    expressSessionSecret: nconf.get('EXPRESS_SESSION_SECRET')
+    expressSessionSecret: nconf.get('EXPRESS_SESSION_SECRET'),
+
+    github: {
+      id: nconf.get('GITHUB_ID'),
+      secret: nconf.get('GITHUB_SECRET')
+    }
 
   };
 
