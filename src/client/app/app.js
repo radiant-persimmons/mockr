@@ -1,5 +1,5 @@
 
-angular.module('app', [])
+angular.module('app', []);
 
 
 console.log('yolo');
