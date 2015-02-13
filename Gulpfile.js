@@ -68,13 +68,13 @@ gulp
   .task('html:stage', tasks.html.stage)
   .task('jade:stage', tasks.jade.stage)
   .task('images:stage', tasks.images.stage)
-//   .task('build:stage',
-//     $.sequence('js:stage',
-//                'css:stage',
-//                'styl:stage',
-//                'html:stage',
-//                'jade:stage',
-//                'images:stage'));
+  .task('build:stage',
+    $.sequence('js:stage',
+               'css:stage',
+               'styl:stage',
+               'html:stage',
+               'jade:stage',
+               'images:stage'));
 
 // ======= START
 
