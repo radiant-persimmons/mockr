@@ -5,6 +5,7 @@ var app = express();
 var config = require('./config/env');
 
 require('./config/express.js')(app);
+require('./config/passport.js')(app);
 require('./routes')(app);
 
 app.listen(app.get('port'), function() {
