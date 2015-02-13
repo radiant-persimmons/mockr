@@ -5,5 +5,11 @@
       $scope.login = function(){
         $GithubLogin.login();
       };
+      $scope.redir = function(){
+        $http({
+          method: 'GET',
+          url: '/dashboard'
+        });
+      };
     }]);
 })();
