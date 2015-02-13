@@ -65,7 +65,7 @@ gulp
   .task('js:stage', tasks.js.stage)
   .task('css:stage', tasks.css.stage)
   .task('styl:stage', tasks.styl.stage)
-//   .task('html:stage', tasks.html.stage)
+  .task('html:stage', tasks.html.stage)
 //   .task('jade:stage', tasks.jade.stage)
 //   .task('images:stage', tasks.images.stage)
 //   .task('build:stage',
