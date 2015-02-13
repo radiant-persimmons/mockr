@@ -4,7 +4,7 @@
   /*  Dependencies  */
   var lib    = require('./lib')
   var gulp   = require('gulp');
-  var $      = require('gulp-load-plugins')({lazy:false});
+  var $      = require('gulp-load-plugins')({lazy:true});
   var del    = require('del');
 
   /* Tasks */
@@ -39,6 +39,7 @@ gulp
               , 'html:dev'
               , 'jade:dev'
               , 'images:dev'
+              , 'processEnv'
               ));
 
 // ====== START
@@ -79,7 +80,8 @@ gulp
                'styl:stage',
                'html:stage',
                'jade:stage',
-               'images:stage'));
+               'images:stage',
+               'processEnv'));
 
 
 
@@ -100,9 +102,32 @@ gulp
     ));
 
 
+//================== PROD
+
+gulp
+  // .task('server:prod', tasks.server.prod)
+  .task('prod',
+    $.sequence(
+      'clean',
+      'build:stage',
+      'vendor:stage',
+      'inject:stage',
+      'processEnv'
+    )
+  );
+
+//================== DEPLOY
+
+gulp
+  .task('deploy', function() {
+    if (process.env.NODE_ENV === 'production') gulp.start('prod');
+  });
+
+
 //================== CLEAN
 gulp
   .task('clean', del.bind(null, ['build']));
+
 
 
 /******************************************************************************
@@ -139,21 +164,21 @@ gulp.task('coveralls', tasks.coveralls);
  * TODO: currently copied from previous project. May not be needed. keep for now
  * and delete later.
  */
-// var envConfig;
+var envConfigDevelopment = {
+  BASE_HREF: 'localhost:3000'
+};
 
-// var envConfigDevelopment = {
-//   BASE_HREF: 'localhost:3000'
-// };
+var envConfigProduction = {
+  BASE_HREF: 'mockr-hr.herokuapp.com'
+};
 
-// var envConfigProduction = {
-//   BASE_HREF: 'pathlete.herokuapp.com'
-// };
-
-// gulp.task('processEnv', function() {
-//   gulp.src('./server/views/index_template.ejs')
-//     .pipe(preprocess({context: envConfig}))
-//     .pipe(concat('index.ejs'))
-//     .pipe(gulp.dest('./server/views'));
-// });
+gulp.task('processEnv', function() {
+  var envConfig = (process.env.NODE_ENV === 'production') ? envConfigProduction
+                                                          : envConfigDevelopment;
+  return gulp.src('src/server/views/_partials/head.template.jade')
+    .pipe($.preprocess({context: envConfig}))
+    .pipe($.rename('head.jade'))
+    .pipe(gulp.dest('src/server/views/_partials/'));
+});
 
 })();
