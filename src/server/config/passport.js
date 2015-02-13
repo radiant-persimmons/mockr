@@ -10,9 +10,9 @@ module.exports = function(app) {
   //use sessions on passport
   app.use(passport.session());
 
-  console.log("github client ID", config.github.clientID);
+  console.log('github client ID', config.github.clientID);
 
-  console.log("github client secret", config.github.clientSecret);
+  console.log('github client secret', config.github.clientSecret);
 
   //var Github = new GithubStrategy({
     //consumerKey: config.github.clientID,
