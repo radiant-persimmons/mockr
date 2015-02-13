@@ -20,11 +20,6 @@ module.exports = function expressConfig(app) {
   // set default server side view engine
   app.set('view engine', 'jade');
 
-  //initialize passport
-  app.use(passport.initialize());
-  //use sessions on passport
-  app.use(passport.session());
-
   // set static asset dir
   app.use(express.static(__dirname + '/../../../build/'));
 
