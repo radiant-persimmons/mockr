@@ -85,7 +85,7 @@ gulp
   .task('vendor:stage', tasks.vendor.stage)
   .task('inject:stage', tasks.inject.stage)
   .task('server:stage', tasks.server.stage)
-  // .task('watch:stage', tasks.watch.stage)
+  .task('watch:stage', tasks.watch.stage)
   // .task('start:stage',
   //   $.sequence(
   //     'vendor:stage',
