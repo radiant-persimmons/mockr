@@ -11,9 +11,14 @@
 
 var tasks = lib.tasks
 
+// ================= DEFAULT
+
+gulp
+  .task('default', $.sequence('dev'));
+
 //================== DEV
 gulp
-  .task( 'default',
+  .task( 'dev',
     $.sequence( 'clean'
               , 'build:dev'
               , 'start:dev'
@@ -53,11 +58,11 @@ gulp
 
 // //================== STAGE
 
-// gulp
-//   .task('default',
-//     $.sequence('clean',
-//                'build:stage',
-//                'start:stage'));
+gulp
+  .task('stage',
+    $.sequence('clean',
+               'build:stage',
+               'start:stage'));
 
 // ====== BUILD
 
@@ -86,48 +91,14 @@ gulp
   .task('inject:stage', tasks.inject.stage)
   .task('server:stage', tasks.server.stage)
   .task('watch:stage', tasks.watch.stage)
-  // .task('start:stage',
-  //   $.sequence(
-  //     'vendor:stage',
-  //     'inject:stage',
-  //     'server:stage',
-  //     'watch:stage'
-  //   );
-  // );
+  .task('start:stage',
+    $.sequence(
+      'vendor:stage',
+      'inject:stage',
+      'server:stage',
+      'watch:stage'
+    ));
 
-// ======= START
-
-
-/*  TODO
-
-  BUILD the stage tasks
-  There are descriptions on what is needed in order to use build each task within the task file.
-  Declare each Task
-  The run the declared tasks using $.sequence
-  Example
-
-    gulp
-      .task('stage',
-        $.sequence(  'build:stage'
-                     'start:stage'))
-
-    gulp
-      .task('js:stage'   , tasks.js.stage   )
-      .task('css:stage'  , tasks.css.stage  )
-      .task('html:stage' , tasks.html.stage )
-      .task('build:stage',
-        $.sequence( 'js:stage'
-                  , 'css:stage'
-                  , 'html:stage'))
-
-    gulp
-      .task('stage:stage',
-        $.sequence( / LIST TASKS HERE /))
-
-*/
-
-
-//
 
 //================== CLEAN
 gulp
