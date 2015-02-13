@@ -9,6 +9,6 @@ module.exports = function(router) {
 
   router.get('/auth/github', AuthController.authentication);
 
-  app.get('/auth/github/callback', AuthController.authenticationCallback);
+  router.get('/auth/github/callback', AuthController.authenticationCallback);
 
 };
