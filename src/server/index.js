@@ -7,7 +7,7 @@ var config = require('./config/env');
 require('./config/express.js')(app);
 require('./routes')(app);
 
-app.listen(config.port, function() {
+app.listen(app.get('port'), function() {
   console.log('listening on port ', app.get('port'));
 });
 
