@@ -1,9 +1,6 @@
 var AuthController = require('./authController.js');
 
 module.exports = function(router) {
-  router.route('/api/auth/signup')
-    .post(AuthController.signup);
-
   router.route('/api/auth/login')
     .post(AuthController.login)
 
