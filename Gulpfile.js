@@ -131,7 +131,7 @@ gulp
 gulp
   .task('git:rebase', tasks.git.rebase)
   .task('git:push', tasks.git.push)
-  .task('git:pr', $.sequence('git:rebase', 'git:push'));
+  .task('git:pr', $.sequence('lint', 'git:rebase', 'git:push'));
 
 /******************************************************************************
  * Testing suite
