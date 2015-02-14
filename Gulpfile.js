@@ -158,7 +158,10 @@ gulp.task('github', function() {
 
   gulp.src('')
     .pipe($.shell([
-      'git checkout ' + nconf.get('b')
+      'git checkout develop',
+      'git pull origin develop',
+      'git checkout ' + nconf.get('b'),
+      'git rebase develop'
     ]))
 });
 
