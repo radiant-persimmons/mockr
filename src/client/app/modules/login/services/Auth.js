@@ -7,12 +7,12 @@
         method: 'GET',
         url: '/login'
       });
-    }
+    };
     //TODO: do we need this?
     // return {
     //     login: login
     // };
-  };
+  }
 
   AuthFactory.$inject = ['$http'];
 
