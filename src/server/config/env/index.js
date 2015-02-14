@@ -21,7 +21,7 @@ var nconf = require('nconf');
     //root: path.normalize(__dirname + '/../../..'),
 
     // Server port
-    port: nconf.get('PORT') || 4000,
+    port: nconf.get('PORT') || 3000,
 
     // Should we populate the DB with sample data?
     seedDB: false,
