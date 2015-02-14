@@ -103,7 +103,6 @@ gulp
 //================== PROD
 
 gulp
-  // .task('server:prod', tasks.server.prod)
   .task('prod',
     $.sequence(
       'clean',
@@ -147,5 +146,21 @@ gulp
  * Sends code coverage data to Coveralls.
  */
 gulp.task('coveralls', tasks.coveralls);
+
+
+var nconf = require('nconf');
+gulp.task('github', function() {
+  nconf.argv();
+  if (!nconf.get('b')) {
+    console.log('Please specify a branch name: --b name');
+    return;
+  }
+
+  gulp.src('')
+    .pipe($.shell([
+      'git checkout ' + nconf.get('b')
+    ]))
+});
+
 
 })();
