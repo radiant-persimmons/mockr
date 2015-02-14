@@ -68,6 +68,4 @@
     ])
     .config(config)
     .run(run);
-
-
 })();
