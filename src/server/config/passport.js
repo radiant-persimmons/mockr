@@ -1,4 +1,4 @@
-var GithubStrategy = require('passport-github').Strategy;
+var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var passport = require('passport');
 var config = require('../config/env');
 
@@ -8,25 +8,29 @@ module.exports = function(app) {
   app.use(passport.initialize());
 
   //use sessions on passport
-  app.use(passport.session());
+  //app.use(passport.session());
 
   console.log('github client ID', config.github.clientID);
 
   console.log('github client secret', config.github.clientSecret);
 
-  //var Github = new GithubStrategy({
-    //consumerKey: config.github.clientID,
-    //consumerSecret: config.github.clientSecret,
-    //callbackURL: '/auth/github/callback',
-    //userAuthorizationURL: 'https://www.github.com/oauth/authorize'
-    //}, function (token, tokenSecret, profile, done) {    
-      //User.findOrCreate({ userId: profile.id }, function (err, user) {
-        //return done(err, user);
-      //});
-    //}
-  //);
-
-  //passport.use(Github);
+  // GitHub
+  passport.use('github',
+    new OAuth2Strategy({
+      authorizationURL: 'https://github.com/login/oauth/authorize',
+      tokenURL: 'https://github.com/login/oauth/access_token',
+      clientID: config.github.clientID,
+      clientSecret: config.github.clientSecret,
+      callbackURL: 'http://localhost:4000/auth/github/callback'
+    },
+    function (accessToken, refreshToken, profile, done) {
+      User.findOrCreate({ userId: profile.id }, function (err, user) {
+        console.log('err', error);
+        console.log('user', user);
+        return done(err, user);
+      });
+    }
+  ));
 
   //module.exports = Github;
 

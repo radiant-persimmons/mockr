@@ -1,8 +1,7 @@
 var AuthController = require('./authController.js');
 
 module.exports = function(router) {
-  router.route('/api/auth/login')
-    .post(AuthController.login);
+  router.get('/api/auth/login', AuthController.login)
 
   router.get('/auth/github', AuthController.authentication);
 

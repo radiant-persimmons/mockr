@@ -1,7 +1,4 @@
 var passport = require('passport');
-var GithubPassport = require('../../config/passport.js');
-
-//passport.use(GithubPassport);
 
 var login = function(req, res, next) {
   res.redirect('/auth/github');
