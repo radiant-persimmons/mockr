@@ -103,7 +103,6 @@ gulp
 //================== PROD
 
 gulp
-  // .task('server:prod', tasks.server.prod)
   .task('prod',
     $.sequence(
       'clean',
@@ -125,7 +124,14 @@ gulp
 gulp
   .task('clean', del.bind(null, ['build']));
 
+/******************************************************************************
+ * GitHub commands
+ *****************************************************************************/
 
+gulp
+  .task('git:rebase', tasks.git.rebase)
+  .task('git:push', tasks.git.push)
+  .task('git:pr', $.sequence('git:rebase', 'git:push'));
 
 /******************************************************************************
  * Testing suite
