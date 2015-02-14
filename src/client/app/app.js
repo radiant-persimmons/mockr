@@ -27,7 +27,7 @@
         controller: 'DashBoardController',
         controllerAs: 'DashBoardCtrl',
         authenticate: true
-      })
+       });
 
     // default uncaught routes to landing page
     $urlRouterProvider.otherwise('/');
