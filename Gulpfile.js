@@ -124,7 +124,14 @@ gulp
 gulp
   .task('clean', del.bind(null, ['build']));
 
+/******************************************************************************
+ * GitHub commands
+ *****************************************************************************/
 
+gulp
+  .task('git:rebase', tasks.git.rebase)
+  .task('git:push', tasks.git.push)
+  .task('git:pr', $.sequence('git:rebase', 'git:push'));
 
 /******************************************************************************
  * Testing suite
@@ -146,39 +153,5 @@ gulp
  * Sends code coverage data to Coveralls.
  */
 gulp.task('coveralls', tasks.coveralls);
-
-
-var nconf = require('nconf');
-gulp.task('git:rebase', function() {
-  nconf.argv();
-  if (!nconf.get('b')) {
-    console.log('Please specify a branch name: --b name');
-    return;
-  }
-
-  return gulp.src('')
-    .pipe($.shell([
-      'git checkout develop',
-      'git pull origin develop',
-      'git checkout ' + nconf.get('b'),
-      'git rebase develop'
-    ]))
-});
-
-gulp.task('git:push', function() {
-  nconf.argv();
-  if (!nconf.get('b')) {
-    console.log('Please specify a branch name: --b name');
-    return;
-  }
-
-  return gulp.src('')
-    .pipe($.shell([
-      'git push origin ' + nconf.get('b')
-    ]));
-});
-
-gulp.task('git:pr', $.sequence('git:rebase', 'git:push'));
-
 
 })();
