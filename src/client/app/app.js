@@ -11,7 +11,7 @@
        */
       .state('landing', {
         url: '/',
-        templateUrl: '/core/views/home.html',
+        templateUrl: '/html/core/views/home.html',
         controller: 'LandingController',
         controllerAs: 'LandingCtrl'
       })
