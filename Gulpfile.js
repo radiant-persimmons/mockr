@@ -149,14 +149,14 @@ gulp.task('coveralls', tasks.coveralls);
 
 
 var nconf = require('nconf');
-gulp.task('github', function() {
+gulp.task('git:rebase', function() {
   nconf.argv();
   if (!nconf.get('b')) {
     console.log('Please specify a branch name: --b name');
     return;
   }
 
-  gulp.src('')
+  return gulp.src('')
     .pipe($.shell([
       'git checkout develop',
       'git pull origin develop',
@@ -164,6 +164,21 @@ gulp.task('github', function() {
       'git rebase develop'
     ]))
 });
+
+gulp.task('git:push', function() {
+  nconf.argv();
+  if (!nconf.get('b')) {
+    console.log('Please specify a branch name: --b name');
+    return;
+  }
+
+  return gulp.src('')
+    .pipe($.shell([
+      'git push origin ' + nconf.get('b')
+    ]));
+});
+
+gulp.task('git:pr', $.sequence('git:rebase', 'git:push'));
 
 
 })();
