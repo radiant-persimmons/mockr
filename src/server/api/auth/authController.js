@@ -10,6 +10,7 @@ var config = require('../../config/env');
 
 
 var login = function(req, res, next) {
+  console.log('getting a redirect');
   res.redirect('/auth/github');
 };
 

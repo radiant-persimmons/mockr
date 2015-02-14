@@ -22,6 +22,7 @@
   "dependencies": {
     "body-parser": "^1.11.0",
     "colors": "^1.0.3",
+    "cors": "^2.5.3",
     "del": "^1.1.1",
     "express": "^4.11.2",
     "express-session": "^1.10.2",
@@ -53,7 +54,10 @@
     "main-bower-files": "^2.5.0",
     "mongoose": "^3.8.23",
     "morgan": "^1.5.1",
-    "nconf": "^0.7.1"
+    "nconf": "^0.7.1",
+    "passport": "^0.2.1",
+    "passport-oauth": "^1.0.0",
+    "request": "^2.53.0"
   },
   "devDependencies": {
     "chai": "^2.0.0",

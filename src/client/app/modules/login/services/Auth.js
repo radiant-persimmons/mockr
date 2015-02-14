@@ -2,16 +2,8 @@
 
   function AuthFactory($http) {
     this.login = function() {
-      console.log('click works');
-      $http({
-        method: 'GET',
-        url: '/login'
-      });
+      window.location = '/api/auth/login'
     };
-    //TODO: do we need this?
-    // return {
-    //     login: login
-    // };
   }
 
   AuthFactory.$inject = ['$http'];
