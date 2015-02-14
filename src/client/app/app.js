@@ -11,8 +11,8 @@
        */
       .state('landing', {
         url: '/',
-        templateUrl: '/html/core/views/home.html',
-        controller: 'LandingController',
+        templateUrl: '/html/modules/login/views/login.html',
+        controller: 'LoginController',
         controllerAs: 'LandingCtrl'
       })
 
@@ -23,7 +23,7 @@
        */
       .state('dashboard', {
         url: '/dashboard',
-        templateUrl: '/html/core/views/dashboard.html',
+        templateUrl: '/html/modules/home/views/home.html',
         controller: 'DashBoardController',
         controllerAs: 'DashBoardCtrl',
         authenticate: true
@@ -62,8 +62,9 @@
 
   angular
     .module('app', [
-      'mockr-login',
-      'mockr-dashboard',
+      'app.controllers.EditRoutesController',
+      'app.controllers.HomeController',
+      'app.controllers.LoginController',
       'ui.router'
     ])
     .config(config)

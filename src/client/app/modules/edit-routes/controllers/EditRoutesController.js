@@ -8,7 +8,7 @@
   EditRoutesController.$inject = [];
 
   angular
-    .module('app.controllers.EditRoutesController', [])
+    .module('app.controllers.EditRoutesController', ['app.services.EditRouteFactory'])
     .controller('EditRoutesController', EditRoutesController);
 
 })();

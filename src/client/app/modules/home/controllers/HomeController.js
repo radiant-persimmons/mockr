@@ -8,6 +8,6 @@
   HomeController.$inject = ['$http'];
   
   angular
-    .module('app.controller.Home',[])
+    .module('app.controllers.HomeController',['app.services.HomeFactory'])
     .controller('HomeController', HomeController);
 })();
