@@ -34,7 +34,7 @@ module.exports = function(app) {
       tokenURL: 'https://github.com/login/oauth/access_token',
       clientID: config.github.clientID,
       clientSecret: config.github.clientSecret,
-      callbackURL: 'http://localhost:4000/auth/github/callback'
+      callbackURL: 'http://localhost:3000/auth/github/callback'
     },
     function (accessToken, refreshToken, profile, done) {
       request({
