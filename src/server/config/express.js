@@ -14,17 +14,11 @@ module.exports = function expressConfig(app) {
   // HTTP request logger middleware
   app.use(morgan('combined'));
 
-  // set view directory
-  app.set('views', __dirname + '/../views');
-
-  // set default server side view engine
-  app.set('view engine', 'jade');
-
   // set static asset dir
   app.use(express.static(__dirname + '/../../../build/'));
 
   app.use(session({
-    secret: config.expressSessionSecret || 'meow',
+    secret: config.expressSessionSecret,
     resave: false,
     saveUninitialized: true
   }));

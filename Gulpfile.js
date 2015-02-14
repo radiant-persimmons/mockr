@@ -39,7 +39,6 @@ gulp
               , 'html:dev'
               , 'jade:dev'
               , 'images:dev'
-              , 'processEnv'
               ));
 
 // ====== START
@@ -80,8 +79,7 @@ gulp
                'styl:stage',
                'html:stage',
                'jade:stage',
-               'images:stage',
-               'processEnv'));
+               'images:stage'));
 
 
 
@@ -111,8 +109,7 @@ gulp
       'clean',
       'build:stage',
       'vendor:stage',
-      'inject:stage',
-      'processEnv'
+      'inject:stage'
     )
   );
 
@@ -150,35 +147,5 @@ gulp
  * Sends code coverage data to Coveralls.
  */
 gulp.task('coveralls', tasks.coveralls);
-
-
-/******************************************************************************
- * Environment configuration
- *****************************************************************************/
-/**
- * envConfig, envConfigDevelopment, and envConfigProduction are used to configure builds
- * with the proper environment. Arguments are passed into the preprocess
- * task to insert variables into files. For example, the base href needs
- * to be dynamically set based on the environment.
- *
- * TODO: currently copied from previous project. May not be needed. keep for now
- * and delete later.
- */
-var envConfigDevelopment = {
-  BASE_HREF: 'localhost:3000'
-};
-
-var envConfigProduction = {
-  BASE_HREF: 'mockr-hr.herokuapp.com'
-};
-
-gulp.task('processEnv', function() {
-  var envConfig = (process.env.NODE_ENV === 'production') ? envConfigProduction
-                                                          : envConfigDevelopment;
-  return gulp.src('src/server/views/_partials/head.template.jade')
-    .pipe($.preprocess({context: envConfig}))
-    .pipe($.rename('head.jade'))
-    .pipe(gulp.dest('src/server/views/_partials/'));
-});
 
 })();
