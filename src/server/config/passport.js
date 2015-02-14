@@ -3,6 +3,7 @@ var passport = require('passport');
 var request = require('request');
 var config = require('../config/env');
 var utils = require('../utils');
+var User = require('../api/user/userModel');
 
 module.exports = function(app) {
 
@@ -45,15 +46,15 @@ module.exports = function(app) {
       }, function (err, res, body) {
         // Extract username and image URL
         body = JSON.parse(body);
-        console.log("body", body);
+        console.log('body', body);
         var user = {
           username: body.login,
           id: body.id
-        }
+        };
 
         utils.createUserIfNotExistant(user, function(err, hasbeenCreated) {
           done(null, user);
-        })
+        });
       });
     }
   ));

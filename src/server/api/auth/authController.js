@@ -17,14 +17,14 @@ var authentication = function(req, res, next) {
   console.log('inside authentication');
   return passport.authenticate('github', { failureRedirect: '/login' }), 
   function(req, res){
-    console.log("inside authenticate function")
+    console.log('inside authenticate function');
     // The request will be redirected to GitHub for authentication, so this
     // function will not be called.
   };
 };
 
 var authenticationCallback = function(req, res, next) {
-  console.log("callback");
+  console.log('callback');
   return passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');

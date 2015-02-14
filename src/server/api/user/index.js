@@ -1,4 +1,4 @@
-var userController = require('./userController')
+var userController = require('./userController');
 
 module.exports = function(router) {
   router.route('/api/users')

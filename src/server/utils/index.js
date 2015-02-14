@@ -4,8 +4,8 @@ var createUserIfNotExistant = function(user, cb) {
   var newUser = new User({ 'username': user.username, 'userID': user.id });
   newUser.save(function (err) {
     if (err){
-      return console.log('Error: ', err);
-      cb(err, null);
+      console.log('Error: ', err);
+      return cb(err, null);
     } 
     console.log('User created');
     cb(null, true);
@@ -14,4 +14,4 @@ var createUserIfNotExistant = function(user, cb) {
 
 module.exports = {
   createUserIfNotExistant: createUserIfNotExistant
-}
+};
