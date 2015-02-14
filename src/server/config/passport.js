@@ -10,17 +10,17 @@ module.exports = function(app) {
   app.use(passport.initialize());
 
   //use sessions on passport
-  //app.use(passport.session());
+  app.use(passport.session());
 
-  //passport.serializeUser(function(user, done) {
-    //done(null, user.id);
-  //});
+  passport.serializeUser(function(user, done) {
+    done(null, user.id);
+  });
 
-  //passport.deserializeUser(function(id, done) {
-    //User.findById(id, function(err, user) {
-      //done(err, user);
-    //});
-  //});
+  passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+      done(err, user);
+    });
+  });
 
   console.log('github client ID', config.github.clientID);
 
