@@ -25,7 +25,8 @@
         url: '/dashboard',
         templateUrl: '/html/core/views/dashboard.html',
         controller: 'DashBoardController',
-        controllerAs: 'DashBoardCtrl'
+        controllerAs: 'DashBoardCtrl',
+        authenticate: true
       })
 
     // default uncaught routes to landing page
@@ -37,7 +38,27 @@
 
   config.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider'];
 
+  function run($rootScope, $state) {
+    $rootScope.$on('$stateChangeStart',
+                   function(e, toState, toParams, fromState, fromParams) {
+      // TODO: do something here
+      // sample code below
+      //
+      // if(toState.authenticate) {
+      //   Auth.isAuth()
+      //     .success(function(authenticated) {
+      //       if (!authenticated) {
+      //         e.preventDefault();
+      //         window.location = '/login';
+      //       }
+      //     }).error(function() {
+      //       console.error('Error handling authentication');
+      //     });
+      // }
+    });
+  }
 
+  run.$inject = ['$rootScope', '$state'];
 
   angular
     .module('app', [
@@ -45,6 +66,7 @@
       'mockr-dashboard',
       'ui.router'
     ])
-    .config(config);
+    .config(config)
+    .run(run);
 
 })();
