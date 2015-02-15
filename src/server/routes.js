@@ -11,7 +11,7 @@ module.exports = function applicationRouter(app) {
   });
   
   router.get('/*', function(req, res, next) {
-    res.render('index');
+    res.redirect('/');
   });
 
   app.use(router);

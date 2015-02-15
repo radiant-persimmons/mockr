@@ -3,6 +3,7 @@ var db = require('../../db');
 
 var userSchema = mongoose.Schema({
   username: { type: String, required: true },
+  userID: { type: Number, required: true},
   endpoints: {}
 });
 
