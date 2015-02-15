@@ -11,18 +11,19 @@ module.exports = {
         
       } 
       console.log('User created');
-      res.end();
+      res.status(201).end();
     });
   },
 
   //TODO: return user, specify user
   getUser: function (req, res) {
     var username = req.params.username;
-    User.find({'username': username}, function (err, user) {
+    User.findOne({'username': username}, function (err, user) {
       //specify user!!!
       if (err) return console.log('Error: ', err);
       //return user
       console.log(user);
+      res.json(user);
     });
   },
 
@@ -32,18 +33,23 @@ module.exports = {
       if (err) return console.log('Error: ', err);
       //return users
       console.log(users);
+      res.json(users);
     });
   },
 
-  //NOT COMPLETE
-  //TODO: specify user, lookup format for findAndModify
   editUser: function (req, res) {
     var username = req.params.username;
-    User.findAndModify(User, {'username': username}, function (err, users) {
+    var newData = req.body;
+
+    User.update({'username': username}, newData, function (err, numberAffected, raw) {
       //specify user!!!
       if (err) return console.log('Error: ', err);
+
+      if (!numberAffected) return res.status(404).end('User not found.');
+      
       //return users
-      console.log(users);
+      console.log('user modified', raw);
+      res.status(201).end();
     });
   }
 };
