@@ -62,7 +62,7 @@
 
   angular
     .module('app', [
-      'app.controllers.EditRoutesController',
+      'app.controllers.RoutesController',
       'app.controllers.HomeController',
       'app.controllers.LoginController',
       'ui.router'
