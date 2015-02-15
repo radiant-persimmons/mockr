@@ -1,7 +1,6 @@
 ;(function(){
 
   function LoginController(AuthFactory) {
-
     this.login = function() {
       AuthFactory.login();
     };
@@ -12,25 +11,10 @@
 
   angular
     .module('app.controllers.LoginController', [
-      'AuthFactory'
+      'app.services.AuthFactory'
     ])
     .controller('LoginController', LoginController);
 
 
 
 })();
-
-/*
-
-core/
-
-modules/
-  rooms/
-  messages/
-  users/
-    api/
-    controllers/
-    directives/
-    views/
-
-*/
