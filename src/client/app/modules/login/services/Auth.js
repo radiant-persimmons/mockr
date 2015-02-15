@@ -2,7 +2,7 @@
 
   function AuthFactory($http) {
     this.login = function() {
-      window.location = '/api/auth/login'
+      window.location = '/api/auth/login';
     };
   }
 
