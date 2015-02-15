@@ -1,10 +1,12 @@
+var Endpoint = require('./endpointController.js');
+
 module.exports = function(router) {
   router.route('/api/users/:user/endpoints')
-    .get()
-    .post();
+    .get(Endpoint.getEndpoints)
+    .post(Endpoint.createEndpoint);
 
   router.route('/api/users/:user/endpoints/:id')
-    .get()
-    .put()
+    .get(Endpoint.getEndpoint)
+    .put(Endpoint.editEndpoint)
     .delete();
 };
