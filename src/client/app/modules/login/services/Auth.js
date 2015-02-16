@@ -4,6 +4,7 @@
     this.login = function() {
       window.location = '/api/auth/login';
     };
+    return this;
   }
 
   AuthFactory.$inject = ['$http'];

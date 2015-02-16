@@ -17,15 +17,15 @@
       })
 
       /**
-       * @name dashboard
+       * @name home
        * @type {route}
        * @description User landing page, the main display.
        */
-      .state('dashboard', {
-        url: '/dashboard',
+      .state('home', {
+        url: '/home',
         templateUrl: '/html/modules/home/views/home.html',
-        controller: 'DashBoardController',
-        controllerAs: 'DashBoardCtrl',
+        controller: 'HomeController',
+        controllerAs: 'HomeCtrl',
         authenticate: true
        });
 
@@ -62,7 +62,7 @@
 
   angular
     .module('app', [
-      'app.controllers.EditRoutesController',
+      'app.controllers.RoutesController',
       'app.controllers.HomeController',
       'app.controllers.LoginController',
       'ui.router'
