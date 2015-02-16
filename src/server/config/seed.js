@@ -57,7 +57,7 @@ Endpoint.find({}).remove(function() {
         console.log('Finished seeding database');
       });
     });
-  })
+  });
 });
 
 User.find({}).remove(function() {
