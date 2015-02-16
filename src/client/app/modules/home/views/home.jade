@@ -1,10 +1,11 @@
-div outside box 
-  div form input
-    h3 Create a Route
-    form(ng-submit="HomeCtrl.addRoute()")
-      input(placeholder="enter route here" ng-model="HomeCtrl.formInfo.route")
-      button Add a Route
-  div current routes list
-    h3 Current Routes:
-    div(ng-repeat="route in HomeCtrl.routes")
-      div {{route}}
+div.container
+  div.outside-box 
+    div.form-input
+      h3 Create a Route
+      form(ng-submit="HomeCtrl.addRoute()")
+        input(placeholder="enter route here" ng-model="HomeCtrl.formInfo.route")
+        button Add a Route
+    div.current-routes-list
+      h3 Current Routes:
+      div(ng-repeat="route in HomeCtrl.routes")
+        div {{route}}
