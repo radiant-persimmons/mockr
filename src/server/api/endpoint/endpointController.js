@@ -18,7 +18,7 @@ var createEndpoint = function(req, res, next) {
   var data = req.body.data;
   var obj = {verb: verb, data: data};
   var container = {};
-  container[path] = obj
+  container[path] = obj;
 
   User.findOne({'username': username}, function (err, user) {
     if (err) return res.end(err);
