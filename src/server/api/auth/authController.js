@@ -28,7 +28,7 @@ var authenticationCallback = function(req, res, next) {
   console.log('callback');
   return passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/home');
   };
 };
 

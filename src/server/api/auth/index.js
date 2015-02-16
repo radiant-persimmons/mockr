@@ -13,7 +13,7 @@ module.exports = function(router) {
 
   router.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/dashboard');
+    res.redirect('/home');
   });
 
 };
