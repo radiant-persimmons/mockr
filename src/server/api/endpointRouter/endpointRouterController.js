@@ -8,11 +8,6 @@ var getData = function(req, res, next) {
   
     var endpoint = user.endpoints[path];
     var endpointData = endpoint.data;
-    console.log('path', path);
-    console.log('user', user);
-    console.log('user endpoints', user.endpoints);
-    console.log('endpoint', endpoint);
-    console.log('endpointData', endpoint.data);
     res.json(endpointData);
   });
 };
