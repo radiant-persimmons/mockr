@@ -8,6 +8,9 @@
     };
     this.editRoute = function() {};
     this.deleteRoute = function() {};
+    this.initialize = function() {
+      HomeFactory.fetch()
+    };
   }
 
   HomeController.$inject = ['$http', 'HomeFactory'];
