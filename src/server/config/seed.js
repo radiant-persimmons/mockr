@@ -19,19 +19,22 @@ console.log('Seeding database...');
 // Clear endpoints
 Endpoint.find({}).remove(function() {
   Endpoint.create({
-    route: '/api/messages',
+    username: 'Andrew',
+    route: 'api/messages',
     method: 'GET',
     responseStatus: 200,
     header: '',
     body: '[{ message: "Hello world" }, { message: "I am Andrew" }]'
   }, {
-    route: '/api/messages',
+    username: 'Andrew',
+    route: 'api/messages',
     method: 'POST',
     responseStatus: 201,
     header: '',
-    body: 'Message stored'
+    body: 'No mas wey'
   }, {
-    route: '/api/rooms',
+    username: 'Andrew',
+    route: 'api/rooms',
     method: 'GET',
     responseStatus: 200,
     header: '',
