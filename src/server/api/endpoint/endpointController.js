@@ -3,47 +3,55 @@ var User = require('../user/userModel');
 
 var getEndpoints = function(req, res, next) {
   var username = req.params.username;
-    User.findOne({'username': username}, function (err, user) {
+    Endpoint.find({'username': username}, function (err, endpoints) {
       if (err) return res.end(err);
-      console.log('endpoints -->', user.endpoints);
-      res.json(user.endpoints);
+      console.log('endpoints -->', endpoints);
+      res.json(endpoints);
     });
 };
 
 var createEndpoint = function(req, res, next) {
   var username = req.params.username;
-  var path = req.body.path;
-  var verb = req.body.verb;
-  var data = req.body.data;
-  var obj = {verb: verb, data: data};
-  var container = {};
-  container[path] = obj;
+  var route = req.body.route;
+  var method = req.body.method;
+  var responseStatus = req.body.responseStatus;
+  var body = req.body.body;
 
-  User.findOne({'username': username}, function (err, user) {
-    if (err) return res.end(err);
-    if(!user) {
-      res.status(500).end();
+
+  var newEndpoint = new Endpoint({username: username, route: route, method: method, responseStatus: responseStatus, body: body});
+  
+  Endpoint.findOne({ username: username, route: route, method: method }, function(err, endpoint) {
+    if(err) return res.status(500).json({ message: err });
+    if(endpoint) {
+      return res.status(500).end();
     } else {
-      User.update({username: username}, { 
-      	$set: { endpoints: container } 
-      }, function(err, numAffected, rawResponse) {
+      newEndpoint.save(function(err, endpoint) {
         if (err) return res.status(500).json({ message: err });
-          console.log(rawResponse);
-          res.status(201).json(rawResponse);
+
+        User.findOne({'username': username}, function (err, user) {
+          if (err) return res.status(500).json({ message: err });
+          if(!user) {
+            res.status(500).end();
+          } else {
+            User.update({username: username}, {$push: {'endpoints': endpoint._id}}, function(err, numAffected, rawResponse) {
+              if (err) return res.status(500).json({ message: err });
+              res.status(201).end();
+            });
+          }
+        });
       });
     }
-  });
+  }); 
 };
 
 var getEndpoint = function(req, res, next) {
   var username = req.params.username;
-  var path = req.params[0];
+  var route = req.params[0];
 
   console.log('params', req.params);
-  User.findOne({'username': username}, function (err, user) {
-    if (err) return res.status(500).end(err);
-    var endpoint = user.endpoints[path];
-    console.log('endpoint', endpoint);
+  Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
+    if (err) return res.status(500).json({ message: err });
+    console.log('endpoints -->', endpoint);
     res.json(endpoint);
   });
 
