@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/mockr-dev'
   },
 
-  seedDB: false
+  seedDB: true
 };
