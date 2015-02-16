@@ -17,7 +17,7 @@
           _this.routes.push(routes[route]);
         }
       }).error(function(err) {
-        console.log('ERROR!!', err)
+        console.log('ERROR!!', err);
       });
     };
     return this;

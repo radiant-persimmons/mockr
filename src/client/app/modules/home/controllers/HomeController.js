@@ -9,7 +9,7 @@
     this.editRoute = function() {};
     this.deleteRoute = function() {};
     this.initialize = function() {
-      HomeFactory.fetch()
+      HomeFactory.fetch();
     };
   }
 
