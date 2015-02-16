@@ -5,7 +5,6 @@ var getEndpoints = function(req, res, next) {
   var username = req.params.username;
     User.findOne({'username': username}, function (err, user) {
       if (err) return res.end(err);
-      //return user
       console.log('endpoints -->', user.endpoints);
       res.json(user.endpoints);
     });
@@ -37,6 +36,16 @@ var createEndpoint = function(req, res, next) {
 };
 
 var getEndpoint = function(req, res, next) {
+  var username = req.params.username;
+  var path = req.params[0];
+
+  console.log('params', req.params);
+  User.findOne({'username': username}, function (err, user) {
+    if (err) return res.status(500).end(err);
+    var endpoint = user.endpoints[path];
+    console.log('endpoint', endpoint);
+    res.json(endpoint);
+  });
 
 };
 

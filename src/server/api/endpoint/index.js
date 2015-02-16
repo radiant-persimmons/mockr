@@ -5,7 +5,7 @@ module.exports = function(router) {
     .get(Endpoint.getEndpoints)
     .post(Endpoint.createEndpoint);
 
-  router.route('/api/users/:username/endpoints/:id')
+  router.route('/api/users/:username/endpoints/*')
     .get(Endpoint.getEndpoint)
     .put(Endpoint.editEndpoint)
     .delete();

@@ -3,7 +3,8 @@ var User = require('./userModel');
 module.exports = {
   createUser: function (req, res) {
     var username = req.body.username;
-    var newUser = new User({ 'username': username });
+    var userID = req.body.userID;
+    var newUser = new User({ 'username': username, 'userID': userID });
     newUser.save(function (err) {
       if (err){
         res.end();

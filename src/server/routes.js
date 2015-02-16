@@ -6,11 +6,7 @@ module.exports = function applicationRouter(app) {
   require('./api/auth')(router);
   require('./api/user')(router);
   require('./api/endpoint')(router);
-
-
-  router.get('/:user/:path', function(req, res, next) {
-  
-  });
+  require('./api/endpointRouter')(router);
   
   router.get('/home', function(req, res, next) {
     res.sendFile(path.resolve(__dirname + '/../../build/index.html'));
