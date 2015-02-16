@@ -17,7 +17,7 @@ var createEndpoint = function(req, res, next) {
   var responseStatus = req.body.responseStatus;
   var body = req.body.body;
 
-
+  //check if user exists here before creating the endpoint
   var newEndpoint = new Endpoint({username: username, route: route, method: method, responseStatus: responseStatus, body: body});
   
   Endpoint.findOne({ username: username, route: route, method: method }, function(err, endpoint) {
