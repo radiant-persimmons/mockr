@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = require('../db');
+var db = require('../../db');
 
 var endpointSchema = mongoose.Schema({
 });
