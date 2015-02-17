@@ -4,7 +4,7 @@
     this.username = 'Andrew';
 
     return this;
-  };
+  }
 
   UserFactory.$inject = [];
 
