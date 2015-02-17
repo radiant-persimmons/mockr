@@ -7,7 +7,7 @@ var endpointSchema = mongoose.Schema({
   method: { type: String, required: true },
   responseStatus: { type: Number, required: true },
   header: { type: String },
-  body: { type: String, required: true }
+  body: { type: String }
 });
 
 var Endpoint = mongoose.model('Endpoint', endpointSchema);
