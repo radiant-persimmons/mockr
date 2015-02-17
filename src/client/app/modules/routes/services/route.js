@@ -1,7 +1,7 @@
 ;(function(){
 
   function RouteFactory ($http, UserFactory) {
-    _this = this;
+    var _this = this;
     _this.routes = [];
     
     this.deleteRoute = function (){};
