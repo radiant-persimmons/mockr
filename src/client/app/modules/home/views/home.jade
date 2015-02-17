@@ -5,6 +5,7 @@ div.container
       form(ng-submit="HomeCtrl.addRoute()")
         input(placeholder="enter route here" ng-model="HomeCtrl.formInfo.route")
         button Add a Route
+      button(ng-click="HomeCtrl.initialize()") fetch
     div.current-routes-list
       h3 Current Routes:
       div(ng-repeat="route in HomeCtrl.routes")
