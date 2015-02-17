@@ -1,19 +1,19 @@
 var User = require('../api/user/userModel');
 
 var createUserIfNotExistant = function(user, cb) {
-  User.findOne({'username': user.username}, function(err, res) {
-    if(!res) {
+  User.findOne({'username': user.username}, function(err, existingUser) {
+    if(!existingUser) {
       var newUser = new User({ 'username': user.username, 'userID': user.id });
-      newUser.save(function (err, user) {
+      newUser.save(function (err, userCreated) {
         if (err){
           console.log('Error: ', err);
           return cb(err, null);
         } 
         console.log('User created');
-        return cb(null, user);
+        return cb(null, userCreated);
       });
     } else {
-      return cb(res, user);
+      return cb(null, existingUser);
     }
   });
 };
