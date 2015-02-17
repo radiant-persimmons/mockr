@@ -14,11 +14,13 @@ module.exports = function(app) {
   app.use(passport.session());
 
   passport.serializeUser(function(user, done) {
+    console.log('serializeUser');
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
     //User.findById(id, function(err, user) {
+      console.log('deserializeUser');
       User.findOne({userID: id}, function(err, user) {
       done(err, user);
     });
@@ -47,7 +49,6 @@ module.exports = function(app) {
       }, function (err, res, body) {
         // Extract username and image URL
         body = JSON.parse(body);
-        console.log('body', body);
         var user = {
           username: body.login,
           id: body.id
