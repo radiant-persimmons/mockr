@@ -25,4 +25,3 @@
     ])
     .controller('HomeController', HomeController);
 })();
->>>>>>> user service complete
