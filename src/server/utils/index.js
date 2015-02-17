@@ -1,8 +1,8 @@
 var User = require('../api/user/userModel');
 
 var createUserIfNotExistant = function(user, cb) {
-  User.findOne({'username': user.username}, function(err, user) {
-    if(!user) {
+  User.findOne({'username': user.username}, function(err, res) {
+    if(!res) {
       var newUser = new User({ 'username': user.username, 'userID': user.id });
       newUser.save(function (err, user) {
         if (err){
@@ -13,7 +13,7 @@ var createUserIfNotExistant = function(user, cb) {
         return cb(null, user);
       });
     } else {
-      return cb(null, user);
+      return cb(res, user);
     }
   });
 };
