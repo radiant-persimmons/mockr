@@ -1,6 +1,10 @@
 var User = require('./userModel');
 
 module.exports = {
+  getCurrentUser: function(req, res){
+    res.status(200).json(req.user);
+  },
+
   createUser: function (req, res) {
     var username = req.body.username;
     var userID = req.body.userID;
@@ -9,8 +13,8 @@ module.exports = {
       if (err){
         res.end();
         return console.log('Error: ', err);
-        
-      } 
+
+      }
       console.log('User created');
       res.status(201).end();
     });
@@ -47,7 +51,7 @@ module.exports = {
       if (err) return console.log('Error: ', err);
 
       if (!numberAffected) return res.status(404).end('User not found.');
-      
+
       //return users
       console.log('user modified', raw);
       res.status(201).end();
