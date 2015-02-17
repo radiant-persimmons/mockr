@@ -1,17 +1,17 @@
 ;(function(){
 
   function RouteFactory ($http, UserFactory) {
-
-    this.routes = [];
+    _this = this;
+    _this.routes = [];
     
     this.deleteRoute = function (){};
 
     this.addRoute = function(body){
-      this.routes.push(body);
       var route = {};
       route.method = 'GET';
       route.route = body;
       route.responseStatus = 200;
+      this.routes.push(route);
       $http({
         method: 'POST',
         url: '/api/users/' + UserFactory.username + '/endpoints',
@@ -40,10 +40,8 @@
         method: 'GET',
         url: '/api/users/' + UserFactory.username + '/endpoints',
       }).success(function(result) {
-        console.log(result);
-        var routes = JSON.parse(result);
-        for (var route in routes) {
-          _this.routes.push(routes[route]);
+        for (var route in result) {
+          _this.routes.push(result[route]);
         }
       }).error(function(err) {
         console.log('ERROR!!', err);

@@ -14,14 +14,14 @@
       RouteFactory.deleteRoute();
     };
     
-    this.initialize = function() {
-      RouteFactory.fetch();
-    };
   }
 
   HomeController.$inject = ['$http', 'RouteFactory'];
   
   angular
     .module('app.controllers.HomeController',['app.services.RouteFactory'])
-    .controller('HomeController', HomeController);
+    .controller('HomeController', HomeController)
+    .run(function(RouteFactory){
+      RouteFactory.fetch();
+    });
 })();
