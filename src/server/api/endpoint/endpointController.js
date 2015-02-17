@@ -34,15 +34,16 @@ var createEndpoint = function(req, res, next) {
             if (err) return res.status(500).json({ message: err });
 
             User.update({username: username}, {$push: {'endpoints': endpoint._id}}, function(err, numAffected, rawResponse) {
-              if (err) return res.status(500).json({ message: err });
+              if (err) return res.status(500).json({ message: err }); 
               res.status(201).end();
             });  
           });
         }
       }); 
-    });
-  }
+    }
+  });
 };
+
 
 var getEndpoint = function(req, res, next) {
   var username = req.params.username;
