@@ -12,7 +12,7 @@
     var factory = {
       getUser: getUser,
       registerCb: registerCb
-    }
+    };
 
     // Get user data from server
     fetchUser().then(function() {
@@ -33,7 +33,7 @@
      */
     function getUser() {
       return user;
-    };
+    }
 
     /**
      * stores callbacks registered by consumers to be run after service
@@ -62,7 +62,7 @@
         }).catch(function(err) {
           console.error('Error fetching using:', err);
         });
-    };
+    }
   }
 
   UserFactory.$inject = ['$http'];
