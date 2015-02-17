@@ -16,32 +16,32 @@ var createEndpoint = function(req, res, next) {
   var method = req.body.method;
   var responseStatus = req.body.responseStatus;
   var body = req.body.body;
-
-  //check if user exists here before creating the endpoint
-  var newEndpoint = new Endpoint({username: username, route: route, method: method, responseStatus: responseStatus, body: body});
   
-  Endpoint.findOne({ username: username, route: route, method: method }, function(err, endpoint) {
-    if(err) return res.status(500).json({ message: err });
-    if(endpoint) {
-      return res.status(500).end();
+  User.findOne({'username': username}, function (err, user) {
+    if (err) return res.status(500).json({ message: err });
+    //check if user exists here before creating the endpoint
+    if(!user) {
+      res.status(500).end();
     } else {
-      newEndpoint.save(function(err, endpoint) {
-        if (err) return res.status(500).json({ message: err });
+      var newEndpoint = new Endpoint({username: username, route: route, method: method, responseStatus: responseStatus, body: body});
+  
+      Endpoint.findOne({ username: username, route: route, method: method }, function(err, endpoint) {
+        if(err) return res.status(500).json({ message: err });
+        if(endpoint) {
+          return res.status(500).end();
+        } else {
+          newEndpoint.save(function(err, endpoint) {
+            if (err) return res.status(500).json({ message: err });
 
-        User.findOne({'username': username}, function (err, user) {
-          if (err) return res.status(500).json({ message: err });
-          if(!user) {
-            res.status(500).end();
-          } else {
             User.update({username: username}, {$push: {'endpoints': endpoint._id}}, function(err, numAffected, rawResponse) {
               if (err) return res.status(500).json({ message: err });
               res.status(201).end();
-            });
-          }
-        });
-      });
-    }
-  }); 
+            });  
+          });
+        }
+      }); 
+    });
+  }
 };
 
 var getEndpoint = function(req, res, next) {
