@@ -1,21 +1,27 @@
 ;(function(){
-  function HomeController($http, HomeFactory) {
+  function HomeController($http, RouteFactory) {
     this.formInfo = {};
-    this.routes = HomeFactory.routes;
+    this.routes = RouteFactory.routes;
+
     this.addRoute = function() {
-      HomeFactory.addRoute(this.formInfo.route);
+      RouteFactory.addRoute(this.formInfo.route);
       this.formInfo.route = '';
     };
+
     this.editRoute = function() {};
-    this.deleteRoute = function() {};
-    this.initialize = function() {
-      HomeFactory.fetch();
+
+    this.deleteRoute = function() {
+      RouteFactory.deleteRoute();
     };
+    
   }
 
-  HomeController.$inject = ['$http', 'HomeFactory'];
+  HomeController.$inject = ['$http', 'RouteFactory'];
   
   angular
-    .module('app.controllers.HomeController',['app.services.HomeFactory'])
-    .controller('HomeController', HomeController);
+    .module('app.controllers.HomeController',['app.services.RouteFactory'])
+    .controller('HomeController', HomeController)
+    .run(function(RouteFactory){
+      RouteFactory.fetch();
+    });
 })();
