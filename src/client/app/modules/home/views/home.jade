@@ -1,4 +1,4 @@
-div.container
+div.homeContainer
   div.outside-box 
     div.form-input
       h3 Create a Route
@@ -8,4 +8,4 @@ div.container
     div.current-routes-list
       h3 Current Routes:
       div(ng-repeat="route in HomeCtrl.routes")
-        div {{route}}
+        div.routeInRoutes {{route}}
