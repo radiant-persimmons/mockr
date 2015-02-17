@@ -8,7 +8,7 @@ var createUserIfNotExistant = function(user, cb) {
         if (err){
           console.log('Error: ', err);
           return cb(err, null);
-        } 
+        }
         console.log('User created');
         return cb(null, userCreated);
       });

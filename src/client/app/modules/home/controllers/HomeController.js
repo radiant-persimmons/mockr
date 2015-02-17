@@ -1,5 +1,5 @@
 ;(function(){
-  function HomeController($http, RouteFactory) {
+  function HomeController($http, RouteFactory, UserFactory) {
     this.formInfo = {};
     this.routes = RouteFactory.routes;
 
@@ -13,15 +13,16 @@
     this.deleteRoute = function() {
       RouteFactory.deleteRoute();
     };
-    
+
   }
 
-  HomeController.$inject = ['$http', 'RouteFactory'];
-  
+  HomeController.$inject = ['$http', 'RouteFactory', 'UserFactory'];
+
   angular
-    .module('app.controllers.HomeController',['app.services.RouteFactory'])
-    .controller('HomeController', HomeController)
-    .run(function(RouteFactory){
-      RouteFactory.fetch();
-    });
+    .module('app.controllers.HomeController', [
+      'app.services.RouteFactory',
+      'app.services.UserFactory'
+    ])
+    .controller('HomeController', HomeController);
 })();
+>>>>>>> user service complete

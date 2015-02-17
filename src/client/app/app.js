@@ -29,6 +29,21 @@
         authenticate: true
        });
 
+
+/**
+ *  resolve: {
+        screenshots: function($stateParams, Screenshot) {
+          return Screenshot.getScreenshots($stateParams.username)
+            .then(function(screenshots){
+              return screenshots.data;
+            }).catch(function(err) {
+              console.error('Error getting screenshots: ', err);
+            });
+        }
+      }
+ */
+
+
     // default uncaught routes to landing page
     $urlRouterProvider.otherwise('/');
 
