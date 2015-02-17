@@ -21,29 +21,20 @@ Endpoint.find({}).remove(function() {
   Endpoint.create({
     username: 'Andrew',
     route: 'api/messages',
-    method: 'GET',
-    responseStatus: 200,
+    methods: { 'GET': 200, 'POST': 201 },
     header: '',
-    body: '[{ message: "Hello world" }, { message: "I am Andrew" }]'
-  }, {
-    username: 'Andrew',
-    route: 'api/messages',
-    method: 'POST',
-    responseStatus: 201,
-    header: '',
-    body: 'No mas wey'
+    body: { 'GET': '[{ message: "Hello world" }, { message: "I am Andrew" }]' }
   }, {
     username: 'Andrew',
     route: 'api/rooms',
-    method: 'GET',
-    responseStatus: 200,
+    methods: { 'GET': 200 },
     header: '',
-    body: '["lobby", "coolpeeps"]'
-  }, function(err, e1, e2, e3) {
-    console.log('\n\nCreated endpoints:\n', e1, e2, e3);
+    body: { 'GET': '["lobby", "coolpeeps"]' }
+  }, function(err, e1, e2) {
+    console.log('\n\nCreated endpoints:\n', e1, e2);
 
     // Grab endpoint IDs to give to user
-    var endpointIDs = _.pluck([e1, e2, e3], '_id');
+    var endpointIDs = _.pluck([e1, e2], '_id');
 
     // Create users
     User.find({}).remove(function() {

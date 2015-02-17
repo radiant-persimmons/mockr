@@ -8,5 +8,5 @@ module.exports = function(router) {
   router.route('/api/users/:username/endpoints/*')
     .get(Endpoint.getEndpoint)
     .put(Endpoint.editEndpoint)
-    .delete();
+    .delete(Endpoint.deleteEndpoint);
 };
