@@ -11,7 +11,7 @@
        */
       .state('landing', {
         url: '/',
-        templateUrl: '/html/modules/login/views/login.html',
+        templateUrl: '/html/modules/auth/login.html',
         controller: 'LoginController',
         controllerAs: 'LandingCtrl'
       })
@@ -23,7 +23,7 @@
        */
       .state('home', {
         url: '/home',
-        templateUrl: '/html/modules/home/views/home.html',
+        templateUrl: '/html/modules/home/home.html',
         controller: 'HomeController',
         controllerAs: 'HomeCtrl',
         authenticate: true
@@ -37,7 +37,7 @@
        */
       .state('editRoute', {
         url: '/routes/{route:.*}',
-        templateUrl: '/html/modules/routes/views/editRoutes.view.html',
+        templateUrl: '/html/modules/routes/edit-routes.html',
         controller: 'EditRoutesController',
         controllerAs: 'vm',
         authenticate: true
