@@ -1,0 +1,10 @@
+h1 Edit Route
+
+form
+  p {{vm.test}}
+  input(ng-model="vm.formInfo.route")
+  div.method-body(ng-repeat="method in vm.formInfo.methods")
+    input(ng-model="method")
+    input(ng-model="vm.formInfo.body[method]")
+
+button(ng-click="vm.updateRoute()")

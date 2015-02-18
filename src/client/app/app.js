@@ -27,7 +27,21 @@
         controller: 'HomeController',
         controllerAs: 'HomeCtrl',
         authenticate: true
-       });
+      })
+
+      /**
+       * @name editRoute
+       * @type {route}
+       * @description View for editing a specific route. Provides options
+       *              to edit or delete the route.
+       */
+      .state('editRoute', {
+        url: '/routes/:id',
+        templateUrl: '/html/modules/routes/views/editRoutes.view.html',
+        controller: 'EditRoutesController',
+        controllerAs: 'vm',
+        authenticate: true
+      });
 
 
 /**
@@ -77,7 +91,7 @@
 
   angular
     .module('app', [
-      'app.controllers.RoutesController',
+      'app.controllers.EditRoutesController',
       'app.controllers.HomeController',
       'app.controllers.LoginController',
       'ui.router'
