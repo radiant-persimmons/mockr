@@ -13,9 +13,7 @@ var getEndpoints = function(req, res, next) {
 var createEndpoint = function(req, res, next) {
   var username = req.params.username;
   var route = req.body.route;
-  var method = req.body.method;
-  var responseStatus = req.body.responseStatus;
-  var body = req.body.body;
+  var methods = req.body.methods;
   
   User.findOne({'username': username}, function (err, user) {
     if (err) return res.status(500).json({ message: err });
@@ -23,9 +21,9 @@ var createEndpoint = function(req, res, next) {
     if(!user) {
       res.status(500).end();
     } else {
-      var newEndpoint = new Endpoint({username: username, route: route, method: method, responseStatus: responseStatus, body: body});
+      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods });
   
-      Endpoint.findOne({ username: username, route: route, method: method }, function(err, endpoint) {
+      Endpoint.findOne({ username: username, route: route }, function(err, endpoint) {
         if(err) return res.status(500).json({ message: err });
         if(endpoint) {
           return res.status(500).end();
@@ -59,13 +57,44 @@ var getEndpoint = function(req, res, next) {
 };
 
 var editEndpoint = function(req, res, next) {
-  
+  var username = req.params.username;
+  var newUsername = req.body.username;
+  var route = req.params[0];
+  var newRoute = req.body.route;
+  var methods = req.body.methods;
+
+  var newData = {};
+  newData.methods = methods;
+  newData.username = newUsername;
+  newData.route = newRoute;
+  newData.body = req.body.body;
+
+  //TODO check if username exists before creating endpoint
+  Endpoint.findOneAndUpdate({ 'username': username, 'route': route }, newData, {upsert: true},function(err, numberAffected, raw) {
+    if (err) {
+      return res.status(500).end();
+    }
+    res.status(201).end();
+  });
+};
+
+var deleteEndpoint = function(req, res, next) {
+  var username = req.params.username;
+  var route = req.params[0];
+
+  Endpoint.remove({ 'username': username, 'route': route }, function(err) {
+    if (err) {
+      return res.status(500).end();
+    }
+    res.status(201).end();
+  });
 };
 
 module.exports = {
   getEndpoints: getEndpoints,
   createEndpoint: createEndpoint,
   getEndpoint: getEndpoint,
-  editEndpoint: editEndpoint
+  editEndpoint: editEndpoint,
+  deleteEndpoint: deleteEndpoint
 };
 
