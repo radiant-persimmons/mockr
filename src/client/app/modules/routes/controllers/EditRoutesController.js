@@ -37,7 +37,7 @@
           POST: 'I\'m a post request'
         },
         methods: ['GET', 'POST']
-      }
+      };
 
       console.log('activate finished');
       console.log(vm.formInfo);
