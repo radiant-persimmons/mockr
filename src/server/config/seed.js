@@ -21,15 +21,15 @@ Endpoint.find({}).remove(function() {
   Endpoint.create({
     username: 'Andrew',
     route: 'api/messages',
-    methods: { 'GET': 200, 'POST': 201 },
-    header: '',
-    body: { 'GET': '[{ message: "Hello world" }, { message: "I am Andrew" }]' }
+    methods: { GET: { status: 200, header: {} }, POST: { status: 201, header: {} } },
+    headers: '',
+    body: { GET: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }
   }, {
     username: 'Andrew',
     route: 'api/rooms',
-    methods: { 'GET': 200 },
-    header: '',
-    body: { 'GET': '["lobby", "coolpeeps"]' }
+    methods: { GET: { status: 200, header: {} } },
+    headers: '',
+    body: { GET: '["lobby", "coolpeeps"]' }
   }, function(err, e1, e2) {
     console.log('\n\nCreated endpoints:\n', e1, e2);
 

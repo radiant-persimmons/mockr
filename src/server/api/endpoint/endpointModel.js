@@ -5,7 +5,7 @@ var endpointSchema = mongoose.Schema({
   username: { type: String, required: true },
   route: { type: String, required: true },
   methods: {},
-  header: { type: String },
+  headers: { type: String },
   body: {}
 });
 

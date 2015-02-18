@@ -14,7 +14,6 @@ var createEndpoint = function(req, res, next) {
   var username = req.params.username;
   var route = req.body.route;
   var methods = req.body.methods;
-  var body = req.body.body;
   
   User.findOne({'username': username}, function (err, user) {
     if (err) return res.status(500).json({ message: err });
@@ -22,7 +21,7 @@ var createEndpoint = function(req, res, next) {
     if(!user) {
       res.status(500).end();
     } else {
-      var newEndpoint = new Endpoint({username: username, route: route, methods: methods, body: body});
+      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods });
   
       Endpoint.findOne({ username: username, route: route }, function(err, endpoint) {
         if(err) return res.status(500).json({ message: err });
@@ -59,12 +58,21 @@ var getEndpoint = function(req, res, next) {
 
 var editEndpoint = function(req, res, next) {
   var username = req.params.username;
+  var newUsername = req.body.username;
   var route = req.params[0];
-  var newData = req.body;
+  var newRoute = req.body.route;
+  var methods = req.body.methods;
 
-  Endpoint.update({ 'username': username, 'route': route }, newData, function(err, numberAffected, raw) {
+  var newData = {};
+  newData.methods = methods;
+  newData.username = newUsername;
+  newData.route = newRoute;
+  newData.body = req.body.body;
+
+  //TODO check if username exists before creating endpoint
+  Endpoint.findOneAndUpdate({ 'username': username, 'route': route }, newData, {upsert: true},function(err, numberAffected, raw) {
     if (err) {
-      return res.status(404).end();
+      return res.status(500).end();
     }
     res.status(201).end();
   });
