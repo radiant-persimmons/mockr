@@ -96,7 +96,7 @@
     }
 
     function getRoute() {
-      RouteFactory.getRoute($stateParams.route)
+      routes.getRoute($stateParams.route)
         .then(function(res) {
           console.log('route has been fetched');
 
