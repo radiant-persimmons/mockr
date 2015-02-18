@@ -13,6 +13,9 @@ var getData = function(req, res, next) {
     } else {
       var statusCode = endpoint.methods[method].status;
       var data = endpoint.methods[method].data;
+
+      //add headers in the response
+
       res.status(statusCode).json(data);
     }
   });
