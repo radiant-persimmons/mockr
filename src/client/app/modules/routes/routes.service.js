@@ -56,6 +56,20 @@
       });
     };
 
+    this.getRoute = function(route) {
+      return $http({
+        method: 'GET',
+        url: '/api/users/' + user.username + '/endpoints' + route
+      }).success(function(result) {
+        console.log('result', result);
+        //for (var route in result) {
+          //_this.routes.push(result[route]);
+        //}
+      }).error(function(err) {
+        console.log('ERROR!!', err);
+      });
+    };
+
     return this;
   }
 

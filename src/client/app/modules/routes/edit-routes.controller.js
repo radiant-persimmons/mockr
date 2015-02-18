@@ -45,14 +45,9 @@
       };
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
-      // // get route info from server TODO
-      // routes.getRoute(vm.formInfo.route)
-      //   .then(function(res) {
-      //     console.log('route has been fetched');
 
-      //   }).catch(function(err) {
-      //     console.error('error fetching route', vm.formInfo.route);
-      //   });
+      // // get route info from server
+      getRoute();
     }
 
     /**
@@ -102,6 +97,16 @@
       // update keys
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
       console.log(vm.formInfo.methods);
+    }
+
+    function getRoute() {
+      routes.getRoute($stateParams.route)
+        .then(function(res) {
+          console.log('route has been fetched');
+
+        }).catch(function(err) {
+          console.error('error fetching route', vm.formInfo.route);
+        });
     }
   }
 
