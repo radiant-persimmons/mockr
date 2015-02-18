@@ -1,14 +1,14 @@
 div.homeContainer
-  div.outside-box 
+  div.outside-box
     div.form-input
       h3 Create a Route
-      form(ng-submit="HomeCtrl.addRoute()")
-        input(placeholder="enter route here" ng-model="HomeCtrl.formInfo.route")
+      form(ng-submit="vm.addRoute()")
+        input(placeholder="enter route here" ng-model="vm.formInfo.route")
         button Add a Route
-        div(ng-repeat="verb in HomeCtrl.verbs")
+        div(ng-repeat="verb in vm.verbs")
           div {{verb}}
-            input(type="checkbox" checklist-model="HomeCtrl.formInfo.verbs" checklist-value="verb") 
+            input(type="checkbox" checklist-model="vm.formInfo.verbs" checklist-value="verb")
     div.current-routes-list
       h3 Current Routes:
-      div(ng-repeat="route in HomeCtrl.routes")
+      div(ng-repeat="route in vm.routes")
         div.routeInRoutes {{route.route}}

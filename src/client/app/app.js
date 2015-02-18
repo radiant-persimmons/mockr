@@ -25,7 +25,7 @@
         url: '/',
         templateUrl: '/html/modules/auth/login.html',
         controller: 'LoginController',
-        controllerAs: 'LandingCtrl'
+        controllerAs: 'vm'
       })
 
       /**
@@ -37,7 +37,7 @@
         url: '/home',
         templateUrl: '/html/modules/home/home.html',
         controller: 'HomeController',
-        controllerAs: 'HomeCtrl',
+        controllerAs: 'vm',
         authenticate: true
       })
 
