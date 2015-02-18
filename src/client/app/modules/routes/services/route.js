@@ -3,7 +3,7 @@
   function RouteFactory ($http, UserFactory) {
     var _this = this;
     _this.routes = [];
-    
+
     this.deleteRoute = function (){};
 
     this.addRoute = function(body){
@@ -12,7 +12,7 @@
       route.route = body;
       route.responseStatus = 200;
       this.routes.push(route);
-      $http({
+      return $http({
         method: 'POST',
         url: '/api/users/' + UserFactory.username + '/endpoints',
         data: route
@@ -24,7 +24,7 @@
     };
 
     this.updateRoute = function(body){
-      $http({
+      return $http({
         method: 'PUT',
         url: '/api/users/' + UserFactory.username + '/endpoints',
         data: body
@@ -36,7 +36,7 @@
     };
 
     this.fetch = function(user) {
-      $http({
+      return $http({
         method: 'GET',
         url: '/api/users/' + UserFactory.username + '/endpoints',
       }).success(function(result) {

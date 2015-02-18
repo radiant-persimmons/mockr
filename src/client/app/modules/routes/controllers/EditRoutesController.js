@@ -6,12 +6,13 @@
     ])
     .controller('EditRoutesController', EditRoutesController);
 
-  EditRoutesController.$inject = ['$stateParams', 'RouteFactory'];
+  EditRoutesController.$inject = ['$state', '$stateParams', 'RouteFactory'];
 
-  function EditRoutesController($stateParams, RouteFactory) {
+  function EditRoutesController($state, $stateParams, RouteFactory) {
     var vm = this;
     vm.routeId = $stateParams.id;
     vm.buttonStatus = 'SAVE';
+    vm.errorMessage = '';
     vm.formInfo = {
       route: '',
       methods: [],
@@ -36,15 +37,12 @@
           GET: 'I\'m a get request',
           POST: 'I\'m a post request'
         },
-        methods: ['GET', 'POST']
       };
+      vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
-      console.log('activate finished');
-      console.log(vm.formInfo);
 
-      // vm.formInfo.methods = _.pluck
 
-      // // get route info from server
+      // // get route info from server TODO
       // RouteFactory.getRoute(vm.routeId)
       //   .then(function(res) {
       //     console.log('route has been fetched');
@@ -55,18 +53,18 @@
     }
 
     function updateRoute() {
-      console.log('calling updateroute');
-      vm.buttonStatus = 'Saving...';
       // Change button status
+      vm.buttonStatus = 'Saving...';
 
-      // // Submit data
-      // RouteFactory.updateRoute(vm.formInfo)
-      //   .then(function(res) {
-
-      //   });
-
-      // // Clear form
-      // vm.formInfo = {};
+      // Submit data
+      RouteFactory.updateRoute(vm.formInfo)
+        .then(function(res) {
+          $state.go('home');
+        }).catch(function(err) {
+          // TODO display error message
+          vm.buttonStatus = 'SAVE';
+          vm.errorMessage = 'Error occurred when saving route.';
+        });
     }
 
     function deleteRoute(argument) {
