@@ -14,7 +14,7 @@
   function user($http) {
     var resolved = false;
     var fnCallbacks = [];
-    var user;
+    var sessionUser;
     var factory = {
       getUser: getUser,
       registerCb: registerCb
@@ -39,7 +39,7 @@
      * @return {Object} current user
      */
     function getUser() {
-      return user;
+      return sessionUser;
     }
 
     /**
@@ -64,9 +64,9 @@
     function fetchUser() {
       return $http.get('/api/user')
         .then(function(res) {
-          user = res.data;
+          sessionUser = res.data;
           console.log('got the user', arguments);
-          return user;
+          return sessionUser;
         }).catch(function(err) {
           console.error('Error fetching using:', err);
         });
