@@ -1,5 +1,17 @@
 ;(function(){
 
+  angular
+    .module('app', [
+      'app.controllers.EditRoutesController',
+      'app.controllers.HomeController',
+      'app.controllers.LoginController',
+      'ui.router'
+    ])
+    .config(config)
+    .run(run);
+
+  config.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider'];
+
   function config($stateProvider, $locationProvider, $urlRouterProvider) {
 
     $stateProvider
@@ -65,7 +77,7 @@
     $locationProvider.html5Mode(true);
   }
 
-  config.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider'];
+  run.$inject = ['$rootScope', '$state'];
 
   function run($rootScope, $state) {
     $rootScope.$on('$stateChangeStart',
@@ -87,15 +99,4 @@
     });
   }
 
-  run.$inject = ['$rootScope', '$state'];
-
-  angular
-    .module('app', [
-      'app.controllers.EditRoutesController',
-      'app.controllers.HomeController',
-      'app.controllers.LoginController',
-      'ui.router'
-    ])
-    .config(config)
-    .run(run);
 })();

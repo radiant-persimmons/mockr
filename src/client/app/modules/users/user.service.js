@@ -1,11 +1,17 @@
 ;(function() {
 
+  angular
+    .module('app.services.user', [])
+    .factory('user', user);
+
+  user.$inject = ['$http'];
+
   /**
    * Service to store info about the session user. Provides way to register
    * callbacks on factory to be executed after the data requests have been
    * resolved (e.g. a callback to stop a loading animation).
    */
-  function UserFactory($http) {
+  function user($http) {
     var resolved = false;
     var fnCallbacks = [];
     var user;
@@ -67,9 +73,4 @@
     }
   }
 
-  UserFactory.$inject = ['$http'];
-
-  angular
-    .module('app.services.UserFactory', [])
-    .factory('UserFactory', UserFactory);
 })();

@@ -1,16 +1,16 @@
 ;(function(){
 
-  function AuthFactory($http) {
+  function auth($http) {
     this.login = function() {
       window.location = '/api/auth/login';
     };
     return this;
   }
 
-  AuthFactory.$inject = ['$http'];
+  auth.$inject = ['$http'];
 
   angular
-    .module('app.services.AuthFactory',[])
-    .factory('AuthFactory', AuthFactory);
-    
+    .module('app.services.auth',[])
+    .factory('auth', auth);
+
 })();
