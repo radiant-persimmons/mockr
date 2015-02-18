@@ -36,7 +36,7 @@
        *              to edit or delete the route.
        */
       .state('editRoute', {
-        url: '/routes/:id',
+        url: '/routes/{route:.*}',
         templateUrl: '/html/modules/routes/views/editRoutes.view.html',
         controller: 'EditRoutesController',
         controllerAs: 'vm',

@@ -10,27 +10,32 @@
 
   function EditRoutesController($state, $stateParams, RouteFactory) {
     var vm = this;
-    vm.routeId = $stateParams.id;
+
+    vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     vm.buttonStatus = 'SAVE';
     vm.errorMessage = '';
+
+    // form info regarding this route
     vm.formInfo = {
-      route: '',
+      route: $stateParams.route,
       methods: [],
       body: {}
     };
+
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
+    vm.toggleMethod = toggleMethod;
 
     activate();
 
     ////////////
 
-    function displayForm() {
-      console.log(vm.formInfo);
-    }
-
+    /**
+     * initialization of controller. Grabs route data from server and populates
+     * the form.
+     */
     function activate() {
-      // TEMP DEBUG
+      // TEMP DEBUG TODO FIX
       vm.formInfo = {
         route: '/api/messages',
         body: {
@@ -40,35 +45,63 @@
       };
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
-
-
       // // get route info from server TODO
-      // RouteFactory.getRoute(vm.routeId)
+      // RouteFactory.getRoute(vm.formInfo.route)
       //   .then(function(res) {
       //     console.log('route has been fetched');
 
       //   }).catch(function(err) {
-      //     console.error('error fetching route', vm.routeId);
+      //     console.error('error fetching route', vm.formInfo.route);
       //   });
     }
 
+    /**
+     * pushes updates route info to the database. Handles error with display
+     * of an error message.
+     */
+    // TODO: should updateRoute pass a param of route???
     function updateRoute() {
-      // Change button status
+      // Change button label to indicate route is saving
       vm.buttonStatus = 'Saving...';
 
-      // Submit data
-      RouteFactory.updateRoute(vm.formInfo)
+      // Submit data. Returns promise for any consumer to act upon resolution
+      return RouteFactory.updateRoute(vm.formInfo)
+        // navigate to home on successful save
         .then(function(res) {
           $state.go('home');
+        // otherwise display error message
         }).catch(function(err) {
-          // TODO display error message
+          // TODO display better error message
           vm.buttonStatus = 'SAVE';
-          vm.errorMessage = 'Error occurred when saving route.';
+          vm.errorMessage = 'Error occurred when saving route';
         });
     }
 
+    /**
+     * deletes route entirely from database
+     */
     function deleteRoute(argument) {
-      RouteFactory.deleteRoute(vm.route);
+      RouteFactory.deleteRoute(vm.formInfo.route);
+    }
+
+    /**
+     * handles logic for when user checks and unchecks a method for a route.
+     * When unchecking, deletes that method from the route. When checking,
+     * adds a new set of body data for user to input
+     */
+    function toggleMethod(method) {
+      // delete method from body if present
+      if (typeof vm.formInfo.body[method] !== 'undefined') {
+        delete vm.formInfo.body[method];
+
+      // otherwise add it to the form
+      } else {
+        vm.formInfo.body[method] = '';
+      }
+
+      // update keys
+      vm.formInfo.methods = Object.keys(vm.formInfo.body);
+      console.log(vm.formInfo.methods);
     }
   }
 
