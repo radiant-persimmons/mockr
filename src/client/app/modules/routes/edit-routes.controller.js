@@ -101,7 +101,6 @@
 
       // update keys
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
-      console.log(vm.formInfo.methods);
     }
   }
 

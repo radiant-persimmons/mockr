@@ -20,19 +20,23 @@
       registerCb: registerCb
     };
 
-    // Get user data from server
-    fetchUser().then(function() {
-      // After getting info, mark as resolved and run registered callbacks
-      resolved = true;
-      console.log('fetching user', resolved, arguments);
-      fnCallbacks.forEach(function(cb) {
-        cb();
-      });
-    });
+    activate();
 
     return factory;
 
     ////////
+
+    function activate() {
+      // Get user data from server
+      fetchUser().then(function() {
+        // After getting info, mark as resolved and run registered callbacks
+        resolved = true;
+        console.log('fetching user', resolved, arguments);
+        fnCallbacks.forEach(function(cb) {
+          cb();
+        });
+      });
+    }
 
     /**
      * returns the currently logged in user
