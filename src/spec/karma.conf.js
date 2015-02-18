@@ -20,7 +20,8 @@ module.exports = function(config) {
       // TODO: set src files
 
       // spec files
-      paths.spec.client
+      paths.spec.client,
+      paths.client.root + '/**/*.spec.js'
     ],
 
 
