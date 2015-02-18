@@ -5,8 +5,10 @@ div.homeContainer
       form(ng-submit="HomeCtrl.addRoute()")
         input(placeholder="enter route here" ng-model="HomeCtrl.formInfo.route")
         button Add a Route
+        div(ng-repeat="verb in HomeCtrl.verbs")
+          div {{verb}}
+            input(type="checkbox" checklist-model="HomeCtrl.formInfo.verbs" checklist-value="verb") 
     div.current-routes-list
       h3 Current Routes:
       div(ng-repeat="route in HomeCtrl.routes")
         div.routeInRoutes {{route.route}}
-
