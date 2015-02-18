@@ -4,8 +4,7 @@
     .module('app.services.auth',[])
     .factory('auth', auth);
 
-  auth.$inject = ['$http'];
-
+  /* @ngInject */
   function auth($http) {
 
     var service = {
