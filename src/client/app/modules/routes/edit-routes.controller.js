@@ -45,6 +45,7 @@
       };
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
+<<<<<<< HEAD
       // // get route info from server TODO
       // routes.getRoute(vm.formInfo.route)
       //   .then(function(res) {
@@ -53,6 +54,10 @@
       //   }).catch(function(err) {
       //     console.error('error fetching route', vm.formInfo.route);
       //   });
+=======
+      // // get route info from server
+      getRoute();
+>>>>>>> add get route function on factory
     }
 
     /**
@@ -102,6 +107,16 @@
       // update keys
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
       console.log(vm.formInfo.methods);
+    }
+
+    function getRoute() {
+      RouteFactory.getRoute($stateParams.route)
+        .then(function(res) {
+          console.log('route has been fetched');
+
+        }).catch(function(err) {
+          console.error('error fetching route', vm.formInfo.route);
+        });
     }
   }
 
