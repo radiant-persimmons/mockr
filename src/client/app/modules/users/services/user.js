@@ -18,6 +18,7 @@
     fetchUser().then(function() {
       // After getting info, mark as resolved and run registered callbacks
       resolved = true;
+      console.log('fetching user', resolved, arguments);
       fnCallbacks.forEach(function(cb) {
         cb();
       });
@@ -58,6 +59,7 @@
       return $http.get('/api/user')
         .then(function(res) {
           user = res.data;
+          console.log('got the user', arguments);
           return user;
         }).catch(function(err) {
           console.error('Error fetching using:', err);

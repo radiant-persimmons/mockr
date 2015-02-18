@@ -3,16 +3,17 @@
   function RouteFactory ($http, UserFactory) {
     var _this = this;
     _this.routes = [];
-    
+
     this.deleteRoute = function (){};
 
     this.addRoute = function(body){
+      
       var route = {};
       route.method = 'GET';
       route.route = body;
       route.responseStatus = 200;
       this.routes.push(route);
-      $http({
+      return $http({
         method: 'POST',
         url: '/api/users/' + UserFactory.username + '/endpoints',
         data: route
@@ -21,10 +22,11 @@
       }).error(function(err) {
         console.log('ADD ROUTE ERROR:', err);
       });
+
     };
 
     this.updateRoute = function(body){
-      $http({
+      return $http({
         method: 'PUT',
         url: '/api/users/' + UserFactory.username + '/endpoints',
         data: body
@@ -36,7 +38,7 @@
     };
 
     this.fetch = function(user) {
-      $http({
+      return $http({
         method: 'GET',
         url: '/api/users/' + UserFactory.username + '/endpoints',
       }).success(function(result) {
@@ -54,7 +56,7 @@
   RouteFactory.$inject = ['$http', 'UserFactory'];
 
   angular
-    .module('app.services.RouteFactory', ['app.services.User'])
+    .module('app.services.RouteFactory', ['app.services.UserFactory'])
     .factory('RouteFactory', RouteFactory);
 
 })();
