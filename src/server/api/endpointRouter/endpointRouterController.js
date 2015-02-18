@@ -11,16 +11,9 @@ var getData = function(req, res, next) {
     if(!endpoint) {
       return res.status(500).end(err);
     } else {
-      var endpointBody = endpoint.body;
-      var endpointBodyParsed = JSON.parse(endpointBody);
-      console.log("endpoint methods", endpoint.methods);
-      console.log("endpoint methods parsed", JSON.parse(endpoint.methods))
-      console.log("endpoint body", endpointBody );
-      console.log("endpoint body parsed", JSON.parse(endpointBody) );
-      console.log("method", method);
-      console.log("route on endpointbody", endpointBody[route] );
-      console.log("route on endpointbodyParsed", endpointBodyParsed[route] );
-      res.json(endpointBodyParsed);
+      var statusCode = endpoint.methods[method].status;
+      var data = endpoint.methods[method].data;
+      res.status(statusCode).json(data);
     }
   });
 };

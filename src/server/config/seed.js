@@ -21,13 +21,13 @@ Endpoint.find({}).remove(function() {
   Endpoint.create({
     username: 'Andrew',
     route: 'api/messages',
-    methods: { GET: { status: 200, header: {} }, POST: { status: 201, header: {} } },
+    methods: { GET: { status: 200, header: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' } },
     headers: '',
     body: { GET: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }
   }, {
     username: 'Andrew',
     route: 'api/rooms',
-    methods: { GET: { status: 200, header: {} } },
+    methods: { GET: { status: 200, header: {}, data: '["lobby", "coolpeeps"]' } },
     headers: '',
     body: { GET: '["lobby", "coolpeeps"]' }
   }, function(err, e1, e2) {
