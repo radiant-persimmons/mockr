@@ -7,6 +7,7 @@
     this.deleteRoute = function (){};
 
     this.addRoute = function(body){
+      
       var route = {};
       route.method = 'GET';
       route.route = body;
@@ -21,6 +22,7 @@
       }).error(function(err) {
         console.log('ADD ROUTE ERROR:', err);
       });
+
     };
 
     this.updateRoute = function(body){
@@ -54,7 +56,7 @@
   RouteFactory.$inject = ['$http', 'UserFactory'];
 
   angular
-    .module('app.services.RouteFactory', ['app.services.User'])
+    .module('app.services.RouteFactory', ['app.services.UserFactory'])
     .factory('RouteFactory', RouteFactory);
 
 })();
