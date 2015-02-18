@@ -59,7 +59,7 @@
     this.getRoute = function(route) {
       return $http({
         method: 'GET',
-        url: '/api/users/' + UserFactory.username + '/endpoints' + route
+        url: '/api/users/' + user.username + '/endpoints' + route
       }).success(function(result) {
         console.log('result', result);
         //for (var route in result) {
