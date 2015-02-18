@@ -1,0 +1,16 @@
+h1 Edit Route
+form
+  h3 {{ vm.formInfo.route }}
+  div.methods-selector.form-group
+    div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
+      label
+        input(type="checkbox"
+              ng-checked="{{ !!vm.formInfo.body[method] }}"
+              ng-click="vm.toggleMethod(method)")
+        {{ method }}
+  div.method-body.form-group(ng-repeat="method in vm.formInfo.methods")
+    label {{ method }}
+    textarea.form-control(rows="3"
+                          ng-model="vm.formInfo.body[method]")
+  button.btn.btn-primary(ng-click="vm.updateRoute()") {{ vm.buttonStatus }}
+  div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
