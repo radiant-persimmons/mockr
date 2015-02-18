@@ -2,13 +2,13 @@
 
   angular
     .module('app.controllers.EditRoutesController', [
-      'app.services.RouteFactory'
+      'app.services.routes'
     ])
     .controller('EditRoutesController', EditRoutesController);
 
-  EditRoutesController.$inject = ['$state', '$stateParams', 'RouteFactory'];
+  EditRoutesController.$inject = ['$state', '$stateParams', 'routes'];
 
-  function EditRoutesController($state, $stateParams, RouteFactory) {
+  function EditRoutesController($state, $stateParams, routes) {
     var vm = this;
 
     vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
@@ -46,7 +46,7 @@
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
       // // get route info from server TODO
-      // RouteFactory.getRoute(vm.formInfo.route)
+      // routes.getRoute(vm.formInfo.route)
       //   .then(function(res) {
       //     console.log('route has been fetched');
 
@@ -65,7 +65,7 @@
       vm.buttonStatus = 'Saving...';
 
       // Submit data. Returns promise for any consumer to act upon resolution
-      return RouteFactory.updateRoute(vm.formInfo)
+      return routes.updateRoute(vm.formInfo)
         // navigate to home on successful save
         .then(function(res) {
           $state.go('home');
@@ -81,7 +81,7 @@
      * deletes route entirely from database
      */
     function deleteRoute(argument) {
-      RouteFactory.deleteRoute(vm.formInfo.route);
+      routes.deleteRoute(vm.formInfo.route);
     }
 
     /**

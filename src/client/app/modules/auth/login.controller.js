@@ -1,20 +1,18 @@
 ;(function(){
 
-  function LoginController(AuthFactory) {
-    this.login = function() {
-      AuthFactory.login();
-    };
-
-  }
-
-  LoginController.$inject = ['AuthFactory'];
-
   angular
     .module('app.controllers.LoginController', [
-      'app.services.AuthFactory'
+      'app.services.auth'
     ])
     .controller('LoginController', LoginController);
 
+  LoginController.$inject = ['auth'];
 
+  function LoginController(auth) {
+    this.login = function() {
+      auth.login();
+    };
+
+  }
 
 })();
