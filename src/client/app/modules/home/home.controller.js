@@ -20,44 +20,53 @@
   * This page serves as a jumping off point to editing individual routes and makes
   * adding and removing new routes easy
   */
+  //runs activate on startup
 
   function HomeController($http, routes, user, checklist) {
-    var test;
-    this.formInfo = {};
-    this.formInfo.verbs = [];
-    this.routes = routes.routes;
-    this.verbs = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
+    var vm = this;
+    vm.formInfo = {};
+    vm.formInfo.verbs = [];
+    vm.routes = routes.routes;
+    vm.user = {};
+    vm.verbs = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
 
-    /**
-    * Activate gets called on module load and calls fetch which fetches user data
-    * from the database and displays it for the user
-    */
-    this.activate = function() {
-      user.registerCb(function(){
-        test = this.getUser();
-      });
-      console.log('getting user', test);
-      routes.fetch();
-    };
+    vm.addRoute = addRoute;
+
+    activate();
+
+    /////////////////////////
 
     /**
     * Process to capture and add route information from the user then store them in
     * the database
     */
-    this.addRoute = function() {
-      console.log(this.formInfo);
-      routes.addRoute(this.formInfo);
-      this.formInfo.route = '';
-    };
+    function addRoute() {
+      console.log('adding', vm.formInfo);
+      routes.addRoute(vm.formInfo, vm.user.username).then(function() {
+        vm.formInfo.route = '';
+        
+      });
+    }
 
-    this.editRoute = function() {};
+    function editRoute() {}
 
-    this.deleteRoute = function() {
+    /**
+    * Activate gets called on module load and calls fetch which fetches user data
+    * from the database and displays it for the user
+    */
+    function activate() {
+      console.log('registering cb');
+      user.registerCb(function(){
+        vm.user = user.getUser();
+        routes.fetch(vm.user.username).then(function() {
+        });
+      });
+
+    }
+    function deleteRoute() {
       routes.deleteRoute();
-    };
+    }
 
-    //runs activate on startup
-    this.activate();
   }
 
 })();

@@ -7,28 +7,33 @@
   routes.$inject = ['$http', 'user'];
 
   function routes ($http, user) {
-    var _this = this;
-    _this.routes = [];
+    var vm = this;
+    vm.routes = [];
 
     this.deleteRoute = function (){};
 
-    this.addRoute = function(body){
-
-      var route = {};
-      route.method = 'GET';
-      route.route = body;
-      route.responseStatus = 200;
-      this.routes.push(route);
-      return $http({
-        method: 'POST',
-        url: '/api/users/' + user.username + '/endpoints',
-        data: route
-      }).then(function(result) {
-        console.log('ADD ROUTE SUCCESS:', result);
-      }).catch(function(err) {
-        console.log('ADD ROUTE ERROR:', err);
-      });
-
+    this.addRoute = function(body, username){
+      if (vm.routes.indexOf(body.route) < 0) {
+        var route = {
+          username: username,
+          route: body.route,
+          methods: {
+          },
+          headers: '',
+          body: {}
+        };
+        
+        vm.routes.push(route);
+        return $http({
+          method: 'POST',
+          url: '/api/users/' + username + '/endpoints',
+          data: route
+        }).success(function(result) {
+          console.log('ADD ROUTE SUCCESS:', result);
+        }).error(function(err) {
+          console.log('ADD ROUTE ERROR:', err);
+        });
+      }
     };
 
     this.updateRoute = function(body){
@@ -49,7 +54,7 @@
         url: '/api/users/' + user.username + '/endpoints',
       }).then(function(result) {
         for (var route in result) {
-          _this.routes.push(result[route]);
+          vm.routes.push(result[route]);
         }
       }).catch(function(err) {
         console.log('ERROR!!', err);
