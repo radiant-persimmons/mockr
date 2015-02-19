@@ -23,9 +23,9 @@
         method: 'POST',
         url: '/api/users/' + user.username + '/endpoints',
         data: route
-      }).success(function(result) {
+      }).then(function(result) {
         console.log('ADD ROUTE SUCCESS:', result);
-      }).error(function(err) {
+      }).catch(function(err) {
         console.log('ADD ROUTE ERROR:', err);
       });
 
@@ -36,9 +36,9 @@
         method: 'PUT',
         url: '/api/users/' + user.username + '/endpoints',
         data: body
-      }).success(function(result) {
+      }).then(function(result) {
         console.log('UPDATE SUCCESS:', result);
-      }).error(function(err) {
+      }).catch(function(err) {
         console.log('UPDATE ERROR:', err);
       });
     };
@@ -47,11 +47,11 @@
       return $http({
         method: 'GET',
         url: '/api/users/' + user.username + '/endpoints',
-      }).success(function(result) {
+      }).then(function(result) {
         for (var route in result) {
           _this.routes.push(result[route]);
         }
-      }).error(function(err) {
+      }).catch(function(err) {
         console.log('ERROR!!', err);
       });
     };
