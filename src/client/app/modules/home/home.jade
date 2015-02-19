@@ -7,7 +7,9 @@ div.homeContainer
         button Add a Route
         div(ng-repeat="verb in HomeCtrl.verbs")
           label 
-            input(type="checkbox" ng-checked="{{ !HomeCtrl.formInfo.verbs }}" ng-click="routes.toggleMethod(verb)") 
+            input(type="checkbox" 
+              ng-checked="{{ !HomeCtrl.formInfo.verbs }}" 
+              ng-click="HomeCtrl.toggleRoute(verb)") 
             {{ verb }}
     div.current-routes-list
       h3 Current Routes:

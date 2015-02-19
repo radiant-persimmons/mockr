@@ -82,7 +82,6 @@
       return $http.get('/api/user')
         .then(function(res) {
           sessionUser = res.data;
-          console.log('got the user', arguments);
           return sessionUser;
         }).catch(function(err) {
           console.error('Error fetching using:', err);

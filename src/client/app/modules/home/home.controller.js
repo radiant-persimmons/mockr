@@ -25,12 +25,14 @@
   function HomeController($http, routes, user, checklist) {
     var vm = this;
     vm.formInfo = {};
-    vm.formInfo.verbs = [];
+    vm.formInfo.methods = [];
+    vm.formInfo.body = {};
     vm.routes = routes.routes;
     vm.user = {};
-    vm.verbs = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
+    vm.verbs = ['GET', 'POST', 'PUT', 'DELETE'];
 
     vm.addRoute = addRoute;
+    vm.toggleRoute = toggleRoute;
 
     activate();
 
@@ -41,11 +43,24 @@
     * the database
     */
     function addRoute() {
-      console.log('adding', vm.formInfo);
       routes.addRoute(vm.formInfo, vm.user.username).then(function() {
         vm.formInfo.route = '';
         
       });
+    }
+    function toggleRoute(method) {
+      // delete method from body if present
+      if (typeof vm.formInfo.body[method] !== 'undefined') {
+        delete vm.formInfo.body[method];
+
+      // otherwise add it to the form
+      } else {
+        vm.formInfo.body[method] = '';
+      }
+
+      // update keys
+      vm.formInfo.methods = Object.keys(vm.formInfo.body);
+      console.log(vm.formInfo.methods);
     }
 
     function editRoute() {}
@@ -55,7 +70,6 @@
     * from the database and displays it for the user
     */
     function activate() {
-      console.log('registering cb');
       user.registerCb(function(){
         vm.user = user.getUser();
         routes.fetch(vm.user.username).then(function() {

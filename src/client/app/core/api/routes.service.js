@@ -8,35 +8,41 @@
 
   function routes ($http, user) {
     var vm = this;
-    vm.routes = [];
-
-    this.deleteRoute = function (){};
-
-    this.addRoute = function(body, username){
-      if (vm.routes.indexOf(body.route) < 0) {
-        var route = {
-          username: username,
-          route: body.route,
-          methods: {
-          },
-          headers: '',
-          body: {}
-        };
-        
-        vm.routes.push(route);
-        return $http({
-          method: 'POST',
-          url: '/api/users/' + username + '/endpoints',
-          data: route
-        }).success(function(result) {
-          console.log('ADD ROUTE SUCCESS:', result);
-        }).error(function(err) {
-          console.log('ADD ROUTE ERROR:', err);
-        });
-      }
+    vm = {
+      routes: [],
+      addRoute: addRoute,
+      updateRoute: updateRoute,
+      fetch: fetch
     };
 
-    this.updateRoute = function(body){
+
+    function deleteRoute(){}
+
+    function addRoute(body, username){
+      var route = {
+        username: username,
+        route: body.route,
+        methods: {
+
+        },
+        headers: '',
+        body: {}
+      };
+      if (vm.routes[body.route]) {
+        vm.routes[body.route] = body.route;
+      }
+      return $http({
+        method: 'POST',
+        url: '/api/users/' + username + '/endpoints',
+        data: route
+      }).success(function(result) {
+        console.log('ADD ROUTE SUCCESS:', result);
+      }).error(function(err) {
+        console.log('ADD ROUTE ERROR:', err);
+      });
+    }
+
+    function updateRoute(body){
       return $http({
         method: 'PUT',
         url: '/api/users/' + user.username + '/endpoints',
@@ -46,9 +52,9 @@
       }).catch(function(err) {
         console.log('UPDATE ERROR:', err);
       });
-    };
+    }
 
-    this.fetch = function(user) {
+    function fetch(user) {
       return $http({
         method: 'GET',
         url: '/api/users/' + user.username + '/endpoints',
@@ -59,9 +65,9 @@
       }).catch(function(err) {
         console.log('ERROR!!', err);
       });
-    };
+    }
 
-    return this;
+    return vm; 
   }
 
 })();
