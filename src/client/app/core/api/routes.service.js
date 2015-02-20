@@ -14,7 +14,7 @@
       fetch: fetch
     };
 
-    return service; 
+    return service;
 
   ////////////////////////////////////
 
