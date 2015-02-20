@@ -1,13 +1,10 @@
 ;(function(){
 
   angular
-    .module('app.controllers.EditRoutesController', [
-      'app.services.routes'
-    ])
+    .module('app.controllers.EditRoutesController', [])
     .controller('EditRoutesController', EditRoutesController);
 
-  EditRoutesController.$inject = ['$state', '$stateParams', 'routes'];
-
+  /* @ngInject */
   function EditRoutesController($state, $stateParams, routes) {
     var vm = this;
 

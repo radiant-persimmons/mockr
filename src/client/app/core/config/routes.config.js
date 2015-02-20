@@ -45,6 +45,14 @@
         controller: 'EditRoutesController',
         controllerAs: 'vm',
         authenticate: true
+      })
+
+      // TODO TEMP testing
+      .state('navbar', {
+        url: '/nav',
+        templateUrl: '/html/core/views/nav-bar.html',
+        controller: 'NavbarController',
+        controllerAs: 'vm'
       });
 
 
