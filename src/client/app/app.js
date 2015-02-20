@@ -6,4 +6,4 @@
       'app.modules'
     ]);
 
-})();
+}).call(this);

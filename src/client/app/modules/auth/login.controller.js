@@ -9,9 +9,14 @@
   LoginController.$inject = ['auth'];
 
   function LoginController(auth) {
-    this.login = function() {
+    var vm = this;
+    vm.login = login;
+
+    //////////
+
+    function login() {
       auth.login();
-    };
+    }
 
   }
 
