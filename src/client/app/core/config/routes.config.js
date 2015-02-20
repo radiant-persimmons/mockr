@@ -45,7 +45,7 @@
         controller: 'EditRoutesController',
         controllerAs: 'vm',
         authenticate: true
-      })
+      });
 
     // default uncaught routes to landing page
     $urlRouterProvider.otherwise('/');
