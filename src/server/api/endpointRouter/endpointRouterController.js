@@ -23,20 +23,20 @@ var getData = function(req, res, next) {
           for(var i=0; i<endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === query) {
-              res.status(statusCode).json(dataPoint);
+              return res.status(statusCode).json(dataPoint);
             }
           }
-          res.status(500).end();
+          return res.status(500).end();
         } else {
           //add headers in the response
           //get data from data inserted through API created
           var data = endpoint.data;
-          res.status(statusCode).json(data);
+          return res.status(statusCode).json(data);
         }
       } else {
         //get data from user input
         var data = endpoint.methods[method].data;
-        res.status(statusCode).json(data);
+        return res.status(statusCode).json(data);
       }
     }
   });
@@ -66,12 +66,12 @@ var postData = function(req, res, next) {
         Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': params}}, function(err, numAffected, rawResponse) {
           if (err) return res.status(500).json(err); 
           console.log(numAffected, rawResponse);
-          res.status(statusCode).end();
+          return res.status(statusCode).end();
         }); 
       } else {
         //get data from user input
         var data = endpoint.methods[method].data;
-        res.status(statusCode).json(data);
+        return res.status(statusCode).json(data);
       }
     }
   });
@@ -119,7 +119,7 @@ var changeData = function(req, res, next) {
         //get data from user input
         //check what verb is normally used?? PUT or PATCH
         var data = endpoint.methods[method].data;
-        res.status(statusCode).json(data);
+        return res.status(statusCode).json(data);
       }
     }
   });
@@ -156,7 +156,7 @@ var deleteData = function(req, res, next) {
                 if (err) return res.status(500).json(err); 
                 console.log("data pull successul");
                 console.log(numAffected, rawResponse);
-                res.status(statusCode).end();
+                return res.status(statusCode).end();
               }); 
             }
           }
@@ -165,7 +165,7 @@ var deleteData = function(req, res, next) {
       } else {
         //get data from user input
         var data = endpoint.methods[method].data;
-        res.status(statusCode).json(data);
+        return res.status(statusCode).json(data);
       }
     }
   });
