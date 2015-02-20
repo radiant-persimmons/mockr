@@ -8,7 +8,7 @@ form
               ng-checked="{{ !!vm.formInfo.body[method] }}"
               ng-click="vm.toggleMethod(method)")
         {{ method }}
-  div.method-body.form-group(ng-repeat="method in vm.formInfo.methods")
+  div.method-body.form-group(ng-repeat="method in vm.formInfo.methods" style="background-color:{{vm.formInfo.colors[method]}}")
     label {{ method }}
     textarea.form-control(rows="3"
                           ng-model="vm.formInfo.body[method]")
