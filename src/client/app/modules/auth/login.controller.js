@@ -16,7 +16,7 @@
 
     function login() {
       auth.login();
-    };
+    }
 
   }
 
