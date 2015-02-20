@@ -19,10 +19,10 @@ var getData = function(req, res, next) {
 
         //if we have params, get specific data from data inserted through API created
         if(req.query.id) {
-          var query = parseInt(req.query.id);
+          var queryID = parseInt(req.query.id);
           for(var i=0; i<endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
-            if(dataPoint.id === query) {
+            if(dataPoint.id === queryID) {
               return res.status(statusCode).json(dataPoint);
             }
           }
