@@ -30,7 +30,8 @@ Endpoint.find({}).remove(function() {
     route: 'api/rooms',
     methods: { GET: { status: 200, header: {}, data: '["lobby", "coolpeeps"]' } },
     headers: '',
-    data: { GET: '["data", "posted"]' }
+    persistance: false,
+    data: []
   }, function(err, e1, e2) {
     console.log('\n\nCreated endpoints:\n', e1, e2);
 
