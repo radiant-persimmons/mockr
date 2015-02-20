@@ -7,5 +7,6 @@ module.exports = function(router) {
   router.put('1/:username/*', endpointRouterController.changeData);
   router.delete('1/:username/*', endpointRouterController.deleteData);
 
+
 };
 
