@@ -19,14 +19,14 @@ console.log('Seeding database...');
 // Clear endpoints
 Endpoint.find({}).remove(function() {
   Endpoint.create({
-    username: 'Andrew',
+    username: 'AndrewSouthpaw',
     route: 'api/messages',
     methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
     persistance: true,
     data: [{ id: 1, msg: 'Hola' }, { id: 2, msg: 'Buenos dias'}],
     count: 2
   }, {
-    username: 'Andrew',
+    username: 'AndrewSouthpaw',
     route: 'api/rooms',
     methods: { GET: { status: 200, headers: {}, data: '["lobby", "coolpeeps"]' } },
     persistance: false,
@@ -41,8 +41,8 @@ Endpoint.find({}).remove(function() {
     // Create users
     User.find({}).remove(function() {
       User.create({
-        username: 'Andrew',
-        userID: 1,
+        username: 'AndrewSouthpaw',
+        userID: 5187404,
         endpoints: endpointIDs
       }, {
         username: 'Ruben',
