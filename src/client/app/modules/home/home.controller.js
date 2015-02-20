@@ -45,10 +45,13 @@
     function addRoute() {
       routes.addRoute(vm.formInfo, vm.user.username).then(function() {
         vm.formInfo.route = '';
+        // vm.routes = routes.routes;
+        console.log('in home controller', vm.routes);
         
       });
     }
     function toggleRoute(method) {
+      console.log(vm.formInfo.methods);
       // delete method from body if present
       if (typeof vm.formInfo.body[method] !== 'undefined') {
         delete vm.formInfo.body[method];
@@ -73,6 +76,8 @@
       user.registerCb(function(){
         vm.user = user.getUser();
         routes.fetch(vm.user.username).then(function() {
+          console.log('in activate',vm.routes);
+
         });
       });
 

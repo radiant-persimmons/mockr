@@ -5,15 +5,15 @@ div.homeContainer
       form(ng-submit="vm.addRoute()")
         input(placeholder="enter route here" ng-model="vm.formInfo.route")
         button Add a Route
-        div(ng-repeat="verb in HomeCtrl.verbs")
+        div(ng-repeat="verb in vm.verbs")
           label 
             input(type="checkbox" 
-              ng-checked="{{ !HomeCtrl.formInfo.verbs }}" 
-              ng-click="HomeCtrl.toggleRoute(verb)") 
+              ng-checked="{{ !!HomeCtrl.formInfo.methods }}" 
+              ng-click="vm.toggleRoute(verb)") 
             {{ verb }}
     div.current-routes-list
       h3 Current Routes:
-      div(ng-repeat="route in HomeCtrl.routes")
+      div(ng-repeat="route in vm.routes" )
         div.routeInRoutes 
-          a(href="/routes/{{ route.route }}")
-            {{ route.route }}
+          a(href="/routes/{{ route }}")
+            {{ route }}
