@@ -21,15 +21,17 @@ Endpoint.find({}).remove(function() {
   Endpoint.create({
     username: 'Andrew',
     route: 'api/messages',
-    methods: { GET: { status: 200, header: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' } },
-    headers: '',
-    body: { GET: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }
+    methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
+    persistance: true,
+    data: [{ id: 1, msg: 'Hola' }, { id: 2, msg: 'Buenos dias'}],
+    count: 2
   }, {
     username: 'Andrew',
     route: 'api/rooms',
-    methods: { GET: { status: 200, header: {}, data: '["lobby", "coolpeeps"]' } },
-    headers: '',
-    body: { GET: '["lobby", "coolpeeps"]' }
+    methods: { GET: { status: 200, headers: {}, data: '["lobby", "coolpeeps"]' } },
+    persistance: false,
+    data: [],
+    count: 0
   }, function(err, e1, e2) {
     console.log('\n\nCreated endpoints:\n', e1, e2);
 

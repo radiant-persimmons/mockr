@@ -14,6 +14,8 @@ var createEndpoint = function(req, res, next) {
   var username = req.params.username;
   var route = req.body.route;
   var methods = req.body.methods;
+
+  //{pK: "id", name: true, content: true }
   
   User.findOne({'username': username}, function (err, user) {
     if (err) return res.status(500).json({ message: err });
