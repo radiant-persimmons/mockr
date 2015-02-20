@@ -17,6 +17,7 @@
     var sessionUser;
     var factory = {
       getUser: getUser,
+      loggedIn: loggedIn,
       registerCb: registerCb
     };
 
@@ -58,6 +59,10 @@
       } else {
         fnCallbacks.push(cb);
       }
+    }
+
+    function loggedIn() {
+      return !!sessionUser && typeof sessionUser.username !== 'undefined';
     }
 
     /**
