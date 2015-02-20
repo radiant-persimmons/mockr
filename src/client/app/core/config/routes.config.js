@@ -45,30 +45,7 @@
         controller: 'EditRoutesController',
         controllerAs: 'vm',
         authenticate: true
-      })
-
-      // TODO TEMP testing
-      .state('navbar', {
-        url: '/nav',
-        templateUrl: '/html/core/views/nav-bar.html',
-        controller: 'NavbarController',
-        controllerAs: 'vm'
       });
-
-
-/**
- *  resolve: {
-        screenshots: function($stateParams, Screenshot) {
-          return Screenshot.getScreenshots($stateParams.username)
-            .then(function(screenshots){
-              return screenshots.data;
-            }).catch(function(err) {
-              console.error('Error getting screenshots: ', err);
-            });
-        }
-      }
- */
-
 
     // default uncaught routes to landing page
     $urlRouterProvider.otherwise('/');
