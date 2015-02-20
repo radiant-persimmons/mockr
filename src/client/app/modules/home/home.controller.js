@@ -24,11 +24,11 @@
 
   function HomeController($http, routes, user, checklist) {
     var vm = this;
-    vm.formInfo = {};
-    vm.formInfo.methods = [];
-    vm.formInfo.body = {};
+    vm.formInfo = {
+      methods: [],
+      body: {}
+    };
     vm.routes = routes.routes;
-    vm.user = {};
     vm.verbs = ['GET', 'POST', 'PUT', 'DELETE'];
 
     vm.addRoute = addRoute;
@@ -44,9 +44,8 @@
     */
     function activate() {
       user.registerCb(function(){
-        vm.user = user.getUser();
-        routes.fetch(vm.user.username).then(function() {
-        });
+        routes.fetch(user.getUser().username)
+          .then(function() {});
       });
 
     }
@@ -56,11 +55,12 @@
     * the database
     */
     function addRoute() {
-      routes.addRoute(vm.formInfo, vm.user.username).then(function() {
+      routes.addRoute(vm.formInfo, user.getUser().username)
+        .then(function() {
         
-        //resets the the text box back to empty
-        vm.formInfo.route = '';
-      });
+          //resets the the text box back to empty
+          vm.formInfo.route = '';
+        });
     }
 
     /**
