@@ -59,12 +59,12 @@ var postData = function(req, res, next) {
       
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistance === true) {
-        var params = req.body;
+        var newContent = req.body;
         //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
         //TODO --> Have to save to db the increment of the count
-        params.id = endpoint.count++;
+        newContent.id = endpoint.count++;
         //update endpoint.data of that endpoint
-        Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': params}}, function(err, numAffected, rawResponse) {
+        Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
           if (err) return res.status(500).json(err); 
           console.log(numAffected, rawResponse);
           return res.status(statusCode).end();
@@ -110,7 +110,7 @@ var changeData = function(req, res, next) {
                 if (err) return res.status(500).json(err); 
                 console.log(numAffected, rawResponse);
                 res.status(statusCode).end();
-                }); 
+              }); 
               return res.status(statusCode).json();
             }
           }
@@ -146,16 +146,16 @@ var deleteData = function(req, res, next) {
           //we need some data to know what to look for
           return res.status(500).end();
         } else {
-          console.log("gets here");
+          console.log('gets here');
           var query = parseInt(req.query.id);
-          for(var i=0; i<endpoint.data.length; i++) {
+          for(var i=0; i < endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === query) {
-              console.log("passes conditional");
+              console.log('passes conditional');
               //delete datapoint passed by the user
               Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': {id: 1}}}, function(err, numAffected, rawResponse) {
                 if (err) return res.status(500).json(err); 
-                console.log("data pull successul");
+                console.log('data pull successul');
                 console.log(numAffected, rawResponse);
                 return res.status(statusCode).end();
               }); 
