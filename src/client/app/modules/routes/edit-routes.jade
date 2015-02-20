@@ -11,6 +11,6 @@ form
   div.method-body.form-group(ng-repeat="method in vm.formInfo.methods")
     label {{ method }}
     textarea.form-control(rows="3"
-                          ng-model="vm.formInfo.body[method]")
+                          ng-model="vm.formInfo.body[method][data]")
   button.btn.btn-primary(ng-click="vm.updateRoute()") {{ vm.buttonStatus }}
   div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}

@@ -32,19 +32,19 @@
      * the form.
      */
     function activate() {
-      // TEMP DEBUG TODO FIX
-      vm.formInfo = {
-        route: '/api/messages',
-        body: {
-          GET: 'I\'m a get request',
-          POST: 'I\'m a post request'
-        }
-      };
-      vm.formInfo.methods = Object.keys(vm.formInfo.body);
+      // // TEMP DEBUG TODO FIX
+      // vm.formInfo = {
+      //   route: '/api/messages',
+      //   body: {
+      //     GET: 'I\'m a get request',
+      //     POST: 'I\'m a post request'
+      //   }
+      // };
+      // vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
-
-      // // get route info from server
-      getRoute();
+      getRoute().then(function(res) {
+        console.log('route received', res);
+      });
     }
 
     /**
@@ -96,13 +96,21 @@
     }
 
     function getRoute() {
-      routes.getRoute($stateParams.route)
+      routes.getRoute(vm.formInfo.route)
         .then(function(res) {
-          console.log('route has been fetched');
+          console.log('route has been fetched:', res);
+          /**
+           * The endpoint DB model stores response, headers, status, etc., all
+           * on the `methods` property. Here we're separating out methods from
+           * the body.
+           */
+          vm.formInfo.body = res.methods;
+          vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
         });
+
     }
   }
 

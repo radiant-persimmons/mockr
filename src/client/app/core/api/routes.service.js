@@ -88,6 +88,17 @@
       });
     }
 
+    // function fetchRoute(username, route) {
+    //   return $http({
+    //     method: 'GET',
+    //     url: '/api/users/' + username + '/endpoints/' + route,
+    //   }).then(function(result) {
+    //     return result.data;
+    //   }).catch(function(err) {
+    //     console.log('Error fetching route', route);
+    //   });
+    // }
+
   }
 
 })();
