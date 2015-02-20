@@ -41,7 +41,7 @@
         body: {
           GET: 'I\'m a get request',
           POST: 'I\'m a post request'
-        },
+        }
       };
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
