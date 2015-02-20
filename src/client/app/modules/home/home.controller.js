@@ -39,19 +39,36 @@
     /////////////////////////
 
     /**
+    * Activate gets called on module load and calls fetch which fetches user data
+    * from the database and displays it for the user
+    */
+    function activate() {
+      user.registerCb(function(){
+        vm.user = user.getUser();
+        routes.fetch(vm.user.username).then(function() {
+        });
+      });
+
+    }
+
+    /**
     * Process to capture and add route information from the user then store them in
     * the database
     */
     function addRoute() {
       routes.addRoute(vm.formInfo, vm.user.username).then(function() {
-        vm.formInfo.route = '';
-        // vm.routes = routes.routes;
-        console.log('in home controller', vm.routes);
         
+        //resets the the text box back to empty
+        vm.formInfo.route = '';
       });
     }
+
+    /**
+     * handles logic for when user checks and unchecks a method for a route.
+     * When unchecking, deletes that method from the route. When checking,
+     * adds a new set of body data for user to input
+     */
     function toggleRoute(method) {
-      console.log(vm.formInfo.methods);
       // delete method from body if present
       if (typeof vm.formInfo.body[method] !== 'undefined') {
         delete vm.formInfo.body[method];
@@ -63,25 +80,12 @@
 
       // update keys
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
-      console.log(vm.formInfo.methods);
     }
 
+    //TODO Add functionality here
     function editRoute() {}
 
-    /**
-    * Activate gets called on module load and calls fetch which fetches user data
-    * from the database and displays it for the user
-    */
-    function activate() {
-      user.registerCb(function(){
-        vm.user = user.getUser();
-        routes.fetch(vm.user.username).then(function() {
-          console.log('in activate',vm.routes);
-
-        });
-      });
-
-    }
+    //TODO Add functionality here
     function deleteRoute() {
       routes.deleteRoute();
     }
