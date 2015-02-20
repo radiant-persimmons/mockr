@@ -1,5 +1,6 @@
 var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
+var url = require('url');
 
 var getData = function(req, res, next) {
   var username = req.params.username;
@@ -12,17 +13,51 @@ var getData = function(req, res, next) {
       return res.status(500).end(err);
     } else {
       var statusCode = endpoint.methods[method].status;
-      var data = endpoint.methods[method].data;
+      
+      //if persistance is set to true, we let the user persist data through their API endpoint
+      if(endpoint.persistance === true) {
 
-      //add headers in the response
-
-      res.status(statusCode).json(data);
+        //if we have params, get specific data from data inserted through API created
+        if(req.query.id) {
+          var query = parseInt(req.query.id);
+          for(var i=0; i<endpoint.data.length; i++) {
+            var dataPoint = endpoint.data[i];
+            if(dataPoint.id === query) {
+              res.status(statusCode).json(dataPoint);
+            }
+          }
+          res.status(500).end();
+        } else {
+          //add headers in the response
+          //get data from data inserted through API created
+          var data = endpoint.data;
+          res.status(statusCode).json(data);
+        }
+      } else {
+        //get data from user input
+        var data = endpoint.methods[method].data;
+        res.status(statusCode).json(data);
+      }
     }
   });
 };
 
+var postData = function(req, res, next) {
+
+};
+
+var changeData = function(req, res, next) {
+
+};
+
+var deleteData = function(req, res, next) {
+
+};
 
 
 module.exports = {
-  getData: getData
+  getData: getData,
+  postData: postData,
+  changeData: changeData,
+  deleteData: deleteData
 };

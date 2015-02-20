@@ -23,13 +23,14 @@ Endpoint.find({}).remove(function() {
     route: 'api/messages',
     methods: { GET: { status: 200, header: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' } },
     headers: '',
-    body: { GET: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }
+    persistance: true,
+    data: [{ id: 1, msg: "Hola" }, { id: 2, msg: "Buenos dias"}]
   }, {
     username: 'Andrew',
     route: 'api/rooms',
     methods: { GET: { status: 200, header: {}, data: '["lobby", "coolpeeps"]' } },
     headers: '',
-    body: { GET: '["lobby", "coolpeeps"]' }
+    data: { GET: '["data", "posted"]' }
   }, function(err, e1, e2) {
     console.log('\n\nCreated endpoints:\n', e1, e2);
 

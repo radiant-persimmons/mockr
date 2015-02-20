@@ -6,7 +6,9 @@ var endpointSchema = mongoose.Schema({
   route: { type: String, required: true },
   methods: {},
   headers: { type: String },
-  body: {}
+  persistance: { type: Boolean, default: false },
+  data: [],
+  count: { type: Number, default: 0 }
 });
 
 var Endpoint = mongoose.model('Endpoint', endpointSchema);
