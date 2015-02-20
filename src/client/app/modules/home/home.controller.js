@@ -20,44 +20,76 @@
   * This page serves as a jumping off point to editing individual routes and makes
   * adding and removing new routes easy
   */
+  //runs activate on startup
 
   function HomeController($http, routes, user, checklist) {
-    var test;
-    this.formInfo = {};
-    this.formInfo.verbs = [];
-    this.routes = routes.routes;
-    this.verbs = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
+    var vm = this;
+    vm.formInfo = {
+      methods: [],
+      body: {}
+    };
+    vm.routes = routes.routes;
+    vm.verbs = ['GET', 'POST', 'PUT', 'DELETE'];
+
+    vm.addRoute = addRoute;
+    vm.toggleRoute = toggleRoute;
+
+    activate();
+
+    /////////////////////////
 
     /**
     * Activate gets called on module load and calls fetch which fetches user data
     * from the database and displays it for the user
     */
-    this.activate = function() {
+    function activate() {
       user.registerCb(function(){
-        test = this.getUser();
+        routes.fetch(user.getUser().username)
+          .then(function() {});
       });
-      console.log('getting user', test);
-      routes.fetch();
-    };
+
+    }
 
     /**
     * Process to capture and add route information from the user then store them in
     * the database
     */
-    this.addRoute = function() {
-      console.log(this.formInfo);
-      routes.addRoute(this.formInfo);
-      this.formInfo.route = '';
-    };
+    function addRoute() {
+      routes.addRoute(vm.formInfo, user.getUser().username)
+        .then(function() {
+        
+          //resets the the text box back to empty
+          vm.formInfo.route = '';
+        });
+    }
 
-    this.editRoute = function() {};
+    /**
+     * handles logic for when user checks and unchecks a method for a route.
+     * When unchecking, deletes that method from the route. When checking,
+     * adds a new set of body data for user to input
+     */
+    function toggleRoute(method) {
+      // delete method from body if present
+      if (typeof vm.formInfo.body[method] !== 'undefined') {
+        delete vm.formInfo.body[method];
 
-    this.deleteRoute = function() {
+      // otherwise add it to the form
+      } else {
+        vm.formInfo.body[method] = '';
+      }
+
+      // update keys
+      vm.formInfo.methods = Object.keys(vm.formInfo.body);
+    }
+
+    //TODO Add functionality here
+    function editRoute() {}
+
+    //TODO Add functionality here
+    function deleteRoute() {
       routes.deleteRoute();
-    };
+    }
 
-    //runs activate on startup
-    this.activate();
   }
 
 })();

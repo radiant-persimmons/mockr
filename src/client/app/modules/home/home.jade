@@ -6,9 +6,14 @@ div.homeContainer
         input(placeholder="enter route here" ng-model="vm.formInfo.route")
         button Add a Route
         div(ng-repeat="verb in vm.verbs")
-          div {{verb}}
-            input(type="checkbox" checklist-model="vm.formInfo.verbs" checklist-value="verb")
+          label 
+            input(type="checkbox" 
+              ng-checked="{{ !!HomeCtrl.formInfo.methods }}" 
+              ng-click="vm.toggleRoute(verb)") 
+            {{ verb }}
     div.current-routes-list
       h3 Current Routes:
-      div(ng-repeat="route in vm.routes")
-        div.routeInRoutes {{route.route}}
+      div(ng-repeat="route in vm.routes" )
+        div.routeInRoutes 
+          a(href="/routes/{{ route }}")
+            {{ route }}

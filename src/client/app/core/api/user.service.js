@@ -22,6 +22,14 @@
     };
 
     activate();
+    // Get user data from server
+    fetchUser().then(function() {
+      // After getting info, mark as resolved and run registered callbacks
+      resolved = true;
+      fnCallbacks.forEach(function(cb) {
+        cb();
+      });
+    });
 
     return factory;
 
@@ -74,7 +82,6 @@
       return $http.get('/api/user')
         .then(function(res) {
           sessionUser = res.data;
-          console.log('got the user', arguments);
           return sessionUser;
         }).catch(function(err) {
           console.error('Error fetching using:', err);

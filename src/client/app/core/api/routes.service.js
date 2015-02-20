@@ -7,31 +7,57 @@
   routes.$inject = ['$http', 'user'];
 
   function routes ($http, user) {
-    var _this = this;
-    _this.routes = [];
-
-    this.deleteRoute = function (){};
-
-    this.addRoute = function(body){
-
-      var route = {};
-      route.method = 'GET';
-      route.route = body;
-      route.responseStatus = 200;
-      this.routes.push(route);
-      return $http({
-        method: 'POST',
-        url: '/api/users/' + user.username + '/endpoints',
-        data: route
-      }).then(function(result) {
-        console.log('ADD ROUTE SUCCESS:', result);
-      }).catch(function(err) {
-        console.log('ADD ROUTE ERROR:', err);
-      });
-
+    var service = {
+      routes: [],
+      addRoute: addRoute,
+      updateRoute: updateRoute,
+      fetch: fetch
     };
 
-    this.updateRoute = function(body){
+    return service; 
+
+  ////////////////////////////////////
+
+
+    //TODO: Make this work
+    function deleteRoute(){}
+
+
+    /**
+    * adds a route to the database
+    * @param {Object} body Data sent about one route including http verbs
+    * @param {string} username Username for the logged in user
+    * @return {promise} $http returns a promise to be used later
+    */
+    function addRoute(body, username){
+
+      //TODO add meaningful data here
+      //data to be stored in the DB
+      var endpoint = {
+        username: username,
+        route: body.route,
+        methods: {},
+        headers: '',
+        body: {}
+      };
+
+      //store the routes in the front end
+      service.routes.push(body.route);
+
+      return $http({
+        method: 'POST',
+        url: '/api/users/' + username + '/endpoints',
+        data: endpoint
+      }).then(function(results) {
+        console.log('SUCCESS', results);
+      })
+      .catch(function(err){
+        console.log('ERROR', err);
+      });
+    }
+
+    //TODO this needs fixed
+    function updateRoute(body){
       return $http({
         method: 'PUT',
         url: '/api/users/' + user.username + '/endpoints',
@@ -41,22 +67,27 @@
       }).catch(function(err) {
         console.log('UPDATE ERROR:', err);
       });
-    };
+    }
 
-    this.fetch = function(user) {
+
+    /**
+    * fetches the users active routes from the database and stores the for display
+    * @param {string} user Username for the logged in user
+    */
+    function fetch(user) {
       return $http({
         method: 'GET',
-        url: '/api/users/' + user.username + '/endpoints',
+        url: '/api/users/' + user + '/endpoints',
       }).then(function(result) {
-        for (var route in result) {
-          _this.routes.push(result[route]);
+        service.routes.length = 0;
+        for (var route in result.data) {
+          service.routes.push(result.data[route].route);
         }
       }).catch(function(err) {
         console.log('ERROR!!', err);
       });
-    };
+    }
 
-    return this;
   }
 
 })();
