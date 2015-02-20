@@ -145,18 +145,19 @@ var deleteData = function(req, res, next) {
           //we need some data to know what to look for
           return res.status(500).end();
         } else {
+          console.log("gets here");
           var query = parseInt(req.query.id);
           for(var i=0; i<endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === query) {
+              console.log("passes conditional");
               //delete datapoint passed by the user
-              delete dataPoint;
-              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': params}}, function(err, numAffected, rawResponse) {
+              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': {id: 1}}}, function(err, numAffected, rawResponse) {
                 if (err) return res.status(500).json(err); 
+                console.log("data pull successul");
                 console.log(numAffected, rawResponse);
                 res.status(statusCode).end();
-                }); 
-              return res.status(statusCode).json();
+              }); 
             }
           }
           return res.status(500).end();
