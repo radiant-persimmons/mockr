@@ -6,6 +6,7 @@ var getData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
+  var data;
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -30,12 +31,12 @@ var getData = function(req, res, next) {
         } else {
           //add headers in the response
           //get data from data inserted through API created
-          var data = endpoint.data;
+          data = endpoint.data;
           return res.status(statusCode).json(data);
         }
       } else {
         //get data from user input
-        var data = endpoint.methods[method].data;
+        data = endpoint.methods[method].data;
         return res.status(statusCode).json(data);
       }
     }
@@ -61,7 +62,7 @@ var postData = function(req, res, next) {
         var params = req.body;
         //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
         //TODO --> Have to save to db the increment of the count
-        params['id'] = endpoint.count++;
+        params.id = endpoint.count++;
         //update endpoint.data of that endpoint
         Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': params}}, function(err, numAffected, rawResponse) {
           if (err) return res.status(500).json(err); 
@@ -104,7 +105,7 @@ var changeData = function(req, res, next) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === query) {
               //update data
-              delete dataPoint;
+              //delete dataPoint;
               Endpoint.update({ 'username': username, 'route': route }, {$set: {'data': params}}, function(err, numAffected, rawResponse) {
                 if (err) return res.status(500).json(err); 
                 console.log(numAffected, rawResponse);

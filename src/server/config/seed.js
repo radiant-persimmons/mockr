@@ -23,7 +23,7 @@ Endpoint.find({}).remove(function() {
     route: 'api/messages',
     methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
     persistance: true,
-    data: [{ id: 1, msg: "Hola" }, { id: 2, msg: "Buenos dias"}],
+    data: [{ id: 1, msg: 'Hola' }, { id: 2, msg: 'Buenos dias'}],
     count: 2
   }, {
     username: 'Andrew',
