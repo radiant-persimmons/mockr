@@ -42,6 +42,12 @@
           GET: 'I\'m a get request',
           POST: 'I\'m a post request'
         },
+        colors: {
+          GET: '#006BD4',
+          POST: '#00E40D',
+          PUT: '#E3E300',
+          DELETE: '#FF001D'
+        }
       };
       vm.formInfo.methods = Object.keys(vm.formInfo.body);
 
