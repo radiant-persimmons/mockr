@@ -14,14 +14,11 @@ module.exports = function(app) {
   app.use(passport.session());
 
   passport.serializeUser(function(user, done) {
-    console.log('serializeUser');
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
-    //User.findById(id, function(err, user) {
-      console.log('deserializeUser');
-      User.findOne({userID: id}, function(err, user) {
+    User.findOne({userID: id}, function(err, user) {
       done(err, user);
     });
   });

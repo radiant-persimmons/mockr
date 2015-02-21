@@ -5,7 +5,7 @@
     .controller('EditRoutesController', EditRoutesController);
 
   /* @ngInject */
-  function EditRoutesController($state, $stateParams, routes) {
+  function EditRoutesController($state, $stateParams, user, routes) {
     var vm = this;
 
     vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
@@ -15,8 +15,8 @@
     // form info regarding this route
     vm.formInfo = {
       route: $stateParams.route,
-      methods: [],
-      body: {}
+      methodKeys: [],
+      methods: {}
     };
 
     vm.updateRoute = updateRoute;
@@ -32,19 +32,10 @@
      * the form.
      */
     function activate() {
-      // TEMP DEBUG TODO FIX
-      vm.formInfo = {
-        route: '/api/messages',
-        body: {
-          GET: 'I\'m a get request',
-          POST: 'I\'m a post request'
-        }
-      };
-      vm.formInfo.methods = Object.keys(vm.formInfo.body);
-
-
-      // // get route info from server
-      getRoute();
+      // getRoute();
+      getRoute().then(function() {
+        console.log('route received');
+      });
     }
 
     /**
@@ -83,26 +74,51 @@
      */
     function toggleMethod(method) {
       // delete method from body if present
-      if (typeof vm.formInfo.body[method] !== 'undefined') {
-        delete vm.formInfo.body[method];
+      if (typeof vm.formInfo.methods[method] !== 'undefined') {
+        delete vm.formInfo.methods[method];
 
       // otherwise add it to the form
       } else {
-        vm.formInfo.body[method] = '';
+        vm.formInfo.methods[method] = '';
       }
 
       // update keys
-      vm.formInfo.methods = Object.keys(vm.formInfo.body);
+      vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
     }
 
     function getRoute() {
-      routes.getRoute($stateParams.route)
-        .then(function(res) {
-          console.log('route has been fetched');
+      // var res = {
+      //     username: 'Andrew',
+      //     route: 'api/rooms',
+      //     methods: { GET: { status: 200, headers: {}, data: '["lobby", "coolpeeps"]' },
+      //                POST: {status: 201, headers: {}, data: 'Post received'}
+      //              },
+      //     persistance: false,
+      //     data: [],
+      //     count: 0
+      // }
 
+      // vm.formInfo.methods = res.methods;
+      // vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
+
+      console.log('retrieving', vm.formInfo.route, 'for', user.getUser().username);
+      return routes.getRoute(vm.formInfo.route)
+        .then(function(res) {
+          console.log('route has been fetched:', res);
+          /**
+           * The endpoint DB model stores response, headers, status, etc., all
+           * on the `methods` property. Here we're separating out method keys from
+           * the body for the sake of ng-repeat in view.
+           */
+          vm.formInfo.methods = res.methods;
+          vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
+          console.log('updated formInfo', vm.formInfo);
+          return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
+          console.error('Message:', err);
         });
+
     }
   }
 
