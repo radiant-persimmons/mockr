@@ -2,38 +2,33 @@
 
   angular
     .module('app.controllers.HomeController', [
-      'app.services.routes',
       'app.services.user',
-      'checklist-model'
+      'app.services.routes'
     ])
     .controller('HomeController', HomeController);
-
-  HomeController.$inject = [
-    '$http',
-    'routes',
-    'user'
-  ];
 
   /**
   * the home controller is responsible for displaying the info on the main page of the app
   * It stores and displays data on what routes the user has available to them
   * This page serves as a jumping off point to editing individual routes and makes
   * adding and removing new routes easy
+  *
+  * @ngInject
   */
-  //runs activate on startup
-
-  function HomeController($http, routes, user, checklist) {
+  function HomeController($http, routes, user) {
     var vm = this;
     vm.formInfo = {
-      methods: [],
-      body: {}
+      route: '',
+      persistance: false,
+      methodKeys: [],
+      methods: {}
     };
     vm.routes = routes.routes;
-    vm.verbs = ['GET', 'POST', 'PUT', 'DELETE'];
+    vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
 
     vm.addRoute = addRoute;
-    vm.toggleRoute = toggleRoute;
-
+    vm.toggleMethod = toggleMethod;
+    vm.togglePersistance = togglePersistance;
     activate();
 
     /////////////////////////
@@ -57,9 +52,11 @@
     function addRoute() {
       routes.addRoute(vm.formInfo, user.getUser().username)
         .then(function() {
-        
-          //resets the the text box back to empty
+          // clear form data
+          vm.formInfo.methodKeys.length = 0;
+          vm.formInfo.methods = {};
           vm.formInfo.route = '';
+          vm.formInfo.persistance = false;
         });
     }
 
@@ -68,18 +65,22 @@
      * When unchecking, deletes that method from the route. When checking,
      * adds a new set of body data for user to input
      */
-    function toggleRoute(method) {
+    function toggleMethod(method) {
       // delete method from body if present
-      if (typeof vm.formInfo.body[method] !== 'undefined') {
-        delete vm.formInfo.body[method];
+      if (typeof vm.formInfo.methods[method] !== 'undefined') {
+        delete vm.formInfo.methods[method];
 
       // otherwise add it to the form
       } else {
-        vm.formInfo.body[method] = '';
+        vm.formInfo.methods[method] = {};
       }
 
       // update keys
-      vm.formInfo.methods = Object.keys(vm.formInfo.body);
+      vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
+    }
+
+    function togglePersistance() {
+      vm.formInfo.persistance = !vm.formInfo.persistance;
     }
 
     //TODO Add functionality here

@@ -4,16 +4,41 @@ div.homeContainer
       h3 Create a Route
       form(ng-submit="vm.addRoute()")
         input(placeholder="enter route here" ng-model="vm.formInfo.route")
-        button Add a Route
-        div(ng-repeat="verb in vm.verbs")
-          label 
-            input(type="checkbox" 
-              ng-checked="{{ !!HomeCtrl.formInfo.methods }}" 
-              ng-click="vm.toggleRoute(verb)") 
-            {{ verb }}
+        button.btn.btn-success +
+
+        div.methods-selector.form-group
+          div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
+            label
+              input(type="checkbox"
+                    ng-checked="!!(vm.formInfo.methods[method] !== undefined)"
+                    ng-click="vm.toggleMethod(method)")
+              {{ method }}
+
+        div.checkbox-inline
+          label
+            input(type="checkbox"
+                  ng-checked="vm.formInfo.persistance"
+                  ng-click="vm.togglePersistance()")
+            {{ 'Persistent' }}
+
+        div.method-body.form-group(ng-hide="vm.formInfo.persistance"
+                                   ng-repeat="method in vm.formInfo.methodKeys")
+          label {{ method }}
+          div.form-group
+            label Status code
+            input.form-control(type="number"
+                               ng-model="vm.formInfo.methods[method].status")
+          div.form-group
+            label Headers
+            textarea.form-control(rows="1"
+                                  ng-model="vm.formInfo.methods[method].headers")
+          div.form-group
+            label Response
+            textarea.form-control(rows="3"
+                                  ng-model="vm.formInfo.methods[method].data")
     div.current-routes-list
       h3 Current Routes:
       div(ng-repeat="route in vm.routes" )
-        div.routeInRoutes 
+        div.routeInRoutes
           a(href="/routes/{{ route }}")
             {{ route }}

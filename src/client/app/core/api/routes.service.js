@@ -32,25 +32,14 @@
     */
     function addRoute(body, username){
 
-      //TODO add meaningful data here
-      //data to be stored in the DB
-      var endpoint = {
-        username: username,
-        route: body.route,
-        methods: {},
-        headers: '',
-        body: {}
-      };
-
-      //store the routes in the front end
-      service.routes.push(body.route);
-
       return $http({
         method: 'POST',
         url: '/api/users/' + username + '/endpoints',
-        data: endpoint
+        data: body
       }).then(function(results) {
         console.log('SUCCESS', results);
+        // store route in data store
+        service.routes.push(body.route);
       })
       .catch(function(err){
         console.log('ERROR', err);
