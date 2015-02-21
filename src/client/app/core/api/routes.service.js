@@ -10,6 +10,7 @@
     var service = {
       routes: [],
       addRoute: addRoute,
+      getRoute: getRoute,
       updateRoute: updateRoute,
       fetch: fetch
     };
@@ -83,6 +84,23 @@
         for (var route in result.data) {
           service.routes.push(result.data[route].route);
         }
+      }).catch(function(err) {
+        console.log('ERROR!!', err);
+      });
+    }
+
+    function getRoute(route) {
+      console.log('inside routes service');
+      console.log(user.getUser().username, route);
+      return $http({
+        method: 'GET',
+        url: '/api/users/' + user.getUser().username + '/endpoints/' + route
+      }).then(function(result) {
+        console.log('result from routes.getRoute', result);
+        return result.data;
+        //for (var route in result) {
+          //_this.routes.push(result[route]);
+        //}
       }).catch(function(err) {
         console.log('ERROR!!', err);
       });

@@ -5,7 +5,7 @@
     .controller('EditRoutesController', EditRoutesController);
 
   /* @ngInject */
-  function EditRoutesController($state, $stateParams, routes) {
+  function EditRoutesController($state, $stateParams, user, routes) {
     var vm = this;
 
     vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
@@ -15,8 +15,8 @@
     // form info regarding this route
     vm.formInfo = {
       route: $stateParams.route,
-      methods: [],
-      body: {}
+      methodKeys: [],
+      methods: {}
     };
 
     vm.updateRoute = updateRoute;
@@ -33,8 +33,8 @@
      */
     function activate() {
       // getRoute();
-      getRoute().then(function(res) {
-        console.log('route received', res);
+      getRoute().then(function() {
+        console.log('route received');
       });
     }
 
@@ -100,6 +100,8 @@
 
       // vm.formInfo.methods = res.methods;
       // vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
+
+      console.log('retrieving', vm.formInfo.route, 'for', user.getUser().username);
       return routes.getRoute(vm.formInfo.route)
         .then(function(res) {
           console.log('route has been fetched:', res);
@@ -110,6 +112,7 @@
            */
           vm.formInfo.methods = res.methods;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
+          console.log('updated formInfo', vm.formInfo);
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
