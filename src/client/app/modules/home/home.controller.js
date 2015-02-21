@@ -26,8 +26,7 @@
     vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
 
     vm.addRoute = addRoute;
-    vm.toggleRoute = toggleRoute;
-
+    vm.toggleMethod = toggleMethod;
     activate();
 
     /////////////////////////
@@ -63,8 +62,7 @@
      * When unchecking, deletes that method from the route. When checking,
      * adds a new set of body data for user to input
      */
-    function toggleRoute(method) {
-      console.log('click');
+    function toggleMethod(method) {
       // delete method from body if present
       if (typeof vm.formInfo.methods[method] !== 'undefined') {
         delete vm.formInfo.methods[method];
