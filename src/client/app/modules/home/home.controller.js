@@ -18,11 +18,12 @@
   function HomeController($http, routes, user) {
     var vm = this;
     vm.formInfo = {
+      route: '',
       methodKeys: [],
       methods: {}
     };
     vm.routes = routes.routes;
-    vm.verbs = ['GET', 'POST', 'PUT', 'DELETE'];
+    vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
 
     vm.addRoute = addRoute;
     vm.toggleRoute = toggleRoute;
@@ -48,11 +49,11 @@
     * the database
     */
     function addRoute() {
-      console.log('[vm.addRoute] form:', vm.formInfo);
       routes.addRoute(vm.formInfo, user.getUser().username)
         .then(function() {
-
-          //resets the the text box back to empty
+          // clear form data
+          vm.formInfo.methodKeys.length = 0;
+          vm.formInfo.methods = {};
           vm.formInfo.route = '';
         });
     }
@@ -63,6 +64,7 @@
      * adds a new set of body data for user to input
      */
     function toggleRoute(method) {
+      console.log('click');
       // delete method from body if present
       if (typeof vm.formInfo.methods[method] !== 'undefined') {
         delete vm.formInfo.methods[method];

@@ -5,25 +5,25 @@ div.homeContainer
       form(ng-submit="vm.addRoute()")
         input(placeholder="enter route here" ng-model="vm.formInfo.route")
         button Add a Route
-        div(ng-repeat="verb in vm.verbs")
+        div.form-group(ng-repeat="method in vm.allMethods")
           label
             input(type="checkbox"
-
-              ng-click="vm.toggleRoute(verb)")
-            {{ verb }}
-          div(ng-show="!!(vm.formInfo.methods[verb] !== undefined)")
+              ng-checked="!!(vm.formInfo.methods[method] !== undefined)"
+              ng-click="vm.toggleRoute(method)")
+            {{ method }}
+          div.method-body(ng-show="!!(vm.formInfo.methods[method] !== undefined)")
             div.form-group
               label Status code
                 input.form-control(type="number"
-                      ng-model="vm.formInfo.methods[verb].status")
+                      ng-model="vm.formInfo.methods[method].status")
             div.form-group
               label Headers
                 textarea.form-control(rows="1"
-                                      ng-model="vm.formInfo.methods[verb].headers")
+                                      ng-model="vm.formInfo.methods[method].headers")
             div.form-group
               label Response
                 textarea.form-control(rows="3"
-                                      ng-model="vm.formInfo.methods[verb].data")
+                                      ng-model="vm.formInfo.methods[method].data")
     div.current-routes-list
       h3 Current Routes:
       div(ng-repeat="route in vm.routes" )
@@ -31,7 +31,7 @@ div.homeContainer
           a(href="/routes/{{ route }}")
             {{ route }}
 
-h1 {{ vm.formInfo.methods }}
+
 
 //- reference form code for later...
 //- ===============================
