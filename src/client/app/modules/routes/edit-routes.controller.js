@@ -87,24 +87,8 @@
     }
 
     function getRoute() {
-      // var res = {
-      //     username: 'Andrew',
-      //     route: 'api/rooms',
-      //     methods: { GET: { status: 200, headers: {}, data: '["lobby", "coolpeeps"]' },
-      //                POST: {status: 201, headers: {}, data: 'Post received'}
-      //              },
-      //     persistance: false,
-      //     data: [],
-      //     count: 0
-      // }
-
-      // vm.formInfo.methods = res.methods;
-      // vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
-
-      console.log('retrieving', vm.formInfo.route, 'for', user.getUser().username);
       return routes.getRoute(vm.formInfo.route)
         .then(function(res) {
-          console.log('route has been fetched:', res);
           /**
            * The endpoint DB model stores response, headers, status, etc., all
            * on the `methods` property. Here we're separating out method keys from
@@ -112,7 +96,6 @@
            */
           vm.formInfo.methods = res.methods;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
-          console.log('updated formInfo', vm.formInfo);
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
