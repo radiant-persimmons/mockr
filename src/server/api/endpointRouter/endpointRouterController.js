@@ -63,6 +63,13 @@ var postData = function(req, res, next) {
         //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
         //TODO --> Have to save to db the increment of the count
         newContent.id = endpoint.count++;
+        for(var column in newContent) {
+          if(!endpoint.schemaDB[column]) {
+            console.log("before deleting", newContent);
+            delete newContent[column];
+            console.log("after deleting newContent", newContent);
+          }
+        }
         //update endpoint.data of that endpoint
         Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
           if (err) return res.status(500).json(err); 
@@ -94,12 +101,19 @@ var changeData = function(req, res, next) {
       
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
-        var newContent = req.body;
         //we need a parameter passed to know what to change
         if(!req.query.id) {
           //we need some data to know what to look for
           return res.status(500).end();
         } else {
+          var newContent = req.body;
+          for(var column in newContent) {
+            if(!endpoint.schemaDB[column]) {
+              console.log("before deleting", newContent);
+              delete newContent[column];
+              console.log("after deleting newContent", newContent);
+            }
+          }
           var queryID = parseInt(req.query.id);
           var deleteQuery = {id: queryID};
           for(var i=0; i<endpoint.data.length; i++) {

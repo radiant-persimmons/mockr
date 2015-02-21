@@ -6,6 +6,7 @@ var endpointSchema = mongoose.Schema({
   route: { type: String, required: true },
   methods: {},
   persistence: { type: Boolean, default: false },
+  schemaDB: {},
   data: [],
   count: { type: Number, default: 0 }
 });
