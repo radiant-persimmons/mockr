@@ -7,6 +7,7 @@ var endpointSchema = mongoose.Schema({
   methods: {},
   persistence: { type: Boolean, default: false },
   schemaDB: {},
+  businessLogic: { type : String },
   data: [],
   count: { type: Number, default: 0 }
 }, { minimize: false });
