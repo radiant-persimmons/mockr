@@ -16,12 +16,15 @@
     vm.formInfo = {
       route: $stateParams.route,
       methodKeys: [],
-      methods: {}
+      methods: {},
+      data: [],
+      persistance: false
     };
 
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
     vm.toggleMethod = toggleMethod;
+    vm.togglePersistance = togglePersistance;
 
     activate();
 
@@ -86,6 +89,10 @@
       vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
     }
 
+    function togglePersistance() {
+      vm.formInfo.persistance = !vm.formInfo.persistance;
+    }
+
     function getRoute() {
       return routes.getRoute(vm.formInfo.route)
         .then(function(res) {
@@ -96,6 +103,8 @@
            */
           vm.formInfo.methods = res.methods;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
+          vm.formInfo.persistance = res.persistance;
+          vm.formInfo.data = res.data;
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
