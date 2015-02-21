@@ -4,7 +4,7 @@ div.homeContainer
       h3 Create a Route
       form(ng-submit="vm.addRoute()")
         input(placeholder="enter route here" ng-model="vm.formInfo.route")
-        button Add a Route
+        button.btn.btn-success +
 
         div.methods-selector.form-group
           div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
