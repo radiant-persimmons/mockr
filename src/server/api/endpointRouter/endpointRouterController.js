@@ -89,7 +89,7 @@ var changeData = function(req, res, next) {
     if(!endpoint) {
       return res.status(500).end(err);
     } else {
-      console.log("method", method);
+      console.log('method', method);
       var statusCode = endpoint.methods[method].status;
       
       //if persistance is set to true, we let the user persist data through their API endpoint
@@ -152,7 +152,7 @@ var deleteData = function(req, res, next) {
         } else {
           console.log('gets here');
           var queryID = parseInt(req.query.id);
-          var deleteQuery = {id: queryID}
+          var deleteQuery = {id: queryID};
           for(var i=0; i < endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === queryID) {
