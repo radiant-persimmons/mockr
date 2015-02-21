@@ -21,7 +21,7 @@ Endpoint.find({}).remove(function() {
   Endpoint.create({
     username: 'AndrewSouthpaw',
     route: 'api/messages',
-    methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
+    methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, PUT: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
     persistence: true,
     data: [{ id: 1, msg: 'Hola' }, { id: 2, msg: 'Buenos dias'}],
     count: 2

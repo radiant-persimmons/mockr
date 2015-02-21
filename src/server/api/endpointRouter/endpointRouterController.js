@@ -89,29 +89,33 @@ var changeData = function(req, res, next) {
     if(!endpoint) {
       return res.status(500).end(err);
     } else {
-
+      console.log("method", method);
       var statusCode = endpoint.methods[method].status;
       
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
-        var params = req.body;
+        var newContent = req.body;
         //we need a parameter passed to know what to change
         if(!req.query.id) {
           //we need some data to know what to look for
           return res.status(500).end();
         } else {
           var queryID = parseInt(req.query.id);
+          var deleteQuery = {id: queryID};
           for(var i=0; i<endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === queryID) {
               //update data
               //delete dataPoint;
-              Endpoint.update({ 'username': username, 'route': route }, {$set: {'data': params}}, function(err, numAffected, rawResponse) {
+              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery} }, function(err, numAffected, rawResponse) {
                 if (err) return res.status(500).json(err); 
                 console.log(numAffected, rawResponse);
-                res.status(statusCode).end();
+                Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent} }, function(err, numAffected, rawResponse) {
+                  if (err) return res.status(500).json(err); 
+                  console.log(numAffected, rawResponse);
+                  return res.status(statusCode).end();
+                }); 
               }); 
-              return res.status(statusCode).json();
             }
           }
           return res.status(500).end();
