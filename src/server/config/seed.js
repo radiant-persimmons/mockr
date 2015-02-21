@@ -23,7 +23,7 @@ Endpoint.find({}).remove(function() {
     route: 'api/messages',
     methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, PUT: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
     persistence: true,
-    schema: { pk: 'id', id: true, msg: true },
+    schemaDB: { id: true, msg: true },
     data: [{ id: 1, msg: 'Hola' }, { id: 2, msg: 'Buenos dias'}],
     count: 2
   }, {
@@ -31,7 +31,7 @@ Endpoint.find({}).remove(function() {
     route: 'api/rooms',
     methods: { GET: { status: 200, headers: {}, data: '["lobby", "coolpeeps"]' } },
     persistence: false,
-    schema: { pk: 'id' },
+    schemaDB: {},
     data: [],
     count: 0
   }, function(err, e1, e2) {
