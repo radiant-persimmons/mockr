@@ -61,7 +61,7 @@
     function updateRoute(body){
       return $http({
         method: 'PUT',
-        url: '/api/users/' + user.username + '/endpoints',
+        url: '/api/users/' + user.getUser().username + '/endpoints',
         data: body
       }).then(function(result) {
         console.log('UPDATE SUCCESS:', result);
@@ -105,17 +105,6 @@
         console.log('ERROR!!', err);
       });
     }
-
-    // function fetchRoute(username, route) {
-    //   return $http({
-    //     method: 'GET',
-    //     url: '/api/users/' + username + '/endpoints/' + route,
-    //   }).then(function(result) {
-    //     return result.data;
-    //   }).catch(function(err) {
-    //     console.log('Error fetching route', route);
-    //   });
-    // }
 
   }
 
