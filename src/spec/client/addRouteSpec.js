@@ -1,0 +1,21 @@
+module.exports = {
+  'Test the home page adding a route': function(browser) {
+    browser
+      .url('http://localhost:3000/')
+      .assert.title('Mockr')
+      .waitForElementPresent('button', 1000)
+      .click('.loginButton button')
+      .setValue('#login_field', ['mockr.app@gmail.com'])
+      .setValue('#password', ['MockMe2015'])
+      .submitForm('#login form')
+      .pause(2000)
+      .setValue('form input', 'testroute/goes/here')
+      .pause(500)
+      .submitForm('form')
+      .assert.containsText('a', 'testroute/goes/here')
+      .click('a')
+      .pause(2000)
+      .assert.containsText('h1', 'Edit Route')
+      .end();
+  }
+};
