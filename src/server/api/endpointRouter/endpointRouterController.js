@@ -59,8 +59,15 @@ var postData = function(req, res, next) {
 
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
-        var newContent = req.body;
-        console.log('newContent', newContent);
+        //run business logic
+
+        //get business logic from db and pass it
+        var newContent = logic.runLogic(endpoint.businessLogic, req, function(result) {
+          console.log("result--_>", result);
+        });
+        newContent = {};
+        //var newContent = req.body;
+
         //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
         //TODO --> Have to save to db the increment of the count
         newContent.id = endpoint.count++;

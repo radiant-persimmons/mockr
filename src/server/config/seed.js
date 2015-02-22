@@ -24,7 +24,7 @@ Endpoint.find({}).remove(function() {
     methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, PUT: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
     persistence: true,
     //schemaDB: { id: true, msg: true },
-    businessLogic: '(function(){body.that = "adios" })()',
+    businessLogic: '(function(){body.that = "adios" })()', //'(function(){while(true) { body.that = 1 }})()'     '(function(){body.that = "adios" })()'
     data: [{ id: 1, msg: 'Hola' }, { id: 2, msg: 'Buenos dias'}],
     count: 2
   }, {
