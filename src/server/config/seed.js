@@ -23,8 +23,8 @@ Endpoint.find({}).remove(function() {
     route: 'api/messages',
     methods: { GET: { status: 200, headers: {}, data: '[{ message: "Hello world" }, { message: "I am Andrew" }]' }, POST: { status: 201, header: {}, data: '' }, PUT: { status: 201, header: {}, data: '' }, DELETE: { status: 201, header: {}, data: '' } },
     persistence: true,
-    schemaDB: { id: true, msg: true },
-    businessLogic: '(function(reqData) {console.log(reqData);})()',
+    //schemaDB: { id: true, msg: true },
+    businessLogic: '(function(){body.that = "adios" })()',
     data: [{ id: 1, msg: 'Hola' }, { id: 2, msg: 'Buenos dias'}],
     count: 2
   }, {
@@ -32,7 +32,7 @@ Endpoint.find({}).remove(function() {
     route: 'api/rooms',
     methods: { GET: { status: 200, headers: {}, data: '["lobby", "coolpeeps"]' } },
     persistence: false,
-    schemaDB: {},
+    //schemaDB: {},
     businessLogic: '',
     data: [],
     count: 0

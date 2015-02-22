@@ -1,30 +1,22 @@
 var vm = require('vm');
 
 var runLogic = function(logic, req) {
-  var newContext = {};
-
-  newContext.codeToRun = function(reqData) {
-    logic.call(null, reqData)//script saved in db
-  }; 
-
-  newContext.data = req.body;
-
-  vm.runInNewContext('codeToRun(data)', newContext);
+  req.body.that = "hola";
+  //var logic = '(function(){that = "adios" })()';
+  vm.runInNewContext(logic, req);
+  console.log(req.body.that);
+  console.log(req.body);
+  return req.body;
 };
 
-
 module.exports = {
-  runLogic: runLogic
+  runLogic: runLogic,
 };
 
 var req = {};
 req.body = {};
 req.that = "hola";
 //runLogic('function some() {console.log(1)}', req);
-
-vm.runInNewContext('(function(){that = "adios" })()', req);
-
-console.log(req.that);
 
 
 //working

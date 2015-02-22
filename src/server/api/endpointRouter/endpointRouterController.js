@@ -1,6 +1,8 @@
 var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
 var url = require('url');
+var vm = require('vm');
+var logic = require('../../utils/businessLogic.js');
 
 var getData = function(req, res, next) {
   var username = req.params.username;
@@ -45,7 +47,6 @@ var getData = function(req, res, next) {
 };
 
 var postData = function(req, res, next) {
-
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
