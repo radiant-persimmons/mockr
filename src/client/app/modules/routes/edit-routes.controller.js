@@ -96,6 +96,7 @@
     function getRoute() {
       return routes.getRoute(vm.formInfo.route)
         .then(function(res) {
+          console.log('ROUTE');
           /**
            * The endpoint DB model stores response, headers, status, etc., all
            * on the `methods` property. Here we're separating out method keys from
