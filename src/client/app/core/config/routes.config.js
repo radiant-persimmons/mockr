@@ -25,12 +25,31 @@
        * @type {route}
        * @description User landing page, the main display.
        */
+      // .state('home', {
+      //   url: '/home',
+      //   templateUrl: '/html/modules/home/home.html',
+      //   controller: 'HomeController',
+      //   controllerAs: 'vm',
+      //   authenticate: true
+      // })
+
       .state('home', {
         url: '/home',
-        templateUrl: '/html/modules/home/home.html',
-        controller: 'HomeController',
-        controllerAs: 'vm',
-        authenticate: true
+        views: {
+          '': {
+            templateUrl: 'html/modules/home/template.html'
+          },
+
+          'smiles@home': { templateUrl: 'html/modules/home/smiles.html' },
+
+          'myRoutes@home': {
+            templateUrl: 'html/modules/home/myroutes.html'
+          },
+
+          'addRoutes@home': {
+            templateUrl: 'html/modules/home/addroute.html'
+          }
+        }
       })
 
       /**
