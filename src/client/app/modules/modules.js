@@ -3,7 +3,8 @@
   angular.module('app.modules', [
     'app.controllers.EditRoutesController',
     'app.controllers.HomeController',
-    'app.controllers.LoginController'
+    'app.controllers.LoginController',
+    'app.controllers.CurrentRoutesController'
   ]);
 
 }).call(this);

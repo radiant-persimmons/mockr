@@ -36,9 +36,3 @@ div.homeContainer
             label Response
             textarea.form-control(rows="3"
                                   ng-model="vm.formInfo.methods[method].data")
-    div.current-routes-list
-      h3 Current Routes:
-      div(ng-repeat="route in vm.routes" )
-        div.routeInRoutes
-          a(href="/routes/{{ route }}")
-            {{ route }}

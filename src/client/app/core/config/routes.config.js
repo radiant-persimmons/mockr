@@ -34,20 +34,39 @@
       // })
 
       .state('home', {
-        url: '/home',
+        url: '',
+        abstract: true,
         views: {
           '': {
             templateUrl: 'html/modules/home/template.html'
           },
 
-          'smiles@home': { templateUrl: 'html/modules/home/smiles.html' },
-
-          'myRoutes@home': {
-            templateUrl: 'html/modules/home/myroutes.html'
+          'current-routes@home': {
+            templateUrl: 'html/modules/routes/current-routes.html',
+            controller: 'CurrentRoutesController',
+            controllerAs: 'vm'
           },
 
           'addRoutes@home': {
             templateUrl: 'html/modules/home/addroute.html'
+          }
+        }
+      })
+
+      .state('home.smiles', {
+        url: '/home',
+        views: {
+          'smiles@home': {
+            templateUrl: 'html/modules/home/smiles.html'
+          }
+        }
+      })
+
+      .state('home.frownie', {
+        url: '/frownie',
+        views: {
+          'smiles@home': {
+            templateUrl: 'html/modules/home/frownie.html'
           }
         }
       })
