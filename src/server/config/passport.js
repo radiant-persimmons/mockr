@@ -49,7 +49,7 @@ module.exports = function(app) {
         var user = {
           username: body.login,
           userID: body.id,
-          avatar: body.avatar_url
+          avatar: body.avatar_url /* jshint ignore:line */
         };
 
         utils.createUserIfNotExistant(user, function(err, hasbeenCreated) {
