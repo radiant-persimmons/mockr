@@ -57,6 +57,7 @@
     "mongoose": "^3.8.23",
     "morgan": "^1.5.1",
     "nconf": "^0.7.1",
+    "nightwatch": "^0.5.36",
     "passport": "^0.2.1",
     "passport-oauth": "^1.0.0",
     "request": "^2.53.0"
