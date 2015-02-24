@@ -14,7 +14,7 @@ module.exports = function(app) {
   app.use(passport.session());
 
   passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user.userID);
   });
 
   passport.deserializeUser(function(id, done) {
@@ -48,7 +48,8 @@ module.exports = function(app) {
         body = JSON.parse(body);
         var user = {
           username: body.login,
-          id: body.id
+          userID: body.id,
+          avatar: body.avatar_url
         };
 
         utils.createUserIfNotExistant(user, function(err, hasbeenCreated) {
