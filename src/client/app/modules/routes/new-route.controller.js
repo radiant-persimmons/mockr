@@ -18,7 +18,8 @@
       methodKeys: [],
       methods: {},
       data: [],
-      persistence: false
+      persistence: false,
+      businessLogic: '(function(){\n\n})()'
     };
 
     vm.saveRoute = saveRoute;

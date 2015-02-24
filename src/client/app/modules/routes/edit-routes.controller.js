@@ -18,7 +18,8 @@
       methodKeys: [],
       methods: {},
       data: [],
-      persistence: false
+      persistence: false,
+      businessLogic: ''
     };
 
     vm.updateRoute = updateRoute;
@@ -105,6 +106,7 @@
           vm.formInfo.persistence = res.persistence;
           vm.formInfo.data = res.data;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
+          vm.formInfo.businessLogic = res.businessLogic;
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);

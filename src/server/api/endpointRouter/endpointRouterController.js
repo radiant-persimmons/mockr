@@ -66,7 +66,7 @@ var postData = function(req, res, next) {
 
         logic.runLogic(endpoint.businessLogic, req, function(err, newContent) {
           if(err) return res.status(500).json(err);
-          if(newContent.res) return res.json(newContent.res);
+          if(newContent.res) return res.status(500).json(newContent.res);
           console.log('result--_>', newContent);
 
           //var newContent = req.body;
