@@ -18,13 +18,13 @@
       methodKeys: [],
       methods: {},
       data: [],
-      persistance: false
+      persistence: false
     };
 
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
     vm.toggleMethod = toggleMethod;
-    vm.togglePersistance = togglePersistance;
+    vm.togglePersistence = togglePersistence;
 
     activate();
 
@@ -89,8 +89,8 @@
       vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
     }
 
-    function togglePersistance() {
-      vm.formInfo.persistance = !vm.formInfo.persistance;
+    function togglePersistence() {
+      vm.formInfo.persistence = !vm.formInfo.persistence;
     }
 
     function getRoute() {
@@ -103,7 +103,7 @@
            */
           vm.formInfo.methods = res.methods;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
-          vm.formInfo.persistance = res.persistance;
+          vm.formInfo.persistence = res.persistence;
           vm.formInfo.data = res.data;
           return;
         }).catch(function(err) {

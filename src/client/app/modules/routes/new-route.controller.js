@@ -18,12 +18,12 @@
       methodKeys: [],
       methods: {},
       data: [],
-      persistance: false
+      persistence: false
     };
 
     vm.saveRoute = saveRoute;
     vm.toggleMethod = toggleMethod;
-    vm.togglePersistance = togglePersistance;
+    vm.togglePersistence = togglePersistence;
 
     activate();
 
@@ -77,8 +77,8 @@
       vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
     }
 
-    function togglePersistance() {
-      vm.formInfo.persistance = !vm.formInfo.persistance;
+    function togglePersistence() {
+      vm.formInfo.persistence = !vm.formInfo.persistence;
     }
   }
 

@@ -12,15 +12,15 @@ form
   div.checkbox-inline
     label
       input(type="checkbox"
-            ng-checked="vm.formInfo.persistance"
-            ng-click="vm.togglePersistance()")
+            ng-checked="vm.formInfo.persistence"
+            ng-click="vm.togglePersistence()")
       {{ 'Persistent' }}
 
-  div.persistent-data-display(ng-show="vm.formInfo.persistance")
+  div.persistent-data-display(ng-show="vm.formInfo.persistence")
     label Persistent data
     p {{ vm.formInfo.data.length === 0 ? 'No data' : vm.formInfo.data | json }}
 
-  div.method-body.form-group(ng-hide="vm.formInfo.persistance"
+  div.method-body.form-group(ng-hide="vm.formInfo.persistence"
                              ng-repeat="method in vm.formInfo.methodKeys")
     label {{ method }}
 
