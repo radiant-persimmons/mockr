@@ -8,6 +8,9 @@ var userSchema = mongoose.Schema({
   // GitHub user ID
   userID: { type: Number, required: true},
 
+  // GitHub avatar URL
+  avatar: { type: String },
+
   /**
    * stores endpoint IDs belonging to user using flat database structure
    * (instead of nested objects) to keep individual objects lightweight.
