@@ -14,17 +14,18 @@ var createEndpoint = function(req, res, next) {
   var username = req.params.username;
   var route = req.body.route;
   var methods = req.body.methods;
+  var persistence = req.body.persistence;
 
   //{pK: "id", name: true, content: true }
-  
+
   User.findOne({'username': username}, function (err, user) {
     if (err) return res.status(500).json({ message: err });
     //check if user exists here before creating the endpoint
     if(!user) {
       res.status(500).end();
     } else {
-      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods });
-  
+      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods, persistence: persistence });
+
       Endpoint.findOne({ username: username, route: route }, function(err, endpoint) {
         if(err) return res.status(500).json({ message: err });
         if(endpoint) {
@@ -34,12 +35,12 @@ var createEndpoint = function(req, res, next) {
             if (err) return res.status(500).json({ message: err });
 
             User.update({username: username}, {$push: {'endpoints': endpoint._id}}, function(err, numAffected, rawResponse) {
-              if (err) return res.status(500).json({ message: err }); 
+              if (err) return res.status(500).json({ message: err });
               res.status(201).end();
-            });  
+            });
           });
         }
-      }); 
+      });
     }
   });
 };
@@ -60,16 +61,16 @@ var getEndpoint = function(req, res, next) {
 
 var editEndpoint = function(req, res, next) {
   var username = req.params.username;
-  var newUsername = req.body.username;
   var route = req.params[0];
   var newRoute = req.body.route;
   var methods = req.body.methods;
+  var persistence = req.body.persistence;
 
   var newData = {};
   newData.methods = methods;
-  newData.username = newUsername;
+  newData.username = username;
   newData.route = newRoute;
-  newData.body = req.body.body;
+  newData.persistence = persistence;
 
   //TODO check if username exists before creating endpoint
   Endpoint.findOneAndUpdate({ 'username': username, 'route': route }, newData, {upsert: true},function(err, numberAffected, raw) {

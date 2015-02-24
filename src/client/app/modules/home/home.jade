@@ -17,11 +17,11 @@ div.homeContainer
         div.checkbox-inline
           label
             input(type="checkbox"
-                  ng-checked="vm.formInfo.persistance"
-                  ng-click="vm.togglePersistance()")
+                  ng-checked="vm.formInfo.persistence"
+                  ng-click="vm.togglePersistence()")
             {{ 'Persistent' }}
 
-        div.method-body.form-group(ng-hide="vm.formInfo.persistance"
+        div.method-body.form-group(ng-hide="vm.formInfo.persistence"
                                    ng-repeat="method in vm.formInfo.methodKeys")
           label {{ method }}
           div.form-group
@@ -36,9 +36,3 @@ div.homeContainer
             label Response
             textarea.form-control(rows="3"
                                   ng-model="vm.formInfo.methods[method].data")
-    div.current-routes-list
-      h3 Current Routes:
-      div(ng-repeat="route in vm.routes" )
-        div.routeInRoutes
-          a(href="/routes/{{ route }}")
-            {{ route }}

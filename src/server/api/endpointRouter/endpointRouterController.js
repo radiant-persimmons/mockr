@@ -14,7 +14,7 @@ var getData = function(req, res, next) {
       return res.status(500).end(err);
     } else {
       var statusCode = endpoint.methods[method].status;
-      
+
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
 
@@ -56,7 +56,7 @@ var postData = function(req, res, next) {
     } else {
 
       var statusCode = endpoint.methods[method].status;
-      
+
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
         var newContent = req.body;
@@ -65,17 +65,15 @@ var postData = function(req, res, next) {
         newContent.id = endpoint.count++;
         for(var column in newContent) {
           if(!endpoint.schemaDB[column]) {
-            console.log("before deleting", newContent);
             delete newContent[column];
-            console.log("after deleting newContent", newContent);
           }
         }
         //update endpoint.data of that endpoint
         Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
-          if (err) return res.status(500).json(err); 
+          if (err) return res.status(500).json(err);
           console.log(numAffected, rawResponse);
           return res.status(statusCode).end();
-        }); 
+        });
       } else {
         //get data from user input
         var data = endpoint.methods[method].data;
@@ -98,7 +96,7 @@ var changeData = function(req, res, next) {
     } else {
       console.log('method', method);
       var statusCode = endpoint.methods[method].status;
-      
+
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
         //we need a parameter passed to know what to change
@@ -109,27 +107,28 @@ var changeData = function(req, res, next) {
           var newContent = req.body;
           for(var column in newContent) {
             if(!endpoint.schemaDB[column]) {
-              console.log("before deleting", newContent);
               delete newContent[column];
-              console.log("after deleting newContent", newContent);
             }
           }
           var queryID = parseInt(req.query.id);
           var deleteQuery = {id: queryID};
-          for(var i=0; i<endpoint.data.length; i++) {
+
+          var updateHandler = function(err, numAffected, rawResponse) {
+            if (err) return res.status(500).json(err);
+            console.log(numAffected, rawResponse);
+            Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent} }, function(err, numAffected, rawResponse) {
+              if (err) return res.status(500).json(err);
+              console.log(numAffected, rawResponse);
+              return res.status(statusCode).end();
+            });
+          };
+
+          for(var i = 0; i < endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === queryID) {
               //update data
               //delete dataPoint;
-              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery} }, function(err, numAffected, rawResponse) {
-                if (err) return res.status(500).json(err); 
-                console.log(numAffected, rawResponse);
-                Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent} }, function(err, numAffected, rawResponse) {
-                  if (err) return res.status(500).json(err); 
-                  console.log(numAffected, rawResponse);
-                  return res.status(statusCode).end();
-                }); 
-              }); 
+              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery} }, updateHandler);
             }
           }
           return res.status(500).end();
@@ -156,7 +155,14 @@ var deleteData = function(req, res, next) {
     } else {
 
       var statusCode = endpoint.methods[method].status;
-      
+
+      var updateHandler = function(err, numAffected, rawResponse) {
+        if (err) return res.status(500).json(err);
+        console.log('data pull successul');
+        console.log(numAffected, rawResponse);
+        return res.status(statusCode).end();
+      };
+
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
         //we need a parameter passed to know what to change
@@ -167,17 +173,12 @@ var deleteData = function(req, res, next) {
           console.log('gets here');
           var queryID = parseInt(req.query.id);
           var deleteQuery = {id: queryID};
-          for(var i=0; i < endpoint.data.length; i++) {
+          for(var i = 0; i < endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === queryID) {
               console.log('passes conditional');
               //delete datapoint passed by the user
-              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery}}, function(err, numAffected, rawResponse) {
-                if (err) return res.status(500).json(err); 
-                console.log('data pull successul');
-                console.log(numAffected, rawResponse);
-                return res.status(statusCode).end();
-              }); 
+              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery}}, updateHandler);
             }
           }
           return res.status(500).end();

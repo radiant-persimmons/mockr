@@ -30,11 +30,11 @@
     * @param {string} username Username for the logged in user
     * @return {promise} $http returns a promise to be used later
     */
-    function addRoute(body, username){
+    function addRoute(body){
 
       return $http({
         method: 'POST',
-        url: '/api/users/' + username + '/endpoints',
+        url: '/api/users/' + user.getUser().username + '/endpoints',
         data: body
       }).then(function(results) {
         console.log('SUCCESS', results);
@@ -50,7 +50,7 @@
     function updateRoute(body){
       return $http({
         method: 'PUT',
-        url: '/api/users/' + user.getUser().username + '/endpoints',
+        url: '/api/users/' + user.getUser().username + '/endpoints/' + body.route,
         data: body
       }).then(function(result) {
         console.log('UPDATE SUCCESS:', result);
