@@ -64,7 +64,7 @@ var editEndpoint = function(req, res, next) {
   var route = req.params[0];
   var newRoute = req.body.route;
   var methods = req.body.methods;
-  var persistence = req.body.persistence
+  var persistence = req.body.persistence;
 
   var newData = {};
   newData.methods = methods;
