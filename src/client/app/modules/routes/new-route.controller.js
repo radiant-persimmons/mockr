@@ -21,8 +21,7 @@
       persistance: false
     };
 
-    vm.updateRoute = updateRoute;
-    vm.deleteRoute = deleteRoute;
+    vm.saveRoute = saveRoute;
     vm.toggleMethod = toggleMethod;
     vm.togglePersistance = togglePersistance;
 
@@ -34,40 +33,29 @@
      * initialization of controller. Grabs route data from server and populates
      * the form.
      */
-    function activate() {
-      // getRoute();
-      getRoute().then(function() {
-        console.log('route received');
-      });
-    }
+    function activate() {}
 
     /**
      * pushes updates route info to the database. Handles error with display
      * of an error message.
      */
-    // TODO: should updateRoute pass a param of route???
-    function updateRoute() {
+    // TODO: should saveRoute pass a param of route???
+    function saveRoute() {
       // Change button label to indicate route is saving
       vm.buttonStatus = 'Saving...';
 
       // Submit data. Returns promise for any consumer to act upon resolution
-      return routes.updateRoute(vm.formInfo)
+      return routes.addRoute(vm.formInfo)
         // navigate to home on successful save
         .then(function(res) {
-          $state.go('home');
+          // $state.go('home');
+          console.log('add route success');
         // otherwise display error message
         }).catch(function(err) {
           // TODO display better error message
           vm.buttonStatus = 'SAVE';
           vm.errorMessage = 'Error occurred when saving route';
         });
-    }
-
-    /**
-     * deletes route entirely from database
-     */
-    function deleteRoute(argument) {
-      routes.deleteRoute(vm.formInfo.route);
     }
 
     /**
@@ -91,26 +79,6 @@
 
     function togglePersistance() {
       vm.formInfo.persistance = !vm.formInfo.persistance;
-    }
-
-    function getRoute() {
-      return routes.getRoute(vm.formInfo.route)
-        .then(function(res) {
-          /**
-           * The endpoint DB model stores response, headers, status, etc., all
-           * on the `methods` property. Here we're separating out method keys from
-           * the body for the sake of ng-repeat in view.
-           */
-          vm.formInfo.methods = res.methods;
-          vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
-          vm.formInfo.persistance = res.persistance;
-          vm.formInfo.data = res.data;
-          return;
-        }).catch(function(err) {
-          console.error('error fetching route', vm.formInfo.route);
-          console.error('Message:', err);
-        });
-
     }
   }
 
