@@ -65,7 +65,7 @@ var postData = function(req, res, next) {
 
         logic.runLogic(endpoint.businessLogic, req, function(err, newContent) {
           if(err) return res.status(500).json(err);
-          console.log("result--_>", newContent);
+          console.log('result--_>', newContent);
 
           //var newContent = req.body;
 
@@ -74,9 +74,9 @@ var postData = function(req, res, next) {
           newContent.id = endpoint.count++;
           for(var column in newContent) {
             if(!endpoint.schemaDB[column]) {
-              console.log("before deleting", newContent);
+              console.log('before deleting', newContent);
               delete newContent[column];
-              console.log("after deleting newContent", newContent);
+              console.log('after deleting newContent', newContent);
             }
           }
           //update endpoint.data of that endpoint
@@ -117,6 +117,7 @@ var changeData = function(req, res, next) {
           return res.status(500).end();
         } else {
           var newContent = req.body;
+
           //for(var column in newContent) {
           //  if(!endpoint.schemaDB[column]) {
           //    delete newContent[column];
