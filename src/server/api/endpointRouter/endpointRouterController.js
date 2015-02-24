@@ -72,13 +72,13 @@ var postData = function(req, res, next) {
           //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
           //TODO --> Have to save to db the increment of the count
           newContent.id = endpoint.count++;
-          for(var column in newContent) {
-            if(!endpoint.schemaDB[column]) {
-              console.log('before deleting', newContent);
-              delete newContent[column];
-              console.log('after deleting newContent', newContent);
-            }
-          }
+          //for(var column in newContent) {
+            //if(!endpoint.schemaDB[column]) {
+              //console.log('before deleting', newContent);
+              //delete newContent[column];
+              //console.log('after deleting newContent', newContent);
+            //}
+          //}
           //update endpoint.data of that endpoint
           Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
             if (err) return res.status(500).json(err); 
