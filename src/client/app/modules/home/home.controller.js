@@ -19,7 +19,7 @@
     var vm = this;
     vm.formInfo = {
       route: '',
-      persistance: false,
+      persistence: false,
       methodKeys: [],
       methods: {}
     };
@@ -28,7 +28,7 @@
 
     vm.addRoute = addRoute;
     vm.toggleMethod = toggleMethod;
-    vm.togglePersistance = togglePersistance;
+    vm.togglePersistence = togglePersistence;
     activate();
 
     /////////////////////////
@@ -56,7 +56,7 @@
           vm.formInfo.methodKeys.length = 0;
           vm.formInfo.methods = {};
           vm.formInfo.route = '';
-          vm.formInfo.persistance = false;
+          vm.formInfo.persistence = false;
         });
     }
 
@@ -79,8 +79,8 @@
       vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
     }
 
-    function togglePersistance() {
-      vm.formInfo.persistance = !vm.formInfo.persistance;
+    function togglePersistence() {
+      vm.formInfo.persistence = !vm.formInfo.persistence;
     }
 
     //TODO Add functionality here

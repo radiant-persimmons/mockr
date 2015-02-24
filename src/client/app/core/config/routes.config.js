@@ -42,13 +42,15 @@
           },
 
           'current-routes@home': {
-            templateUrl: 'html/modules/routes/current-routes.html',
+            templateUrl: 'html/modules/layout/current-routes.html',
             controller: 'CurrentRoutesController',
             controllerAs: 'vm'
           },
 
-          'addRoutes@home': {
-            templateUrl: 'html/modules/home/addroute.html'
+          'add-routes@home': {
+            templateUrl: 'html/modules/layout/add-routes.html',
+            controller: 'AddRoutesController',
+            controllerAs: 'vm'
           }
         }
       })
@@ -56,17 +58,19 @@
       .state('home.smiles', {
         url: '/home',
         views: {
-          'smiles@home': {
+          'container@home': {
             templateUrl: 'html/modules/home/smiles.html'
           }
         }
       })
 
-      .state('home.frownie', {
-        url: '/frownie',
+      .state('home.new-route', {
+        url: '/new-route/:route',
         views: {
-          'smiles@home': {
-            templateUrl: 'html/modules/home/frownie.html'
+          'container@home': {
+            templateUrl: 'html/modules/routes/new-route.html',
+            controller: 'NewRouteController',
+            controllerAs: 'vm'
           }
         }
       })
@@ -77,12 +81,16 @@
        * @description View for editing a specific route. Provides options
        *              to edit or delete the route.
        */
-      .state('editRoute', {
+      .state('home.edit-route', {
         url: '/routes/{route:.*}',
-        templateUrl: '/html/modules/routes/edit-routes.html',
-        controller: 'EditRoutesController',
-        controllerAs: 'vm',
-        authenticate: true
+        authenticate: true,
+        views: {
+          'container@home': {
+            templateUrl: '/html/modules/routes/edit-routes.html',
+            controller: 'EditRoutesController',
+            controllerAs: 'vm',
+          }
+        }
       });
 
     // default uncaught routes to landing page
