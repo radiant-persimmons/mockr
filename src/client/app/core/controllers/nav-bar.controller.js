@@ -10,25 +10,18 @@
     vm.loggedIn = false;
     vm.username = '';
 
-
     activate();
 
     //////////
 
     function activate() {
-      console.log(vm.loggedIn);
       user.registerCb(userResolved);
     }
-
-    // function loggedIn() {
-    //   console.log(user.loggedIn());
-    //   return user.loggedIn();
-    // }
 
     function userResolved() {
       vm.username = user.getUser().username;
       vm.loggedIn = user.loggedIn();
-      // console.log(vm.loggedIn());
+      vm.avatar = user.getUser().avatar;
     }
   }
 
