@@ -9,7 +9,7 @@ var endpointSchema = mongoose.Schema({
   schemaDB: {},
   data: [],
   count: { type: Number, default: 0 }
-});
+}, { minimize: false });
 
 var Endpoint = mongoose.model('Endpoint', endpointSchema);
 

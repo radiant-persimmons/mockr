@@ -50,7 +50,7 @@
     function updateRoute(body){
       return $http({
         method: 'PUT',
-        url: '/api/users/' + user.getUser().username + '/endpoints',
+        url: '/api/users/' + user.getUser().username + '/endpoints/' + body.route,
         data: body
       }).then(function(result) {
         console.log('UPDATE SUCCESS:', result);

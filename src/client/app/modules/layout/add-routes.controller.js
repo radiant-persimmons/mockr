@@ -21,6 +21,7 @@
     */
     function addRoute() {
       $state.go('home.new-route', { route: vm.formInfo.route });
+      vm.formInfo.route = '';
     }
   }
 

@@ -1,14 +1,6 @@
 h1 Edit Route
 form
   h3 {{ vm.formInfo.route }}
-  div.methods-selector.form-group
-    div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
-      label
-        input(type="checkbox"
-              ng-checked="!!vm.formInfo.methods[method]"
-              ng-click="vm.toggleMethod(method)")
-        {{ method }}
-
   div.checkbox-inline
     label
       input(type="checkbox"
@@ -19,6 +11,14 @@ form
   div.persistent-data-display(ng-show="vm.formInfo.persistence")
     label Persistent data
     p {{ vm.formInfo.data.length === 0 ? 'No data' : vm.formInfo.data | json }}
+
+  div.methods-selector.form-group(ng-hide="vm.formInfo.persistence")
+    div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
+      label
+        input(type="checkbox"
+              ng-checked="!!vm.formInfo.methods[method]"
+              ng-click="vm.toggleMethod(method)")
+        {{ method }}
 
   div.method-body.form-group(ng-hide="vm.formInfo.persistence"
                              ng-repeat="method in vm.formInfo.methodKeys")

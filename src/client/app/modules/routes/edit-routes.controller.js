@@ -54,7 +54,7 @@
       return routes.updateRoute(vm.formInfo)
         // navigate to home on successful save
         .then(function(res) {
-          $state.go('home');
+          $state.go('home.home');
         // otherwise display error message
         }).catch(function(err) {
           // TODO display better error message
@@ -102,9 +102,9 @@
            * the body for the sake of ng-repeat in view.
            */
           vm.formInfo.methods = res.methods;
-          vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
           vm.formInfo.persistence = res.persistence;
           vm.formInfo.data = res.data;
+          vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);

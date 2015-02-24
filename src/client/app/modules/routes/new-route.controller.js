@@ -45,11 +45,11 @@
       vm.buttonStatus = 'Saving...';
 
       // Submit data. Returns promise for any consumer to act upon resolution
+      console.log(vm.formInfo);
       return routes.addRoute(vm.formInfo)
         // navigate to home on successful save
         .then(function(res) {
-          // $state.go('home');
-          console.log('add route success');
+          $state.go('home.home');
         // otherwise display error message
         }).catch(function(err) {
           // TODO display better error message

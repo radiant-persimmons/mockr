@@ -55,11 +55,11 @@
         }
       })
 
-      .state('home.smiles', {
+      .state('home.home', {
         url: '/home',
         views: {
           'container@home': {
-            templateUrl: 'html/modules/home/smiles.html'
+            templateUrl: 'html/modules/home/welcome.html'
           }
         }
       })
