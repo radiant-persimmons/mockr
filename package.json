@@ -57,6 +57,7 @@
     "karma": "^0.12.31",
     "lodash": "^3.2.0",
     "main-bower-files": "^2.5.0",
+    "moment": "^2.9.0",
     "mongoose": "^3.8.23",
     "morgan": "^1.5.1",
     "nconf": "^0.7.1",

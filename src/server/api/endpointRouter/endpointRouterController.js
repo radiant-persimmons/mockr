@@ -1,8 +1,8 @@
 var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
 var url = require('url');
-var vm = require('vm');
 var logic = require('../../utils/businessLogic.js');
+var Moment = require('moment');
 
 var getData = function(req, res, next) {
   var username = req.params.username;
@@ -73,7 +73,9 @@ var postData = function(req, res, next) {
 
           //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
           //TODO --> Have to save to db the increment of the count
-          newContent.id = endpoint.count++;
+          newContent.id = endpoint.count;
+          newContent.createdAt = Moment.format('L');
+          newContent.updatedAt = Moment.format('L');
           //for(var column in newContent) {
             //if(!endpoint.schemaDB[column]) {
               //console.log('before deleting', newContent);
@@ -85,7 +87,10 @@ var postData = function(req, res, next) {
           Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
             if (err) return res.status(500).json(err); 
             console.log(numAffected, rawResponse);
-            return res.status(201).end();
+            //update count of objects in db
+            Endpoint.update({ 'username': username, 'route': route }, {$set: {'count': endpoint.count++}}, function(err, numAffected, rawResponse) {
+              return res.status(201).end();
+            });
           }); 
         });
       } else {
@@ -126,6 +131,8 @@ var changeData = function(req, res, next) {
           //    delete newContent[column];
           //  }
           //}
+          newContent.updatedAt = Moment.format('L');
+
           var queryID = parseInt(req.query.id);
           var deleteQuery = {id: queryID};
 
