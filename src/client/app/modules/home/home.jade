@@ -3,7 +3,7 @@ div.homeContainer
     div.form-input
       h3 Create a Route
       form(ng-submit="vm.addRoute()")
-        input(placeholder="enter route here" ng-model="vm.formInfo.route")
+        input.route-validation(placeholder="enter route here" ng-model="vm.formInfo.route")
         button.btn.btn-success +
 
         div.methods-selector.form-group
