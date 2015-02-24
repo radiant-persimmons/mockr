@@ -59,7 +59,7 @@ var postData = function(req, res, next) {
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
         var newContent = req.body;
-        console.log("newContent", newContent);
+        console.log('newContent', newContent);
         //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
         //TODO --> Have to save to db the increment of the count
         newContent.id = endpoint.count++;
