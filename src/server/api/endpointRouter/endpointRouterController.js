@@ -13,7 +13,6 @@ var getData = function(req, res, next) {
     if(!endpoint) {
       return res.status(500).end(err);
     } else {
-      var statusCode = endpoint.methods[method].status;
 
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
@@ -24,7 +23,7 @@ var getData = function(req, res, next) {
           for(var i=0; i<endpoint.data.length; i++) {
             var dataPoint = endpoint.data[i];
             if(dataPoint.id === queryID) {
-              return res.status(statusCode).json(dataPoint);
+              return res.status(200).json(dataPoint);
             }
           }
           return res.status(500).end();
@@ -32,9 +31,11 @@ var getData = function(req, res, next) {
           //add headers in the response
           //get data from data inserted through API created
           data = endpoint.data;
-          return res.status(statusCode).json(data);
+          return res.status(200).json(data);
         }
       } else {
+        //TODO check if we have nested object with that method
+        var statusCode = endpoint.methods[method].status;
         //get data from user input
         data = endpoint.methods[method].data;
         return res.status(statusCode).json(data);
@@ -55,26 +56,26 @@ var postData = function(req, res, next) {
       return res.status(500).end(err);
     } else {
 
-      var statusCode = endpoint.methods[method].status;
-
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
         var newContent = req.body;
+        console.log("newContent", newContent);
         //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
         //TODO --> Have to save to db the increment of the count
         newContent.id = endpoint.count++;
-        for(var column in newContent) {
-          if(!endpoint.schemaDB[column]) {
-            delete newContent[column];
-          }
-        }
+        //for(var column in newContent) {
+        //  if(!endpoint.schemaDB[column]) {
+        //    delete newContent[column];
+        //  }
+        //}
         //update endpoint.data of that endpoint
         Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
           if (err) return res.status(500).json(err);
           console.log(numAffected, rawResponse);
-          return res.status(statusCode).end();
+          return res.status(201).end();
         });
       } else {
+        var statusCode = endpoint.methods[method].status;
         //get data from user input
         var data = endpoint.methods[method].data;
         return res.status(statusCode).json(data);
@@ -95,7 +96,6 @@ var changeData = function(req, res, next) {
       return res.status(500).end(err);
     } else {
       console.log('method', method);
-      var statusCode = endpoint.methods[method].status;
 
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
@@ -105,11 +105,11 @@ var changeData = function(req, res, next) {
           return res.status(500).end();
         } else {
           var newContent = req.body;
-          for(var column in newContent) {
-            if(!endpoint.schemaDB[column]) {
-              delete newContent[column];
-            }
-          }
+          //for(var column in newContent) {
+          //  if(!endpoint.schemaDB[column]) {
+          //    delete newContent[column];
+          //  }
+          //}
           var queryID = parseInt(req.query.id);
           var deleteQuery = {id: queryID};
 
@@ -119,7 +119,7 @@ var changeData = function(req, res, next) {
             Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent} }, function(err, numAffected, rawResponse) {
               if (err) return res.status(500).json(err);
               console.log(numAffected, rawResponse);
-              return res.status(statusCode).end();
+              return res.status(201).end();
             });
           };
 
@@ -134,6 +134,7 @@ var changeData = function(req, res, next) {
           return res.status(500).end();
         }
       } else {
+        var statusCode = endpoint.methods[method].status;
         //get data from user input
         //check what verb is normally used?? PUT or PATCH
         var data = endpoint.methods[method].data;
@@ -154,13 +155,11 @@ var deleteData = function(req, res, next) {
       return res.status(500).end(err);
     } else {
 
-      var statusCode = endpoint.methods[method].status;
-
       var updateHandler = function(err, numAffected, rawResponse) {
         if (err) return res.status(500).json(err);
         console.log('data pull successul');
         console.log(numAffected, rawResponse);
-        return res.status(statusCode).end();
+        return res.status(201).end();
       };
 
       //if persistance is set to true, we let the user persist data through their API endpoint
@@ -184,6 +183,7 @@ var deleteData = function(req, res, next) {
           return res.status(500).end();
         }
       } else {
+        var statusCode = endpoint.methods[method].status;
         //get data from user input
         var data = endpoint.methods[method].data;
         return res.status(statusCode).json(data);
