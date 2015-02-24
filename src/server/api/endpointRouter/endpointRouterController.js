@@ -37,6 +37,7 @@ var getData = function(req, res, next) {
         }
       } else {
         //TODO check if we have nested object with that method
+        if(!endpoint.methods[method]) return res.status(500).end();
         var statusCode = endpoint.methods[method].status;
         //get data from user input
         data = endpoint.methods[method].data;
@@ -88,6 +89,7 @@ var postData = function(req, res, next) {
           }); 
         });
       } else {
+        if(!endpoint.methods[method]) return res.status(500).end();
         var statusCode = endpoint.methods[method].status;
         //get data from user input
         var data = endpoint.methods[method].data;
@@ -148,6 +150,7 @@ var changeData = function(req, res, next) {
           return res.status(500).end();
         }
       } else {
+        if(!endpoint.methods[method]) return res.status(500).end();
         var statusCode = endpoint.methods[method].status;
         //get data from user input
         //check what verb is normally used?? PUT or PATCH
@@ -197,6 +200,7 @@ var deleteData = function(req, res, next) {
           return res.status(500).end();
         }
       } else {
+        if(!endpoint.methods[method]) return res.status(500).end();
         var statusCode = endpoint.methods[method].status;
         //get data from user input
         var data = endpoint.methods[method].data;
