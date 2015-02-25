@@ -15,6 +15,7 @@ var createEndpoint = function(req, res, next) {
   var route = req.body.route;
   var methods = req.body.methods;
   var persistence = req.body.persistence;
+  var businessLogic = req.body.businessLogic;
 
   //{pK: "id", name: true, content: true }
 
@@ -24,7 +25,7 @@ var createEndpoint = function(req, res, next) {
     if(!user) {
       res.status(500).end();
     } else {
-      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods, persistence: persistence });
+      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods, persistence: persistence, businessLogic: businessLogic });
 
       Endpoint.findOne({ username: username, route: route }, function(err, endpoint) {
         if(err) return res.status(500).json({ message: err });
