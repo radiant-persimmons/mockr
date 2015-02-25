@@ -23,12 +23,6 @@ module.exports = function(app) {
     });
   });
 
-  console.log('github client ID', config.github.clientID);
-
-  console.log('github client secret', config.github.clientSecret);
-
-  console.log('github callback', config.github.callback);
-
   // GitHub
   passport.use('github',
     new OAuth2Strategy({
