@@ -27,6 +27,8 @@ module.exports = function(app) {
 
   console.log('github client secret', config.github.clientSecret);
 
+  console.log('github callback', config.github.callback);
+
   // GitHub
   passport.use('github',
     new OAuth2Strategy({
@@ -34,7 +36,7 @@ module.exports = function(app) {
       tokenURL: 'https://github.com/login/oauth/access_token',
       clientID: config.github.clientID,
       clientSecret: config.github.clientSecret,
-      callbackURL: 'http://localhost:3000/auth/github/callback'
+      callbackURL: config.github.callback
     },
     function (accessToken, refreshToken, profile, done) {
       request({
