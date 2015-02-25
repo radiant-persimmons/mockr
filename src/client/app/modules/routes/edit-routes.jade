@@ -47,10 +47,10 @@ form(name="editForm")
                             required)
 
   div.business-logic.form-group(ng-show="vm.formInfo.persistence")
-  div.form-group
-    label Business Logic
-    textarea.form-control(rows="3"
-                          ng-model="vm.formInfo.businessLogic")
+    div.form-group
+      label Business Logic
+      textarea.form-control(rows="3"
+                            ng-model="vm.formInfo.businessLogic")
 
   div.submit-area.form-group
     button.btn.btn-primary(ng-click="vm.updateRoute()" ng-disabled="editForm.$invalid") {{ vm.buttonStatus }}
