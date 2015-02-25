@@ -37,6 +37,12 @@ form
       textarea.form-control(rows="3"
                             ng-model="vm.formInfo.methods[method].data")
 
+  div.business-logic.form-group(ng-show="vm.formInfo.persistence")
+  div.form-group
+    label Business Logic
+    textarea.form-control(rows="3"
+                          ng-model="vm.formInfo.businessLogic")
+
   div.submit-area.form-group
     button.btn.btn-primary(ng-click="vm.updateRoute()") {{ vm.buttonStatus }}
     div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
