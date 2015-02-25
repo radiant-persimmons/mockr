@@ -2,7 +2,6 @@ var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
 var url = require('url');
 var logic = require('../../utils/businessLogic.js');
-var Moment = require('moment');
 var utils = require('../../utils');
 
 var getData = function(req, res, next) {
@@ -10,15 +9,12 @@ var getData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
   var data;
-
-  utils
-
+  console.log("now", Date.now() );
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
     if(!endpoint) {
       return res.status(500).end(err);
     } else {
-
       //if persistance is set to true, we let the user persist data through their API endpoint
       if(endpoint.persistence === true) {
 
@@ -33,10 +29,27 @@ var getData = function(req, res, next) {
           }
           return res.status(500).end();
         } else {
-          //if it has createdAt or updatedAt
-
-          //get data from data inserted through API created
           data = endpoint.data;
+          //if it has createdAt or updatedAt
+          if(req.query.createdAt || req.query.updatedAt) {
+            var queryParam = req.query.createdAt || req.query.updatedAt;
+            if(queryParam === 'ASC') {
+
+            } else if(queryParam === 'DESC') {
+              var dataSorted = data.sort(function(a, b) {
+                return b.createdAt - a.createdAt;
+              });
+              data = dataSorted;
+            }
+          }
+          if(req.query.start) {
+            data = data.slice(req.query.start);
+          } 
+          if(req.query.size) {
+            data = data.slice(0, req.query.size);
+          }
+          //get data from data inserted through API created
+          
           return res.status(200).json(data);
         }
       } else {
@@ -56,6 +69,7 @@ var postData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
+  var currentTime = Date.now();
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -79,8 +93,8 @@ var postData = function(req, res, next) {
           //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
           //TODO --> Have to save to db the increment of the count
           newContent.id = endpoint.count;
-          newContent.createdAt = Moment().format('L');
-          newContent.updatedAt = Moment().format('L');
+          newContent.createdAt = currentTime;
+          newContent.updatedAt = currentTime;
 
           //for(var column in newContent) {
             //if(!endpoint.schemaDB[column]) {
@@ -108,13 +122,13 @@ var postData = function(req, res, next) {
       }
     }
   });
-
 };
 
 var changeData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
+  var currentTime = Date.now();
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -137,7 +151,7 @@ var changeData = function(req, res, next) {
           //    delete newContent[column];
           //  }
           //}
-          newContent.updatedAt = Moment().format('L');
+          newContent.updatedAt = currentTime;
 
           var queryID = parseInt(req.query.id);
           var deleteQuery = {id: queryID};

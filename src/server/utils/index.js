@@ -8,6 +8,7 @@ var createUserIfNotExistant = function(user, cb) {
   });
 };
 
+
 module.exports = {
   createUserIfNotExistant: createUserIfNotExistant
 };
