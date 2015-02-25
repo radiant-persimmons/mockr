@@ -15,6 +15,7 @@ module.exports = function expressConfig(app) {
   // HTTP request logger middleware
   app.use(morgan('combined'));
 
+  // Attach CORS headers
   app.use(cors());
 
   // set static asset dir
