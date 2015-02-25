@@ -3,12 +3,15 @@ var Endpoint = require('../endpoint/endpointModel.js');
 var url = require('url');
 var logic = require('../../utils/businessLogic.js');
 var Moment = require('moment');
+var utils = require('../../utils');
 
 var getData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
   var data;
+
+  utils
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -30,7 +33,8 @@ var getData = function(req, res, next) {
           }
           return res.status(500).end();
         } else {
-          //add headers in the response
+          //if it has createdAt or updatedAt
+
           //get data from data inserted through API created
           data = endpoint.data;
           return res.status(200).json(data);
@@ -38,6 +42,7 @@ var getData = function(req, res, next) {
       } else {
         //TODO check if we have nested object with that method
         if(!endpoint.methods[method]) return res.status(500).end();
+        //add headers in the response
         var statusCode = endpoint.methods[method].status;
         //get data from user input
         data = endpoint.methods[method].data;
