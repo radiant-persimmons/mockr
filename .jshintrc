@@ -1,0 +1,26 @@
+{
+    "node": true,
+    "esnext": true,
+    "bitwise": true,
+    "camelcase": true,
+    "curly": false,
+    "eqeqeq": true,
+    "immed": true,
+    "indent": 2,
+    "latedef": false,
+    "newcap": true,
+    "noarg": true,
+    "predef": ["window", "angular"],
+    "quotmark": "single",
+    "regexp": true,
+    "undef": true,
+    "unused": false,
+    "strict": false,
+    "trailing": true,
+    "smarttabs": true,
+    "white": true,
+
+    // Environments
+    "mocha": true,
+    "jasmine": true
+}
