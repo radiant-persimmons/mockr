@@ -1,4 +1,13 @@
 h3 Create a Route
-form(ng-submit="vm.addRoute()")
-  input.ng-validat(placeholder="enter route here" ng-model="vm.formInfo.route")
-  button.btn.btn-success +
+form(ng-submit="vm.addRoute()" name="routeForm")
+  input(placeholder="enter route here"
+    name="routes"
+    ng-model="vm.formInfo.route"
+    ng-pattern="/^(?!.*\/\/)[A-Za-z0-9][A-Za-z0-9\/]*$/"
+    ng-class="{ 'alert-danger' : routeForm.routes.$invalid && !routeForm.routes.$pristine }"
+    role="alert"
+    required)
+  button.btn.btn-success(ng-disabled="routeForm.$invalid") +
+  
+  p.has-error(ng-show="routeForm.routes.$error.minlength") route is too short
+  

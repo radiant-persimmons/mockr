@@ -1,5 +1,5 @@
 h1 Edit Route
-form
+form(name="editForm")
   h3 {{ vm.formInfo.route }}
   div.checkbox-inline
     label
@@ -27,7 +27,12 @@ form
     div.form-group
       label Status code
       input.form-control(type="number"
-                         ng-model="vm.formInfo.methods[method].status")
+                         name="status"
+                         ng-model="vm.formInfo.methods[method].status"
+                         ng-pattern="/^(?!.*\/\/)[0-9][0-9]*$/"
+                         ng-class="{ 'alert-danger' : editForm.response.$invalid && !editForm.response.$pristine }"
+                         role="alert"
+                         required)
     div.form-group
       label Headers
       textarea.form-control(rows="1"
@@ -35,8 +40,12 @@ form
     div.form-group
       label Response
       textarea.form-control(rows="3"
-                            ng-model="vm.formInfo.methods[method].data")
+                            ng-model="vm.formInfo.methods[method].data"
+                            name="response"
+                            ng-class="{ 'alert-danger' : editForm.status.$invalid && !editForm.status.$pristine }"
+                            role="alert"
+                            required)
 
   div.submit-area.form-group
-    button.btn.btn-primary(ng-click="vm.updateRoute()") {{ vm.buttonStatus }}
+    button.btn.btn-primary(ng-click="vm.updateRoute()" ng-disabled="editForm.$invalid") {{ vm.buttonStatus }}
     div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
