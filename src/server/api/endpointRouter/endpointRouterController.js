@@ -9,7 +9,7 @@ var getData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
   var data;
-  console.log("now", Date.now() );
+  console.log('now', Date.now() );
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
     if(!endpoint) {
