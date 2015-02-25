@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/radiant-persimmons/mockr.svg?branch=develop)](https://travis-ci.org/radiant-persimmons/mockr) [![Coverage Status](https://coveralls.io/repos/radiant-persimmons/mockr/badge.svg?branch=develop)](https://coveralls.io/r/radiant-persimmons/mockr?branch=develop) [![Stories in Ready](https://badge.waffle.io/radiant-persimmons/mockr.svg?label=ready&title=Backlog)](http://waffle.io/radiant-persimmons/mockr)
 
-> A back end mocker for people whom don't know how to spell.
+Version 0.1.0
+
+> A back end mocker tool for people whom don't know how to spell.
 
 ## Team
 

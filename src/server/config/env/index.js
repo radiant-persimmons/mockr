@@ -1,7 +1,7 @@
 var join = require('path').join;
 var _ = require('lodash');
 var nconf = require('nconf');
-  
+
   nconf
   // grab flags, e.g. --foo bar --> nconf.get('foo') === 'bar'
   .argv()
@@ -43,7 +43,8 @@ var nconf = require('nconf');
 
     github: {
       clientID: nconf.get('GITHUB_KEY'),
-      clientSecret: nconf.get('GITHUB_SECRET')
+      clientSecret: nconf.get('GITHUB_SECRET'),
+      callback: nconf.get('GITHUB_CALLBACK')
     }
 
   };
