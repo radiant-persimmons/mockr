@@ -54,7 +54,7 @@
      */
     function registerCb(cb) {
       if (typeof cb !== 'function') {
-        throw 'user#registerCb: only takes functions as callbacks'
+        throw 'user#registerCb: only takes functions as callbacks';
       }
 
       if (resolved) {

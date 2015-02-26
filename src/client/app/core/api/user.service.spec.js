@@ -1,3 +1,5 @@
+/*jshint -W079 */
+
 describe('user service', function() {
   var $httpBackend;
   var user;
@@ -90,7 +92,7 @@ describe('user service', function() {
 
       $httpBackend.flush();
       var success = false;
-      var cb = function() { success = true; }
+      var cb = function() { success = true; };
       user.registerCb(cb);
       expect(success).to.equal(true);
     });
