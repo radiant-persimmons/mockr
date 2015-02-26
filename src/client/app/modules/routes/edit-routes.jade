@@ -12,6 +12,38 @@ form(name="editForm")
     label Persistent data
     p {{ vm.formInfo.data.length === 0 ? 'No data' : vm.formInfo.data | json }}
 
+    .alert.alert-info
+    p Sort Type: {{ sortType }}
+    p Sort Reverse: {{ sortReverse }}
+    p Search Query: {{ searchUser }}
+    form
+      .form-group
+        .input-group
+          .input-group-addon
+            i.fa.fa-search
+          input.form-control(type='text', placeholder='Search Users', ng-model='searchUser')
+    table.table.table-bordered.table-striped
+      thead
+        tr
+          td
+            a(href='#', ng-click="sortType = 'id'; sortReverse = !sortReverse")
+              | ID 
+              span.fa.fa-caret-down(ng-show="sortType == 'id' && !sortReverse")
+              span.fa.fa-caret-up(ng-show="sortType == 'id' && sortReverse")
+          td
+            a(href='#', ng-click="sortType = 'name'; sortReverse = !sortReverse")
+              | Name
+              span.fa.fa-caret-down(ng-show="sortType == 'name' && !sortReverse")
+              span.fa.fa-caret-up(ng-show="sortType == 'name' && sortReverse")
+          td
+            a(href='#', ng-click="sortType = 'email'; sortReverse = !sortReverse")
+              | Email
+              span.fa.fa-caret-down(ng-show="sortType == 'email' && !sortReverse")
+              span.fa.fa-caret-up(ng-show="sortType == 'email' && sortReverse")
+      tbody
+        tr(ng-repeat='user in vm.formInfo.data | orderBy:sortType:sortReverse | filter:searchUser')
+          td(ng-repeat='column in user') {{ column }}
+
   div.methods-selector.form-group(ng-hide="vm.formInfo.persistence")
     div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
       label
