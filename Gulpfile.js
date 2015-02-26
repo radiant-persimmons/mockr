@@ -140,13 +140,13 @@ gulp
 gulp
   .task('lint', tasks.lint)
   .task('karma', tasks.karma)
-  .task('mocha', tasks.mocha)
   .task('nightwatch', tasks.nightwatch)
+  .task('mocha', tasks.mocha)
   .task('test',
     $.sequence('lint',
                'karma',
-               'mocha',
-               'nightwatch')
+               'nightwatch',
+               'mocha')
   );
 
 /**
