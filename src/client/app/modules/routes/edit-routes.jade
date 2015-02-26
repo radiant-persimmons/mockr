@@ -26,7 +26,7 @@ form(name="editForm")
       thead
         tr
           td(ng-repeat="(key, value) in vm.user")
-            a(href='#', ng-click="sortType = '{{ key }}'; sortReverse = !sortReverse")
+            a(href='#', ng-click="sortType = '{{key}}'; sortReverse = !sortReverse")
               | {{ key }}
               span.fa.fa-caret-down(ng-show="sortType == '{{ key }}' && !sortReverse")
               span.fa.fa-caret-up(ng-show="sortType == '{{ key }}' && sortReverse")
