@@ -18,7 +18,7 @@ form(name="editForm")
         {{ method }}
 
   div.method-body.form-group(ng-hide="vm.formInfo.persistence"
-                             ng-repeat="method in vm.formInfo.methodKeys")
+                             ng-repeat="method in vm.formInfo.methodKeys" ng-class="method + 'inputBox'")
     label {{ method }}
 
     div.form-group

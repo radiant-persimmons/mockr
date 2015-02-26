@@ -6,7 +6,8 @@ header(role="header" id="header")
         button(type="button" class="navbar-toggle collapsed")
         a(class="navbar-brand" href="/" ng-hide="vm.loggedIn")
           img(src="/images/mockr-logo.png")
-        a(class="navbar-brand" href="/home" ng-show="vm.loggedIn") Mockr
+        a(class="navbar-brand" href="/home" ng-show="vm.loggedIn")
+          img(src="/images/mockr-logo.png")
       ul(class="nav navbar-nav navbar-right")
         li(ng-hide="vm.loggedIn")
           a(href="/") Login
