@@ -66,12 +66,14 @@ var editEndpoint = function(req, res, next) {
   var newRoute = req.body.route;
   var methods = req.body.methods;
   var persistence = req.body.persistence;
+  var businessLogic = req.body.businessLogic;
 
   var newData = {};
   newData.methods = methods;
   newData.username = username;
   newData.route = newRoute;
   newData.persistence = persistence;
+  newData.businessLogic = businessLogic;
 
   //TODO check if username exists before creating endpoint
   Endpoint.findOneAndUpdate({ 'username': username, 'route': route }, newData, {upsert: true},function(err, numberAffected, raw) {
