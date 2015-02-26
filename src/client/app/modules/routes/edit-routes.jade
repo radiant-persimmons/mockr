@@ -31,11 +31,8 @@ form(name="editForm")
           td(ng-repeat='column in user') {{ column }}
 
   div.methods-selector.form-group(ng-hide="vm.formInfo.persistence")
-<<<<<<< HEAD
     div.method.checkbox-inline(ng-repeat="method in vm.allMethods" ng-class="method + '-inputBox'")
-=======
-    div.method.checkbox-inline(ng-repeat="method in vm.allMethods" ng-class="method + 'checkbox'")
->>>>>>> feature e2e testing closes #75
+
       label
         input(type="checkbox"
               ng-checked="!!vm.formInfo.methods[method]"
