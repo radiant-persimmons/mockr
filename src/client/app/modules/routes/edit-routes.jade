@@ -25,21 +25,11 @@ form(name="editForm")
     table.table.table-bordered.table-striped
       thead
         tr
-          td
-            a(href='#', ng-click="sortType = 'id'; sortReverse = !sortReverse")
-              | ID 
-              span.fa.fa-caret-down(ng-show="sortType == 'id' && !sortReverse")
-              span.fa.fa-caret-up(ng-show="sortType == 'id' && sortReverse")
-          td
-            a(href='#', ng-click="sortType = 'name'; sortReverse = !sortReverse")
-              | Name
-              span.fa.fa-caret-down(ng-show="sortType == 'name' && !sortReverse")
-              span.fa.fa-caret-up(ng-show="sortType == 'name' && sortReverse")
-          td
-            a(href='#', ng-click="sortType = 'email'; sortReverse = !sortReverse")
-              | Email
-              span.fa.fa-caret-down(ng-show="sortType == 'email' && !sortReverse")
-              span.fa.fa-caret-up(ng-show="sortType == 'email' && sortReverse")
+          td(ng-repeat="(key, value) in vm.user")
+            a(href='#', ng-click="sortType = '{{ key }}'; sortReverse = !sortReverse")
+              | {{ key }}
+              span.fa.fa-caret-down(ng-show="sortType == '{{ key }}' && !sortReverse")
+              span.fa.fa-caret-up(ng-show="sortType == '{{ key }}' && sortReverse")
       tbody
         tr(ng-repeat='user in vm.formInfo.data | orderBy:sortType:sortReverse | filter:searchUser')
           td(ng-repeat='column in user') {{ column }}

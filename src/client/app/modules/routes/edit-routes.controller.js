@@ -22,6 +22,8 @@
       businessLogic: ''
     };
 
+    vm.user = vm.formInfo.data[0];
+
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
     vm.toggleMethod = toggleMethod;
@@ -107,6 +109,7 @@
           vm.formInfo.data = res.data;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
           vm.formInfo.businessLogic = res.businessLogic;
+          vm.user = vm.formInfo.data[0];
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
