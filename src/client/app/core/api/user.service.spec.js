@@ -1,15 +1,25 @@
-/*jshint -W079 */
-
 describe('user service', function() {
+  /**
+   * $httpBackend is used to fake backend for Angular tests. Define placeholder
+   * services here (e.g. `user`) so you can reference them later in tests.
+   */
   var $httpBackend;
   var user;
 
+  // load necessary modules; typically will only be the one you're testing
   beforeEach(module('app.services.user'));
+
+  /**
+   * have Angular inject providers into your placeholder variables
+   * it intelligently removes the _'s to reference the actual provider. This
+   * is done so you can refer to the original name without any naming conflicts
+   */
   beforeEach(inject(function(_$httpBackend_, _user_) {
     $httpBackend = _$httpBackend_;
     user = _user_;
   }));
 
+  // basic questions, proof of concept that things are loading correctly
   describe('user', function() {
     it('should exist', function() {
       expect(user).to.be.a('object');
@@ -23,10 +33,19 @@ describe('user service', function() {
   describe('#activate', function() {
 
     it('should activate with a call to api', function() {
+      /**
+       * you tell `$httpBackend` to listen to certain requests and respond
+       * with whatever you tell it. Look into $httpBackend docs for more info
+       * on options available
+       */
       $httpBackend
         .expectGET('/api/user')
         .respond(200, { username: 'AndrewSouthpaw' });
+
+      // tell backend to process the requests that have been made
       $httpBackend.flush();
+
+      // in this case, test that method called route and stored expected info
       expect(user.getUser()).to.eql({ username: 'AndrewSouthpaw' });
     });
 
