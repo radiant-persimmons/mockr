@@ -11,11 +11,16 @@
   function LoginController(auth) {
     var vm = this;
     vm.login = login;
+    vm.logout = logout;
 
     //////////
 
     function login() {
       auth.login();
+    }
+
+    function logout() {
+      auth.logout();
     }
 
   }

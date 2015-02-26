@@ -10,7 +10,7 @@ header(role="header" id="header")
           img(src="/images/mockr-logo.png")
       ul(class="nav navbar-nav navbar-right")
         li(ng-hide="vm.loggedIn")
-          a(href="/") Login
+          a(href="#" ng-click="vm.login()") Login
         li(ng-show="vm.loggedIn")
           a {{ vm.username }}
         li.user-avatar(ng-show="vm.loggedIn")
