@@ -12,7 +12,7 @@ module.exports = {
 function login(req, res, next) {
   console.log('getting a redirect');
   res.redirect('/auth/github');
-};
+}
 
 function logout(req, res, next) {
   console.log('destroying session');
@@ -29,7 +29,7 @@ function authentication(req, res, next) {
     // The request will be redirected to GitHub for authentication, so this
     // function will not be called.
   };
-};
+}
 
 function authenticationCallback(req, res, next) {
   console.log('callback');
@@ -37,4 +37,4 @@ function authenticationCallback(req, res, next) {
   function(req, res) {
     res.redirect('/home');
   };
-};
+}
