@@ -27,7 +27,7 @@
     vm.searchData   = '';     // set the default search/filter term
   
 
-    vm.user = vm.formInfo.data[0];
+    vm.tableHead = vm.formInfo.data[0];
 
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
