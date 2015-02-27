@@ -22,6 +22,13 @@
       businessLogic: ''
     };
 
+    vm.sortType     = 'id'; // set the default sort type
+    vm.sortReverse  = false;  // set the default sort order
+    vm.searchData   = '';     // set the default search/filter term
+  
+
+    vm.tableHead = vm.formInfo.data[0];
+
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
     vm.toggleMethod = toggleMethod;
@@ -107,6 +114,7 @@
           vm.formInfo.data = res.data;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
           vm.formInfo.businessLogic = res.businessLogic;
+          vm.tableHead = vm.formInfo.data[0];
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
