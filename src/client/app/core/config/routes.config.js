@@ -15,8 +15,8 @@
        */
       .state('landing', {
         url: '/',
-        templateUrl: '/html/modules/auth/login.html',
-        controller: 'LoginController',
+        templateUrl: '/html/modules/landing/landing.html',
+        controller: 'LandingController',
         controllerAs: 'vm'
       })
 
@@ -25,14 +25,6 @@
        * @type {route}
        * @description User landing page, the main display.
        */
-      // .state('home', {
-      //   url: '/home',
-      //   templateUrl: '/html/modules/home/home.html',
-      //   controller: 'HomeController',
-      //   controllerAs: 'vm',
-      //   authenticate: true
-      // })
-
       .state('home', {
         url: '',
         abstract: true,

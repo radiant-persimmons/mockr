@@ -8,7 +8,8 @@
   function auth($http) {
 
     var service = {
-      login: login
+      login: login,
+      logout: logout
     };
 
     return service;
@@ -20,6 +21,11 @@
      */
     function login() {
       window.location = '/api/auth/login';
+    }
+
+    // logout user by directing to server route
+    function logout() {
+      window.location = '/api/auth/logout';
     }
   }
 
