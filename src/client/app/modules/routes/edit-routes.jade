@@ -12,10 +12,6 @@ form(name="editForm")
     label Persistent data
     p {{ vm.formInfo.data.length === 0 ? 'No data' : vm.formInfo.data | json }}
 
-    .alert.alert-info
-    p Sort Type: {{ vm.sortType }}
-    p Sort Reverse: {{ vm.sortReverse }}
-    p Search Query: {{ vm.searchData }}
     form
       .form-group
         .input-group
@@ -25,7 +21,7 @@ form(name="editForm")
     table.table.table-bordered.table-striped
       thead
         tr
-          td(ng-repeat="(key, value) in vm.user")
+          td(ng-repeat="(key, value) in vm.tableHead")
             a(href='#', ng-click="vm.sortType = key; vm.sortReverse = !vm.sortReverse")
               | {{ key }}
               span.fa.fa-caret-down(ng-show="vm.sortType == '{{ key }}' && !vm.sortReverse")
