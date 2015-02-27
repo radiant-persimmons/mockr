@@ -8,6 +8,7 @@
   "selenium" : {
     "start_process" : true,
     "server_path" : "src/spec/selenium-server-standalone-2.44.0.jar",
+    "port" : 99.0,
     "log_path" : "",
     "host" : "127.0.0.1",
     "cli_args" : {
@@ -18,7 +19,7 @@
   "test_settings" : {
     "default" : {
       "launch_url" : "http://localhost",
-      "selenium_port"  : 4444,
+      "selenium_port"  : 99.0,
       "selenium_host"  : "localhost",
       "silent": true,
       "screenshots" : {
