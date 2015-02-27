@@ -22,9 +22,9 @@
       businessLogic: ''
     };
 
-    vm.sortType     = 'name'; // set the default sort type
+    vm.sortType     = 'id'; // set the default sort type
     vm.sortReverse  = false;  // set the default sort order
-    vm.searchFish   = '';     // set the default search/filter term
+    vm.searchData   = '';     // set the default search/filter term
   
 
     vm.user = vm.formInfo.data[0];
