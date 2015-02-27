@@ -5,6 +5,10 @@ node_js:
 services:
 - mongodb
 
+# Update npm, necessary for certain packages to install correctly
+before_install:
+- npm install -g npm
+
 # Special configurations for using Chrome browser in Travis
 before_script:
 - export CHROME_BIN=chromium-browser
