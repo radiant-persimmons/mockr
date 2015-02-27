@@ -124,7 +124,7 @@
             }
 
       .state('home.analytics', {
-        url: '/routes/{route:.*}/analytics',
+        url: '/analytics/{route:.*}',
         authenticate: true,
         views: {
           'container@home': {

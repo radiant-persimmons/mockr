@@ -4,4 +4,5 @@ div.current-routes-list
     div.routeInRoutes
       a(href="/routes/{{ route }}")
         {{ route }}
-      a(ng-click='goToAnalytics(route)')
+      a(href="/analytics/{{ route }}")
+        'Analytics'
