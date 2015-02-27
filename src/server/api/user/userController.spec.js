@@ -34,25 +34,38 @@ console.log('userController.spec.js');
 console.log('*************************************');
 
 describe('UNIT: userController', function() {
+
+  var req;
+  var res;
+  var jsonStub;
+
   // set up stubs on req and res
   beforeEach(function() {
     // var req = sinon.stub();
     // req.withArgs() // ???
 
-    var user = { user: 'Andrew' };
-    var req = user;
-    var statusStub = sinon.stub();
-    var jsonStub = sinon.stub();
-    var res = { status: statusStub };
-    res.status.withArgs(200).returns({ json: jsonStub })
-    jsonStub.withArgs(user).returns(true);
+    req = {
+      user: 'Andrew'
+    };
+
+    jsonStub = sinon.stub();
+
+    res = {
+      status: sinon.stub().returns({ json: jsonStub })
+    };
 
     ////
 
   });
 
   it('test', function() {
-    route.getCurrentUser();
+    route.getCurrentUser(req, res);
+
+    expect(res.status.calledOnce);
+    expect(res.status.calledWith(200));
+
+    expect(jsonStub.calledOnce);
+    expect(jsonStub.calledWith(req.user));
     // ???
   });
 });
