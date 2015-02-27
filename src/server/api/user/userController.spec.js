@@ -1,4 +1,5 @@
 /*jshint -W079 */
+/*jshint -W079 */
 
 // Set environment to test, always do this.
 process.env.NODE_ENV = 'test';
@@ -13,17 +14,51 @@ var passportStub = require('passport-stub');
  * Spy/stub/mock routes **before** initializing app.
  * See http://bit.ly/1MWo3rY for an explanation of why.
  */
-var route = require('../../server/api/user/userController');
+var route = require('./userController');
 sinon.spy(route, 'getCurrentUser');
 
+/**
+ * Because we're not resetting the spy after each test,
+ * we'll manually track the call count.
+ */
+var callCount = 0;
+
 // Initialize app/server
-var app = require('../../server/index.js');
+var app = require('../../index.js');
 
 // Stub passport
 passportStub.install(app);
 
+console.log('*************************************');
+console.log('userController.spec.js');
+console.log('*************************************');
+
+describe('UNIT: userController', function() {
+  // set up stubs on req and res
+  beforeEach(function() {
+    // var req = sinon.stub();
+    // req.withArgs() // ???
+
+    var user = { user: 'Andrew' };
+    var req = user;
+    var statusStub = sinon.stub();
+    var jsonStub = sinon.stub();
+    var res = { status: statusStub };
+    res.status.withArgs(200).returns({ json: jsonStub })
+    jsonStub.withArgs(user).returns(true);
+
+    ////
+
+  });
+
+  it('test', function() {
+    route.getCurrentUser();
+    // ???
+  });
+});
+
 // Indicate the route you're checking, if one
-describe('UNIT: /api/user', function() {
+describe('INTEGRATION: /api/user route', function() {
 
   /**
    * restore original functionality on spied method
