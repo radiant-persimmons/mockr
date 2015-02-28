@@ -85,6 +85,41 @@
             controllerAs: 'vm',
           }
         }
+      })
+
+      /**
+       * @name Docs
+       * @type {route}
+       * @description View for the project documentation
+       *
+       */
+      .state('docs',{
+        url:'/docs',
+        authenticate: false,
+        views: {
+          '': {
+            templateUrl: '/html/modules/docs/docs.html'
+          },
+          'current-doc@docs': {
+            templateUrl: '/html/modules/docs/current-doc.html'
+            // controller: 'DocsController',
+            // controllerAs: 'vm'
+          },
+          'doc-list@docs': {
+            templateUrl: '/html/modules/docs/docs-list.html',
+            controller: 'DocsController',
+            controllerAs: 'vm'
+          }
+        }
+      })
+      .state('docs.single-doc', {
+        url: '/docs/{doc:.*}',
+        authenticate: false,
+        views: {
+          'container@docs': {
+            templateUrl: '/html/module/docs/pages/test.html'
+          }
+        }
       });
 
     // default uncaught routes to landing page
