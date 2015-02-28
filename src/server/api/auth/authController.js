@@ -6,7 +6,9 @@ module.exports = {
   login: login,
   logout: logout,
   authentication: authentication,
-  authenticationCallback: authenticationCallback
+  authenticationCallback: authenticationCallback,
+  isAuthenticatedUser: isAuthenticatedUser,
+  restricted: restricted
 };
 
 function login(req, res, next) {
@@ -39,10 +41,24 @@ function authenticationCallback(req, res, next) {
   };
 }
 
+/**
+ * Routes that require the session user to be the user on the route path
+ */
+function isAuthenticatedUser(req, res, next) {
+  if (req.user && req.params.username === req.user.username) {
+    next();
+  } else {
+    res.status(401).json({ message: 'Not authenticated' });
+  }
+}
+
+/**
+ * Routes that require a user session
+ */
 function restricted(req, res, next) {
   if (req.user) {
     next();
   } else {
-    res.redirect('/');
+    res.status(401).json({ message: 'Not authenticated' });
   }
 }
