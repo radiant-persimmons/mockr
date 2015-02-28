@@ -11,6 +11,7 @@
     vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     vm.buttonStatus = 'SAVE';
     vm.errorMessage = '';
+    vm.username = '';
 
     // form info regarding this route
     vm.formInfo = {
@@ -46,6 +47,10 @@
       // getRoute();
       getRoute().then(function() {
         console.log('route received');
+      });
+
+      user.registerCb(function() {
+        vm.username = user.getUser().username;
       });
     }
 

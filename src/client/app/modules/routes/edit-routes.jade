@@ -1,6 +1,8 @@
 h1 Edit Route
 form(name="editForm")
   h3 {{ vm.formInfo.route }}
+  h5 Public API URL:
+    code http://mockr-hr.herokuapp.com/1/{{vm.username}}/{{vm.formInfo.route}}
   div.checkbox-inline
     label
       input(type="checkbox"
