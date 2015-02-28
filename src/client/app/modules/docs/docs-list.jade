@@ -1,3 +1,4 @@
 div.container-fluid.doc-list
   h3 Docs List
-  div(ng-repeat="doc in vm.docList") {{doc}}
+  div(ng-repeat="doc in vm.docList") 
+    a(href="/docs/{{doc}}"){{doc}}

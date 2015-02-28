@@ -113,10 +113,10 @@
         }
       })
       .state('docs.single-doc', {
-        url: '/docs/{doc:.*}',
+        url: '/docs/:doc',
         authenticate: false,
         views: {
-          'container@docs': {
+          'current-doc@docs': {
             templateUrl: '/html/module/docs/pages/test.html'
           }
         }
