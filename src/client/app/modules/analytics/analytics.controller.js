@@ -7,6 +7,44 @@
   /* @ngInject */
   function AnalyticsController($stateParams, user, routes) {
     var vm = this;
+
+
+    vm.data = {
+      "xScale": "ordinal",
+        "yScale": "linear",
+        "type": "bar",
+        "main": [
+          {
+            "className": ".pizza",
+            "data": [
+              {
+                "x": "Pepperoni",
+                "y": 12
+              },
+              {
+                "x": "Cheese",
+                "y": 8
+              }
+            ]
+          }
+        ],
+        "comp": [
+          {
+            "className": ".pizza",
+            "type": "line-dotted",
+            "data": [
+              {
+                "x": "Pepperoni",
+                "y": 10
+              },
+              {
+                "x": "Cheese",
+                "y": 4
+              }
+            ]
+          }
+        ]
+      };
   
     // form info regarding this route
     vm.formInfo = {
