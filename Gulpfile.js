@@ -145,7 +145,6 @@ gulp
   .task('test',
     $.sequence('lint',
                'karma',
-               'nightwatch',
                'mocha')
   );
 
