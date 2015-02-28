@@ -49,6 +49,7 @@
 
       .state('home.home', {
         url: '/home',
+        authenticate: true,
         views: {
           'container@home': {
             templateUrl: 'html/modules/home/welcome.html'
@@ -58,6 +59,7 @@
 
       .state('home.new-route', {
         url: '/new-route/:route',
+        authenticate: true,
         views: {
           'container@home': {
             templateUrl: 'html/modules/routes/new-route.html',

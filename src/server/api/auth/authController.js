@@ -38,3 +38,11 @@ function authenticationCallback(req, res, next) {
     res.redirect('/home');
   };
 }
+
+function restricted(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    res.redirect('/');
+  }
+}
