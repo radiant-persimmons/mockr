@@ -1,4 +1,5 @@
 var userController = require('./userController');
+var auth = require('../auth/authController');
 
 module.exports = function(router) {
   // Returns session user
@@ -10,7 +11,7 @@ module.exports = function(router) {
     .post(userController.createUser); //not used, user will be created automatically when logged in with passport
 
   router.route('/api/users/:username')
-    .get(userController.getUser)
-    .put(userController.editUser)
+    .get(auth.isAuthenticatedUser, userController.getUser)
+    .put(auth.isAuthenticatedUser, userController.editUser)
     .delete();
 };
