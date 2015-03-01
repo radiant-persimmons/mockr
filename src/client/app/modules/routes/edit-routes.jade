@@ -3,6 +3,11 @@ form(name="editForm")
   h3 {{ vm.formInfo.route }}
   h5 Public API URL:
     code http://mockr-hr.herokuapp.com/1/{{vm.username}}/{{vm.formInfo.route}}
+    button#copy-button(data-clipboard-text="http://mockr-hr.herokuapp.com/1/{{vm.username}}/{{vm.formInfo.route}}"
+                       title="Copy to clipboard"
+                       ng-click="vm.displayCopyMessage()")
+      span.glyphicon.glyphicon-copy
+    span.clipboard-copy-message(ng-show="vm.copiedMessageDisplay")  Copied!
   div.checkbox-inline
     label
       input(type="checkbox"
