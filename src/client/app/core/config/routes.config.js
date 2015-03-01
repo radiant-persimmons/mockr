@@ -94,16 +94,11 @@
        *
        */
       .state('docs',{
-        url:'/docs',
-        authenticate: false,
+        url:'',
+        abstract: true,
         views: {
           '': {
             templateUrl: '/html/modules/docs/docs.html'
-          },
-          'current-doc@docs': {
-            templateUrl: '/html/modules/docs/current-doc.html'
-            // controller: 'DocsController',
-            // controllerAs: 'vm'
           },
           'doc-list@docs': {
             templateUrl: '/html/modules/docs/docs-list.html',
@@ -112,12 +107,21 @@
           }
         }
       })
-      .state('docs.single-doc', {
-        url: '/docs/:doc',
-        authenticate: false,
+      .state('docs.docs', {
+        url: '/docs',
         views: {
-          'current-doc@docs': {
-            templateUrl: '/html/module/docs/pages/test.html'
+          'container@docs': {
+            templateUrl: '/html/modules/docs/current-doc.html'
+          }
+        }
+      })
+      .state('docs.current-doc', {
+        url: '/docs/:doc',
+        views: {
+          'container@docs': {
+            templateUrl: function($stateParams) {
+              return '/html/modules/docs/pages/' + $stateParams.doc + '.html'
+            }
           }
         }
       });
