@@ -120,7 +120,7 @@
         views: {
           'container@docs': {
             templateUrl: function($stateParams) {
-              return '/html/modules/docs/pages/' + $stateParams.doc + '.html'
+              return '/html/modules/docs/pages/' + $stateParams.doc + '.html';
             }
           }
         }

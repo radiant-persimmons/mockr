@@ -22,5 +22,5 @@
         {name:'Using Persistant Data',path: 'persist'},
         {name:'Business Logic',path: 'business'}
       ];
-    };
+    }
 })();
