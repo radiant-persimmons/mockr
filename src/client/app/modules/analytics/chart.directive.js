@@ -19,8 +19,6 @@
         console.log('scope', scope);
         console.log("element", element);
         console.log("attrs", attrs);
-
-        var myChart = new xChart('bar', scope.vm.data, '#myChart'); 
       }
     };
 
