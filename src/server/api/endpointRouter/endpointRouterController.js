@@ -93,7 +93,10 @@ var postData = function(req, res, next) {
   var currentTime = Date.now();
 
   var date = new Date();
-  var day = date.getDay()
+  var day = date.getDay();
+  if(day === 0) {
+    day = 7;
+  }
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -169,7 +172,10 @@ var changeData = function(req, res, next) {
   var currentTime = Date.now();
 
   var date = new Date();
-  var day = date.getDay()
+  var day = date.getDay();
+  if(day === 0) {
+    day = 7;
+  }
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -249,7 +255,10 @@ var deleteData = function(req, res, next) {
   var method = req.method;
 
   var date = new Date();
-  var day = date.getDay()
+  var day = date.getDay();
+  if(day === 0) {
+    day = 7;
+  }
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
