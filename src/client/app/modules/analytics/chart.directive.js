@@ -16,9 +16,6 @@
       controller: 'AnalyticsController',
       controllerAs: 'vm',
       link: function(scope, element, attrs) {
-        console.log('scope', scope);
-        console.log("element", element);
-        console.log("attrs", attrs);
       }
     };
 
