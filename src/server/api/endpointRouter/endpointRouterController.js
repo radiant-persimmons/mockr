@@ -12,6 +12,9 @@ var getData = function(req, res, next) {
   
   var date = new Date();
   var day = date.getDay()
+  if(day === 0) {
+    day = 7;
+  }
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
