@@ -10,6 +10,7 @@
     var service = {
       routes: [],
       addRoute: addRoute,
+      deleteRoute: deleteRoute,
       getRoute: getRoute,
       updateRoute: updateRoute,
       fetch: fetch
@@ -20,8 +21,19 @@
   ////////////////////////////////////
 
 
-    //TODO: Make this work
-    function deleteRoute(){}
+    /**
+     * deletes specified route from server
+     */
+    function deleteRoute(route){
+      return $http({
+        method: 'DELETE',
+        url: '/api/users/' + user.getUser().username + '/endpoints/' + route,
+      }).then(function(res) {
+        service.routes = _.filter(service.routes, function(e) { return e !== route; });
+      }).catch(function(res) {
+        console.error('Error deleting route', res);
+      });
+    }
 
 
     /**

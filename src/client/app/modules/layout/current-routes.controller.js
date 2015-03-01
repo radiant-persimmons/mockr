@@ -5,7 +5,7 @@
     .controller('CurrentRoutesController', CurrentRoutesController);
 
   /* @ngInject */
-  function CurrentRoutesController(routes, user) {
+  function CurrentRoutesController($scope, routes, user) {
     var vm = this;
 
     vm.routes = routes.routes;
@@ -25,6 +25,15 @@
       });
 
     }
+
+    /**
+     * Listen for changes on routes service, update as necessary.
+     */
+    $scope.$watch(function() {
+      return routes.routes;
+    }, function(newValue) {
+      vm.routes = routes.routes;
+    });
   }
 
 }).call(this);

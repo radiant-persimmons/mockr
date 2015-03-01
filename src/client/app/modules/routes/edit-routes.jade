@@ -70,6 +70,12 @@ form(name="editForm")
     textarea.form-control(rows="3"
                             ng-model="vm.formInfo.businessLogic")
 
-  div.submit-area.form-group
-    button.btn.btn-primary(ng-click="vm.updateRoute()" ng-disabled="editForm.$invalid") {{ vm.buttonStatus }}
-    div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
+  div.submit-area.form-inline
+    //- div.form-group
+    button.btn.btn-primary(ng-click="vm.updateRoute()" ng-disabled="editForm.$invalid"
+                           style="padding-right: 15px") {{ vm.buttonStatus }}
+    //- div.form-group
+    button.btn.btn-danger(ng-click="vm.deleteRoute()" ng-disabled="editForm.$invalid") DELETE
+
+  div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
+

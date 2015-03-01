@@ -25,7 +25,7 @@
     vm.sortType     = 'id'; // set the default sort type
     vm.sortReverse  = false;  // set the default sort order
     vm.searchData   = '';     // set the default search/filter term
-  
+
 
     vm.tableHead = vm.formInfo.data[0];
 
@@ -75,7 +75,10 @@
      * deletes route entirely from database
      */
     function deleteRoute(argument) {
-      routes.deleteRoute(vm.formInfo.route);
+      routes.deleteRoute(vm.formInfo.route)
+        .then(function(res) {
+          $state.go('home.home');
+        });
     }
 
     /**
