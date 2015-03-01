@@ -5,7 +5,13 @@
     "camelcase": true,
     "curly": false,
     "eqeqeq": true,
-    "globals": {"_": true, "inject": false, "angular": false},
+    "globals": {
+      "_": true,
+      "inject": false,
+      "angular": false,
+      "ZeroClipboard": false,
+      "document": false
+    },
     "immed": true,
     "indent": 2,
     "latedef": false,
