@@ -106,6 +106,9 @@
         data[positionforMethod] = dataforMethod;
       }
 
+      var xAxis = ['days', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+      data.unshift(xAxis);
+
       return data;
     }
 
@@ -123,6 +126,7 @@
           pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728']
         },
         data: {
+          x: 'days',
           columns: data
           //type : '  ',
           //onclick: function (d, i) { console.log("onclick", d, i); },
@@ -137,9 +141,10 @@
             }
           },
           x: {
+            type: 'category',
             label: { // ADD
               text: 'Day',
-              position: 'middle'
+              position: 'outer-middle'
             }
           }
         } 
