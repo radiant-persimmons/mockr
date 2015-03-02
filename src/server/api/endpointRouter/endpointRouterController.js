@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
 var url = require('url');
@@ -212,6 +213,7 @@ var changeData = function(req, res, next) {
             //  }
             //}
             newContent.updatedAt = currentTime;
+            _.defaults(newContent, endpoint.data);
 
             var queryID = parseInt(req.query.id);
             var deleteQuery = {id: queryID};
