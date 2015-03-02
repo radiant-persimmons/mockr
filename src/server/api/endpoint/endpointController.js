@@ -17,7 +17,11 @@ var createEndpoint = function(req, res, next) {
   var persistence = req.body.persistence;
   var businessLogic = req.body.businessLogic;
 
-  //{pK: "id", name: true, content: true }
+  var analytics = {};
+  analytics['GET'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
+  analytics['POST'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
+  analytics['PUT'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
+  analytics['DELETE'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
 
   User.findOne({'username': username}, function (err, user) {
     if (err) return res.status(500).json({ message: err });
@@ -25,7 +29,7 @@ var createEndpoint = function(req, res, next) {
     if(!user) {
       res.status(500).end();
     } else {
-      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods, persistence: persistence, businessLogic: businessLogic });
+      var newEndpoint = new Endpoint({ username: username, route: route, methods: methods, persistence: persistence, businessLogic: businessLogic, analytics: analytics });
 
       Endpoint.findOne({ username: username, route: route }, function(err, endpoint) {
         if(err) return res.status(500).json({ message: err });

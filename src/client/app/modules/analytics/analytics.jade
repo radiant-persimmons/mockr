@@ -19,8 +19,8 @@ table.table.table-bordered.table-striped
       td(ng-repeat="(key, value) in vm.tableHead")
         a(href='#', ng-click="vm.sortType = key; vm.sortReverse = !vm.sortReverse")
           | {{ key }}
-          span.fa.fa-caret-down(ng-show="vm.sortType == '{{ key }}' && !vm.sortReverse")
-          span.fa.fa-caret-up(ng-show="vm.sortType == '{{ key }}' && vm.sortReverse")
+          span.fa.fa-caret-down(ng-show="vm.sortType === '{{ key }}' && !vm.sortReverse")
+          span.fa.fa-caret-up(ng-show="vm.sortType === '{{ key }}' && vm.sortReverse")
   tbody
     tr(ng-repeat='user in vm.formInfo.data | orderBy:vm.sortType:vm.sortReverse | filter:vm.searchData')
       td(ng-repeat='column in user') {{ column }}

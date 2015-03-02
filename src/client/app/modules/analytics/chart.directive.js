@@ -14,9 +14,7 @@
       scope: true,
       transclude: true,
       controller: 'AnalyticsController',
-      controllerAs: 'vm',
-      link: function(scope, element, attrs) {
-      }
+      controllerAs: 'vm'
     };
 
   }

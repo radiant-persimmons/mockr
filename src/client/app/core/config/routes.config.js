@@ -122,6 +122,9 @@
             templateUrl: function($stateParams) {
               return '/html/modules/docs/pages/' + $stateParams.doc + '.html';
             }
+          }
+        }
+      })
 
       .state('home.analytics', {
         url: '/analytics/{route:.*}',
