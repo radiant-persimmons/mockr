@@ -11,7 +11,7 @@ var getData = function(req, res, next) {
   var data;
   
   var date = new Date();
-  var day = date.getDay()
+  var day = date.getDay();
   if(day === 0) {
     day = 7;
   }
@@ -28,7 +28,7 @@ var getData = function(req, res, next) {
         endpoint.analytics[method] = {};
       }
       if(!endpoint.analytics[method][day]) {
-        endpoint.analytics[method][day] = 0
+        endpoint.analytics[method][day] = 0;
       }
       endpoint.analytics[method][day] += 1;
 
@@ -110,7 +110,7 @@ var postData = function(req, res, next) {
         endpoint.analytics[method] = {};
       }
       if(!endpoint.analytics[method][day]) {
-        endpoint.analytics[method][day] = 0
+        endpoint.analytics[method][day] = 0;
       }
       endpoint.analytics[method][day] += 1;
 
@@ -189,7 +189,7 @@ var changeData = function(req, res, next) {
         endpoint.analytics[method] = {};
       }
       if (!endpoint.analytics[method][day]) {
-        endpoint.analytics[method][day] = 0
+        endpoint.analytics[method][day] = 0;
       }
       endpoint.analytics[method][day] += 1;
 
@@ -272,7 +272,7 @@ var deleteData = function(req, res, next) {
         endpoint.analytics[method] = {};
       }
       if (!endpoint.analytics[method][day]) {
-        endpoint.analytics[method][day] = 0
+        endpoint.analytics[method][day] = 0;
       }
       endpoint.analytics[method][day] += 1;
 

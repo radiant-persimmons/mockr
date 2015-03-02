@@ -26,7 +26,7 @@
 
     vm.tableHead = vm.formInfo.data[0];
     vm.prepareData = prepareData;
-    vm.analytics;
+    vm.analytics = {};
 
     activate();
 
@@ -90,16 +90,16 @@
       }
 
       var data = [];
-      for(var method in vm.analytics) {
-        var days = vm.analytics[method];
+      for(var currentMethod in vm.analytics) {
+        var days = vm.analytics[currentMethod];
         var dataforMethod = [];
-        dataforMethod[0] = method;
+        dataforMethod[0] = currentMethod;
         for(var day in days) {
           var calls = days[day];
           dataforMethod[day] = days[day];
         }
         _.defaults(dataforMethod, defaultValues);
-        var positionforMethod = position[method];
+        var positionforMethod = position[currentMethod];
         data[positionforMethod] = dataforMethod;
       }
 
@@ -141,7 +141,7 @@
           }
         } 
       });
-    };
+    }
 
 
   }
