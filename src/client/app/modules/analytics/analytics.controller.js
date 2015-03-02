@@ -54,7 +54,9 @@
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
           vm.formInfo.businessLogic = res.businessLogic;
           vm.tableHead = vm.formInfo.data[0];
-          vm.analytics = res.analytics;
+          if(res.analytics) {
+            vm.analytics = res.analytics;
+          }
           console.log('analytics data from db' , res.analytics);
           return;
         }).catch(function(err) {
@@ -82,6 +84,7 @@
       }; 
       
       var methods = ['GET', 'POST', 'PUT', 'DELETE'];
+
       for(var i = 0; i < methods.length; i++) { 
         var method = methods[i];
         if(!vm.analytics[method]) {
