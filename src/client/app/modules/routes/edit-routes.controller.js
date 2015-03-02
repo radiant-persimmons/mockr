@@ -5,12 +5,14 @@
     .controller('EditRoutesController', EditRoutesController);
 
   /* @ngInject */
-  function EditRoutesController($state, $stateParams, user, routes) {
+  function EditRoutesController($state, $stateParams, $timeout, user, routes) {
     var vm = this;
 
     vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     vm.buttonStatus = 'SAVE';
+    vm.copiedMessageDisplay = false;
     vm.errorMessage = '';
+    vm.username = '';
 
     // form info regarding this route
     vm.formInfo = {
@@ -26,9 +28,9 @@
     vm.sortReverse  = false;  // set the default sort order
     vm.searchData   = '';     // set the default search/filter term
 
-
     vm.tableHead = vm.formInfo.data[0];
 
+    vm.displayCopyMessage = displayCopyMessage;
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
     vm.toggleMethod = toggleMethod;
@@ -47,6 +49,12 @@
       getRoute().then(function() {
         console.log('route received');
       });
+
+      user.registerCb(function() {
+        vm.username = user.getUser().username;
+      });
+
+      activateZeroClipboard();
     }
 
     /**
@@ -125,8 +133,27 @@
         });
 
     }
+
+    /**
+     * Display the 'Copied!' message, and set it to disappear after an
+     * interval.
+     */
+    function displayCopyMessage() {
+      vm.copiedMessageDisplay = true;
+      $timeout(function() {
+        vm.copiedMessageDisplay = false;
+      }, 1000);
+    }
+
+    function activateZeroClipboard() {
+      var client = new ZeroClipboard( document.getElementById('copy-button') );
+
+      client.on( 'ready', function( readyEvent ) {
+        client.on( 'aftercopy', function( event ) {
+          // `this` === `client`
+          // `event.target` === the element that was clicked
+        } );
+      } );
+    }
   }
-
-
-
 })();
