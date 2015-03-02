@@ -18,10 +18,10 @@ var createEndpoint = function(req, res, next) {
   var businessLogic = req.body.businessLogic;
 
   var analytics = {};
-  analytics['GET'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
-  analytics['POST'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
-  analytics['PUT'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
-  analytics['DELETE'] = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
+  analytics.GET = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
+  analytics.POST = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
+  analytics.PUT = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
+  analytics.DELETE = {'1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0};
 
   User.findOne({'username': username}, function (err, user) {
     if (err) return res.status(500).json({ message: err });
