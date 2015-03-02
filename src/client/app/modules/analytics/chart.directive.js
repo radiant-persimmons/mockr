@@ -19,8 +19,3 @@
 
   }
 }).call(this);
-
-//refactor returned object
-
-//link
-  //insert logic to render chart
