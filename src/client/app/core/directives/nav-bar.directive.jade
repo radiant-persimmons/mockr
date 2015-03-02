@@ -9,6 +9,8 @@ header(role="header" id="header")
         a(class="navbar-brand" href="/home" ng-show="vm.loggedIn")
           img(src="/images/mockr-logo.png")
       ul(class="nav navbar-nav navbar-right")
+        li
+          a(href="/docs") Docs
         li(ng-hide="vm.loggedIn")
           a(href="#" ng-click="vm.login()") Login
         li(ng-show="vm.loggedIn")

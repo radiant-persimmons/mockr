@@ -85,6 +85,45 @@
             controllerAs: 'vm',
           }
         }
+      })
+
+      /**
+       * @name Docs
+       * @type {route}
+       * @description View for the project documentation
+       *
+       */
+      .state('docs',{
+        url:'',
+        abstract: true,
+        views: {
+          '': {
+            templateUrl: '/html/modules/docs/docs.html'
+          },
+          'doc-list@docs': {
+            templateUrl: '/html/modules/docs/docs-list.html',
+            controller: 'DocsController',
+            controllerAs: 'vm'
+          }
+        }
+      })
+      .state('docs.docs', {
+        url: '/docs',
+        views: {
+          'container@docs': {
+            templateUrl: '/html/modules/docs/current-doc.html'
+          }
+        }
+      })
+      .state('docs.current-doc', {
+        url: '/docs/:doc',
+        views: {
+          'container@docs': {
+            templateUrl: function($stateParams) {
+              return '/html/modules/docs/pages/' + $stateParams.doc + '.html';
+            }
+          }
+        }
       });
 
     // default uncaught routes to landing page
