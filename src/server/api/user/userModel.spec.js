@@ -1,7 +1,7 @@
 /*jshint -W079 */
 
 var expect = require('chai').expect;
-var User = require('../../server/api/user/userModel');
+var User = require('./userModel');
 
 describe('Unit: database: User model', function () {
   beforeEach(function (done) {
