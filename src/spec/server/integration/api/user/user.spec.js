@@ -3,6 +3,9 @@
 // Set environment to test, always do this.
 process.env.NODE_ENV = 'test';
 
+// Helpers
+var paths = require('../../../../../../paths.json');
+
 // Dependencies
 var expect = require('chai').expect;
 var request = require('supertest');
@@ -13,7 +16,7 @@ var passportStub = require('passport-stub');
  * Spy/stub/mock routes **before** initializing app.
  * See http://bit.ly/1MWo3rY for an explanation of why.
  */
-var route = require('../../../../../server/api/user/userController');
+var route = require(paths.server.root + '/api/user/userController');
 sinon.spy(route, 'getCurrentUser');
 
 /**
@@ -23,14 +26,10 @@ sinon.spy(route, 'getCurrentUser');
 var callCount = 0;
 
 // Initialize app/server
-var app = require('../../../../../server/index.js');
+var app = require(paths.server.root + '/index.js');
 
 // Stub passport
 passportStub.install(app);
-
-console.log('*************************************');
-console.log('userController.spec.js');
-console.log('*************************************');
 
 // Indicate the route you're checking, if one
 describe('INTEGRATION: user routes', function() {
