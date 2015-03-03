@@ -4,6 +4,7 @@ var Endpoint = require('../endpoint/endpointModel.js');
 var url = require('url');
 var logic = require('../../utils/businessLogic.js');
 var utils = require('../../utils');
+var _ = require('lodash');
 
 var getData = function(req, res, next) {
   var username = req.params.username;
@@ -165,20 +166,17 @@ var changeData = function(req, res, next) {
     if (!endpoint) {
       return res.status(500).end(err);
     } else {
-      endpoint.analytics[method][day] += 1;
+      console.log('method', method);
 
-      Endpoint.update({ 'username': username, 'route': route }, {$set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
-        if (err) return res.status(500).json(err); 
-
-        //if persistance is set to true, we let the user persist data through their API endpoint
-        if (endpoint.persistence === true) {
-          //we need a parameter passed to know what to change
-          if (!req.query.id) {
-            //we need some data to know what to look for
-            return res.status(500).end();
-          } else {
-            //TODO--> use default or extend to have the properties of current object
-            var newContent = req.body;
+      //if persistance is set to true, we let the user persist data through their API endpoint
+      if (endpoint.persistence === true) {
+        //we need a parameter passed to know what to change
+        if (!req.query.id) {
+          //we need some data to know what to look for
+          return res.status(500).end();
+        } else {
+          var queryID = parseInt(req.query.id);
+          var deleteQuery = {id: queryID};
 
             //for(var column in newContent) {
             //  if(!endpoint.schemaDB[column]) {
@@ -194,20 +192,19 @@ var changeData = function(req, res, next) {
             var updateHandler = function(err, numAffected, rawResponse) {
               if (err) return res.status(500).json(err);
               console.log(numAffected, rawResponse);
-              Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent} }, function(err, numAffected, rawResponse) {
-                if (err) return res.status(500).json(err);
-                console.log(numAffected, rawResponse);
-                return res.status(201).end();
-              });
-            };
+              return res.status(201).end();
+            });
+          };
 
-            for(var i = 0; i < endpoint.data.length; i++) {
-              var dataPoint = endpoint.data[i];
-              if (dataPoint.id === queryID) {
-                //update data
-                //delete dataPoint;
-                Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery} }, updateHandler);
-              }
+          for(var i = 0; i < endpoint.data.length; i++) {
+            var dataPoint = endpoint.data[i];
+            if (dataPoint.id === queryID) {
+              var newContent = req.body;
+              newContent.updatedAt = currentTime;
+              //update data
+              _.defaults(newContent, dataPoint);
+              //delete dataPoint;
+              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery} }, updateHandler);
             }
             return res.status(500).end();
           }
