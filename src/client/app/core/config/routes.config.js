@@ -124,7 +124,20 @@
             }
           }
         }
+      })
+
+      .state('home.analytics', {
+        url: '/analytics/{route:.*}',
+        authenticate: true,
+        views: {
+          'container@home': {
+            templateUrl: '/html/modules/analytics/analytics.html',
+            controller: 'AnalyticsController',
+            controllerAs: 'vm'
+          }
+        }
       });
+
 
     // default uncaught routes to landing page
     $urlRouterProvider.otherwise('/');

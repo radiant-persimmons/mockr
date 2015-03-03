@@ -7,7 +7,8 @@
     'app.controllers.CurrentRoutesController',
     'app.controllers.AddRoutesController',
     'app.controllers.NewRouteController',
-    'app.controllers.DocsController'
+    'app.controllers.DocsController',
+    'app.controllers.AnalyticsController'
   ]);
 
 }).call(this);

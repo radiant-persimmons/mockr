@@ -9,7 +9,8 @@ var endpointSchema = mongoose.Schema({
   schemaDB: {},
   businessLogic: { type : String },
   data: [],
-  count: { type: Number, default: 0 }
+  count: { type: Number, default: 0 },
+  analytics: {}
 }, { minimize: false });
 
 var Endpoint = mongoose.model('Endpoint', endpointSchema);

@@ -5,7 +5,7 @@
     .controller('CurrentRoutesController', CurrentRoutesController);
 
   /* @ngInject */
-  function CurrentRoutesController($scope, routes, user) {
+  function CurrentRoutesController($scope, $state, routes, user) {
     var vm = this;
 
     vm.routes = routes.routes;
@@ -34,6 +34,10 @@
     }, function(newValue) {
       vm.routes = routes.routes;
     });
+
+    function goToAnalytics(route) {
+      $state.go('home.analytics', { route: route });
+    }
   }
 
 }).call(this);
