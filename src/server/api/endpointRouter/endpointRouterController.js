@@ -204,7 +204,7 @@ var changeData = function(req, res, next) {
               //update data
               _.defaults(newContent, dataPoint);
               //delete dataPoint;
-              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery} }, updateHandler);
+              Endpoint.update({ 'username': username, 'route': route }, { $pull: {'data': deleteQuery} }, updateHandler);
             }
             return res.status(500).end();
           }
