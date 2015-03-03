@@ -28,54 +28,29 @@ var getData = function(req, res, next) {
       Endpoint.update({ 'username': username, 'route': route }, { $set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
         if (err) return res.status(500).json(err); 
 
-        //if persistance is set to true, we let the user persist data through their API endpoint
+        //if persistance is set to true, we let the user persist data, manipulate it and read it through their API endpoint
         if(endpoint.persistence === true) {
-
-          //if we have params, get specific data from data inserted through API created
-          if (req.query.id) {
-            var queryID = parseInt(req.query.id);
-            for (var i=0; i<endpoint.data.length; i++) {
-              var dataPoint = endpoint.data[i];
-              if (dataPoint.id === queryID) {
-                return res.status(200).json(dataPoint);
-              }
-            }
+          //apply queries passed through the endpoint url
+          var data = utils.applyQueries(req, endpoint.data);
+          if(!data) {
             return res.status(500).end();
-          } else {
-            data = endpoint.data;
-            //if it has createdAt or updatedAt
-            if (req.query.createdAt || req.query.updatedAt) {
-              var queryParam = req.query.createdAt || req.query.updatedAt;
-              if (queryParam === 'ASC') {
-
-              } else if (queryParam === 'DESC') {
-                var dataSorted = data.sort(function(a, b) {
-                  return b.createdAt - a.createdAt;
-                });
-                data = dataSorted;
-              }
-            }
-            if (req.query.start) {
-              data = data.slice(req.query.start);
-            } 
-            if (req.query.size) {
-              data = data.slice(0, req.query.size);
-            }
-            //get data from data inserted through API created
-          
-            return res.status(200).json(data);
           }
+          return res.status(200).json(data);
+
+        //else, if persistance is set to false
         } else {
           //TODO check if we have nested object with that method
+          //if GET method data hasn't been set, end response
           if (!endpoint.methods[method]) return res.status(500).end();
           //add headers in the response
+
+          //get statusCode and data from user input
           var statusCode = endpoint.methods[method].status;
-          //get data from user input
           data = endpoint.methods[method].data;
           return res.status(statusCode).json(data);
         }
-      });
-    } 
+      }
+    }
   });
 };
 
@@ -83,7 +58,6 @@ var postData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
-  var currentTime = Date.now();
 
   var date = new Date();
   var day = date.getDay();
@@ -100,51 +74,36 @@ var postData = function(req, res, next) {
 
       Endpoint.update({ 'username': username, 'route': route }, {$set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
         if (err) return res.status(500).json(err); 
-
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {
           //run business logic
-
-          //get business logic from db and pass it
-
           logic.runLogic(endpoint.businessLogic, req, function(err, newContent) {
             if (err) return res.status(500).json(err);
             if (newContent.res) return res.status(500).json(newContent.res);
-            console.log('result--_>', newContent);
 
-            //var newContent = req.body;
+            newContent = utils.augmentPostData(newContent, endpoint);
 
-            //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
-            //TODO --> Have to save to db the increment of the count
-            newContent.id = endpoint.count;
-            newContent.createdAt = currentTime;
-            newContent.updatedAt = currentTime;
-
-            //for(var column in newContent) {
-              //if(!endpoint.schemaDB[column]) {
-                //console.log('before deleting', newContent);
-                //delete newContent[column];
-                //console.log('after deleting newContent', newContent);
-              //}
-            //}
             //update endpoint.data of that endpoint
-            Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
+            utils.insertPostDataToDb(username, route, newContent, function(err) {
               if (err) return res.status(500).json(err); 
-              console.log(numAffected, rawResponse);
-              Endpoint.update({ 'username': username, 'route': route }, {$set: {'count': ++endpoint.count}}, function(err, numAffected, rawResponse) {
+
+              //update count of objects in db
+              utils.updateObjectCount(username, route, endpoint, function(err) {
                 if (err) return res.status(500).json(err); 
                 return res.status(201).end();
-              });
+              })
             }); 
           });
         } else {
+          //if GET method data hasn't been set, end response
           if (!endpoint.methods[method]) return res.status(500).end();
+
+          //get statusCode and data from user input
           var statusCode = endpoint.methods[method].status;
-          //get data from user input
           var data = endpoint.methods[method].data;
           return res.status(statusCode).json(data);
         }
-      });
+      }
     }
   });
 };
@@ -241,43 +200,36 @@ var deleteData = function(req, res, next) {
 
       Endpoint.update({ 'username': username, 'route': route }, { $set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
         if (err) return res.status(500).json(err); 
-
-
-        var updateHandler = function(err, numAffected, rawResponse) {
-          if (err) return res.status(500).json(err);
-          console.log('data pull successul');
-          console.log(numAffected, rawResponse);
-          return res.status(201).end();
-        };
-
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {
           //we need a parameter passed to know what to change
           if (!req.query.id) {
-            //we need some data to know what to look for
+            //if no id is passed in the url endpoint, end connection
             return res.status(500).end();
           } else {
-            console.log('gets here');
+            var data = endpoint.data;
             var queryID = parseInt(req.query.id);
-            var deleteQuery = {id: queryID};
-            for (var i = 0; i < endpoint.data.length; i++) {
-              var dataPoint = endpoint.data[i];
-              if (dataPoint.id === queryID) {
-                console.log('passes conditional');
-                //delete datapoint passed by the user
-                Endpoint.update({ 'username': username, 'route': route }, { $pull: {'data': deleteQuery}}, updateHandler);
-              }
+            var dataPoint = utils.lookForDataPoint(data, queryID);
+            if(!dataPoint) {
+              return res.status(500).end();
             }
-            return res.status(500).end();
+
+            var deleteQuery = {id: queryID};
+
+            utils.removeDataFromDb(username, route, deleteQuery, function(err) {
+              if (err) return res.status(500).json(err);
+              return res.status(201).end();
+            });
           }
         } else {
-          if (!endpoint.methods[method]) return res.status(500).end();
+          if(!endpoint.methods[method]) return res.status(500).end();
+
+          //get statusCode and data from user input
           var statusCode = endpoint.methods[method].status;
-          //get data from user input
           var data = endpoint.methods[method].data;
           return res.status(statusCode).json(data);
         }
-      }); 
+      }
     }
   });
 };
