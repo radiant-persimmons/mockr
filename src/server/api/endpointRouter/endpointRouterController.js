@@ -112,7 +112,7 @@ var changeData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
-  var currentTime = utils.getTime();
+  //var currentTime = utils.getTime();
 
   var date = new Date();
   var day = date.getDay();
@@ -138,10 +138,8 @@ var changeData = function(req, res, next) {
           if(!dataPoint) {
             return res.status(500).end();
           }
-          var newContent = req.body;
-          newContent.updatedAt = currentTime;
-          //update data
-          _.defaults(newContent, dataPoint);
+
+          newContent = utils.updateData(req.body, dataPoint);
           //delete dataPoint;
           var deleteQuery = {id: queryID};
 

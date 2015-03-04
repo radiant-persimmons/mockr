@@ -1,5 +1,6 @@
 var User = require('../api/user/userModel.js');
 var Endpoint = require('../api/endpoint/endpointModel.js');
+var _ = require('lodash');
 
 var createUserIfNotExistant = function(user, cb) {
   User.findOneAndUpdate({ username: user.username }, user,
@@ -81,6 +82,12 @@ var removeDataFromDb = function(username, route, deleteQuery, cb) {
   });
 };
 
+var updateData = function(newContent, oldContent) {
+  newContent.updatedAt = getTime();
+  _.defaults(newContent, oldContent);
+  return newContent;
+};
+
 var getTime = function() {
   return Date.now();
 };
@@ -93,5 +100,6 @@ module.exports = {
   augmentPostData: augmentPostData,
   insertPostDataToDb: insertPostDataToDb,
   removeDataFromDb: removeDataFromDb,
-  getTime: getTime
+  getTime: getTime,
+  updateData: updateData
 };
