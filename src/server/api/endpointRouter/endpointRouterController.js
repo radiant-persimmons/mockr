@@ -11,17 +11,13 @@ var getData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
   var data;
-  
-  var day = utils.getDay();
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
     if (!endpoint) {
       return res.status(500).end(err);
     } else {
-      endpoint.analytics[method][day] += 1;
-
-      Endpoint.update({ 'username': username, 'route': route }, { $set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {
         if (err) return res.status(500).json(err); 
 
         //if persistance is set to true, we let the user persist data, manipulate it and read it through their API endpoint
@@ -55,16 +51,12 @@ var postData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
 
-  var day = utils.getDay();
-
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
     if (!endpoint) {
       return res.status(500).end(err);
     } else {
-      endpoint.analytics[method][day] += 1;
-
-      Endpoint.update({ 'username': username, 'route': route }, {$set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {  
         if (err) return res.status(500).json(err); 
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {
@@ -105,16 +97,12 @@ var changeData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
 
-  var day = utils.getDay();
-
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
     if (!endpoint) {
       return res.status(500).end(err);
     } else {
-      endpoint.analytics[method][day] += 1;
-
-      Endpoint.update({ 'username': username, 'route': route }, { $set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {
         if (err) return res.status(500).json(err); 
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {
@@ -158,16 +146,12 @@ var deleteData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
 
-  var day = utils.getDay();
-
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
     if (!endpoint) {
       return res.status(500).end(err);
     } else {
-      endpoint.analytics[method][day] += 1;
-
-      Endpoint.update({ 'username': username, 'route': route }, { $set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {
         if (err) return res.status(500).json(err); 
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {

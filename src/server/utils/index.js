@@ -82,6 +82,15 @@ var removeDataFromDb = function(username, route, deleteQuery, cb) {
   });
 };
 
+var incrementCallCount = function(username, route, endpoint, method, cb) {
+  var day = getDay();
+  endpoint.analytics[method][day] += 1;
+
+  Endpoint.update({ 'username': username, 'route': route }, { $set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
+    cb(err);
+  });
+};
+
 var updateData = function(newContent, oldContent) {
   newContent.updatedAt = getTime();
   _.defaults(newContent, oldContent);
@@ -101,6 +110,8 @@ var getDay = function() {
   return day;
 };
 
+
+
 module.exports = {
   createUserIfNotExistant: createUserIfNotExistant,
   applyQueries: applyQueries,
@@ -111,6 +122,7 @@ module.exports = {
   removeDataFromDb: removeDataFromDb,
   getTime: getTime,
   updateData: updateData,
-  getDay: getDay
+  getDay: getDay,
+  incrementCallCount: incrementCallCount
 };
 
