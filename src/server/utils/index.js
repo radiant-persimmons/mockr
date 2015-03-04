@@ -23,7 +23,7 @@ var applyQueries = function(req, data) {
     if (queryParam === 'ASC') {
       data = data.sort(function(a, b) {
         return a.createdAt - b.createdAt;
-      })
+      });
     } else if (queryParam === 'DESC') {
       //order data from bigger to smaller
       data = data.sort(function(a, b) {
@@ -51,7 +51,7 @@ var lookForDataPoint = function(data, id) {
     }
   }
   return null;
-}
+};
 
 var updateObjectCount = function(username, route, endpoint, cb) {
   Endpoint.update({ 'username': username, 'route': route }, {$set: {'count': ++endpoint.count}}, function(err, numAffected, rawResponse) {

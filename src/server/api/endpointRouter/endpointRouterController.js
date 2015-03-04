@@ -23,7 +23,7 @@ var getData = function(req, res, next) {
         //if persistance is set to true, we let the user persist data, manipulate it and read it through their API endpoint
         if(endpoint.persistence === true) {
           //apply queries passed through the endpoint url
-          var data = utils.applyQueries(req, endpoint.data);
+          data = utils.applyQueries(req, endpoint.data);
           if(!data) {
             return res.status(500).end();
           }
@@ -75,7 +75,7 @@ var postData = function(req, res, next) {
               utils.updateObjectCount(username, route, endpoint, function(err) {
                 if (err) return res.status(500).json(err); 
                 return res.status(201).end();
-              })
+              });
             }); 
           });
         } else {
@@ -116,7 +116,7 @@ var changeData = function(req, res, next) {
               return res.status(500).end();
             }
 
-            newContent = utils.updateData(req.body, dataPoint);
+            var newContent = utils.updateData(req.body, dataPoint);
             //delete dataPoint;
             var deleteQuery = {id: queryID};
 
@@ -145,6 +145,7 @@ var deleteData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
+  var data;
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -160,7 +161,7 @@ var deleteData = function(req, res, next) {
             //if no id is passed in the url endpoint, end connection
             return res.status(500).end();
           } else {
-            var data = endpoint.data;
+            data = endpoint.data;
             var queryID = parseInt(req.query.id);
             var dataPoint = utils.lookForDataPoint(data, queryID);
             if(!dataPoint) {
@@ -179,7 +180,7 @@ var deleteData = function(req, res, next) {
 
           //get statusCode and data from user input
           var statusCode = endpoint.methods[method].status;
-          var data = endpoint.methods[method].data;
+          data = endpoint.methods[method].data;
           return res.status(statusCode).json(data);
         }
       });
