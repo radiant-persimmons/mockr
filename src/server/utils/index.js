@@ -20,13 +20,14 @@ var applyQueries = function(req, data) {
   if (req.query.createdAt || req.query.updatedAt) {
     var queryParam = req.query.createdAt || req.query.updatedAt;
     if (queryParam === 'ASC') {
-      //do nothing because it's already sorted in that order
+      data = data.sort(function(a, b) {
+        return a.createdAt - b.createdAt;
+      })
     } else if (queryParam === 'DESC') {
       //order data from bigger to smaller
-      var dataSorted = data.sort(function(a, b) {
+      data = data.sort(function(a, b) {
         return b.createdAt - a.createdAt;
       });
-      data = dataSorted;
     }
   }
   //check if request url contains start param
@@ -69,7 +70,7 @@ var augmentPostData = function(newContent, endpoint) {
 
 var insertPostDataToDb = function(username, route, newContent, cb) {
   //update endpoint.data of that endpoint
-  Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
+  Endpoint.update({ 'username': username, 'route': route }, { $push: {'data': newContent}}, function(err, numAffected, rawResponse) {
     cb(err);
   });  
 };
@@ -91,5 +92,6 @@ module.exports = {
   updateObjectCount: updateObjectCount,
   augmentPostData: augmentPostData,
   insertPostDataToDb: insertPostDataToDb,
-  removeDataFromDb: removeDataFromDb
+  removeDataFromDb: removeDataFromDb,
+  getTime: getTime
 };

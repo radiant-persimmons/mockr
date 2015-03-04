@@ -112,7 +112,7 @@ var changeData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
-  var currentTime = Date.now();
+  var currentTime = utils.getTime();
 
   var date = new Date();
   var day = date.getDay();
@@ -131,51 +131,36 @@ var changeData = function(req, res, next) {
       if (endpoint.persistence === true) {
         //we need a parameter passed to know what to change
         if (!req.query.id) {
-          //we need some data to know what to look for
           return res.status(500).end();
         } else {
           var queryID = parseInt(req.query.id);
-          var deleteQuery = {id: queryID};
-
-            //for(var column in newContent) {
-            //  if(!endpoint.schemaDB[column]) {
-            //    delete newContent[column];
-            //  }
-            //}
-            newContent.updatedAt = currentTime;
-            _.defaults(newContent, endpoint.data);
-
-            var queryID = parseInt(req.query.id);
-            var deleteQuery = {id: queryID};
-
-            var updateHandler = function(err, numAffected, rawResponse) {
-              if (err) return res.status(500).json(err);
-              console.log(numAffected, rawResponse);
-              return res.status(201).end();
-            });
-          };
-
-          for(var i = 0; i < endpoint.data.length; i++) {
-            var dataPoint = endpoint.data[i];
-            if (dataPoint.id === queryID) {
-              var newContent = req.body;
-              newContent.updatedAt = currentTime;
-              //update data
-              _.defaults(newContent, dataPoint);
-              //delete dataPoint;
-              Endpoint.update({ 'username': username, 'route': route }, { $pull: {'data': deleteQuery} }, updateHandler);
-            }
+          var dataPoint = utils.lookForDataPoint(endpoint.data, queryID);
+          if(!dataPoint) {
             return res.status(500).end();
           }
-        } else {
-          if (!endpoint.methods[method]) return res.status(500).end();
-          var statusCode = endpoint.methods[method].status;
-          //get data from user input
-          //check what verb is normally used?? PUT or PATCH
-          var data = endpoint.methods[method].data;
-          return res.status(statusCode).json(data);
+          var newContent = req.body;
+          newContent.updatedAt = currentTime;
+          //update data
+          _.defaults(newContent, dataPoint);
+          //delete dataPoint;
+          var deleteQuery = {id: queryID};
+
+          utils.removeDataFromDb(username, route, deleteQuery, function(err) {
+            if (err) return res.status(500).json(err);
+            utils.insertPostDataToDb(username, route, newContent, function(err) {
+              if (err) return res.status(500).json(err);
+              return res.status(201).end();
+            });
+          });
         }
-      });
+      } else {
+        if (!endpoint.methods[method]) return res.status(500).end();
+
+        //get statusCode and data from user input
+        var statusCode = endpoint.methods[method].status;
+        var data = endpoint.methods[method].data;
+        return res.status(statusCode).json(data);
+      }
     }
   });
 };
