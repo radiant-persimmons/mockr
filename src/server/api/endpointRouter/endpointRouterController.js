@@ -12,11 +12,7 @@ var getData = function(req, res, next) {
   var method = req.method;
   var data;
   
-  var date = new Date();
-  var day = date.getDay();
-  if(day === 0) {
-    day = 7;
-  }
+  var day = utils.getDay();
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -59,11 +55,7 @@ var postData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
 
-  var date = new Date();
-  var day = date.getDay();
-  if(day === 0) {
-    day = 7;
-  }
+  var day = utils.getDay();
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -112,13 +104,8 @@ var changeData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
-  //var currentTime = utils.getTime();
 
-  var date = new Date();
-  var day = date.getDay();
-  if(day === 0) {
-    day = 7;
-  }
+  var day = utils.getDay();
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
@@ -171,11 +158,7 @@ var deleteData = function(req, res, next) {
   var route = req.params[0];
   var method = req.method;
 
-  var date = new Date();
-  var day = date.getDay();
-  if(day === 0) {
-    day = 7;
-  }
+  var day = utils.getDay();
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);

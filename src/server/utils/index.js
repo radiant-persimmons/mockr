@@ -93,7 +93,12 @@ var getTime = function() {
 };
 
 var getDay = function() {
-
+  var date = new Date();
+  var day = date.getDay();
+  if(day === 0) {
+    day = 7;
+  }
+  return day;
 };
 
 module.exports = {
