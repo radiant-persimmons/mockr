@@ -49,7 +49,7 @@ var getData = function(req, res, next) {
           data = endpoint.methods[method].data;
           return res.status(statusCode).json(data);
         }
-      }
+      });
     }
   });
 };
@@ -103,7 +103,7 @@ var postData = function(req, res, next) {
           var data = endpoint.methods[method].data;
           return res.status(statusCode).json(data);
         }
-      }
+      });
     }
   });
 };
@@ -125,40 +125,43 @@ var changeData = function(req, res, next) {
     if (!endpoint) {
       return res.status(500).end(err);
     } else {
-      console.log('method', method);
+      endpoint.analytics[method][day] += 1;
 
-      //if persistance is set to true, we let the user persist data through their API endpoint
-      if (endpoint.persistence === true) {
-        //we need a parameter passed to know what to change
-        if (!req.query.id) {
-          return res.status(500).end();
-        } else {
-          var queryID = parseInt(req.query.id);
-          var dataPoint = utils.lookForDataPoint(endpoint.data, queryID);
-          if(!dataPoint) {
+      Endpoint.update({ 'username': username, 'route': route }, { $set: {'analytics': endpoint.analytics }}, function(err, numAffected, rawResponse) {
+        if (err) return res.status(500).json(err); 
+        //if persistance is set to true, we let the user persist data through their API endpoint
+        if (endpoint.persistence === true) {
+          //we need a parameter passed to know what to change
+          if (!req.query.id) {
             return res.status(500).end();
-          }
+          } else {
+            var queryID = parseInt(req.query.id);
+            var dataPoint = utils.lookForDataPoint(endpoint.data, queryID);
+            if(!dataPoint) {
+              return res.status(500).end();
+            }
 
-          newContent = utils.updateData(req.body, dataPoint);
-          //delete dataPoint;
-          var deleteQuery = {id: queryID};
+            newContent = utils.updateData(req.body, dataPoint);
+            //delete dataPoint;
+            var deleteQuery = {id: queryID};
 
-          utils.removeDataFromDb(username, route, deleteQuery, function(err) {
-            if (err) return res.status(500).json(err);
-            utils.insertPostDataToDb(username, route, newContent, function(err) {
+            utils.removeDataFromDb(username, route, deleteQuery, function(err) {
               if (err) return res.status(500).json(err);
-              return res.status(201).end();
+              utils.insertPostDataToDb(username, route, newContent, function(err) {
+                if (err) return res.status(500).json(err);
+                return res.status(201).end();
+              });
             });
-          });
-        }
-      } else {
-        if (!endpoint.methods[method]) return res.status(500).end();
+          }
+        } else {
+          if (!endpoint.methods[method]) return res.status(500).end();
 
-        //get statusCode and data from user input
-        var statusCode = endpoint.methods[method].status;
-        var data = endpoint.methods[method].data;
-        return res.status(statusCode).json(data);
-      }
+          //get statusCode and data from user input
+          var statusCode = endpoint.methods[method].status;
+          var data = endpoint.methods[method].data;
+          return res.status(statusCode).json(data);
+        }
+      });
     }
   });
 };
@@ -212,7 +215,7 @@ var deleteData = function(req, res, next) {
           var data = endpoint.methods[method].data;
           return res.status(statusCode).json(data);
         }
-      }
+      });
     }
   });
 };

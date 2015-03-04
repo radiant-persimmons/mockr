@@ -92,6 +92,10 @@ var getTime = function() {
   return Date.now();
 };
 
+var getDay = function() {
+
+};
+
 module.exports = {
   createUserIfNotExistant: createUserIfNotExistant,
   applyQueries: applyQueries,
@@ -101,5 +105,7 @@ module.exports = {
   insertPostDataToDb: insertPostDataToDb,
   removeDataFromDb: removeDataFromDb,
   getTime: getTime,
-  updateData: updateData
+  updateData: updateData,
+  getDay: getDay
 };
+
