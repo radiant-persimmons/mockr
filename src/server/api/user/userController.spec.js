@@ -7,6 +7,7 @@ process.env.NODE_ENV = 'test';
 var expect = require('chai').expect;
 var request = require('supertest');
 var sinon = require('sinon');
+// var mockery = require('mockery');
 var passportStub = require('passport-stub');
 var controller = require('./userController')
 var userModel = require('./userModel');
@@ -14,31 +15,83 @@ var mongoose = require('mongoose');
 var mongooseMock = require('mongoose-mock');
 var proxyquire = require('proxyquire');
 
+// // userController, will be required after mock is set
+// var controller;
 
 describe('UNIT: userController.js', function() {
 
-  describe('module.getCurrentUser', function() {
-    var req;
-    var res;
-    var jsonStub;
+  // var saveSpy;
 
-    // set up stubs on req and res
-    beforeEach(function() {
-      req = { user: 'Andrew' };
-      jsonStub = sinon.stub();
-      res = { status: sinon.stub().returns({ json: jsonStub }) };
-    });
+  // before(function() {
+  //   mockery.enable({
+  //     warnOnReplace: false,
+  //     warnOnUnregistered: false,
+  //     useCleanCache: true
+  //   });
 
-    it('should return status 200 with json object `req.user`', function() {
-      controller.getCurrentUser(req, res);
+  //   // User model mock
+  //   var userMock = function(params) {
+  //     this.username = params.username;
+  //     this.userID = params.userID;
+  //     this.save = function(cb) {
+  //       cb();
+  //     };
+  //     s
+  //   };
 
-      expect(res.status.calledOnce);
-      expect(res.status.calledWith(200));
+  //   mockery.registerMock('./userModel', userMock);
 
-      expect(jsonStub.calledOnce);
-      expect(jsonStub.calledWith(req.user));
-    });
-  });
+  //   controller = require('./userController');
+  // });
+
+  // after(function() {
+  //   mockery.disable();
+  // });
+
+  // describe('#createUser', function() {
+
+  // });
+
+  // it('test', function(done) {
+  //   var req = {
+  //     body: {
+  //       username: 'Andrew',
+  //       userID: 1
+  //     }
+  //   };
+  //   var res = {
+  //     status: function(statusCode) {
+  //       return {
+  //         end: function() {}
+  //       };
+  //     }
+  //   }
+  //   controller.createUser(req, res);
+  //   done();
+  // });
+
+  // describe('module.getCurrentUser', function() {
+  //   var req;
+  //   var res;
+  //   var jsonStub;
+
+  //   // set up stubs on req and res
+  //   beforeEach(function() {
+  //     req = { user: 'Andrew' };
+  //     jsonStub = sinon.stub();
+  //     res = { status: sinon.stub().returns({ json: jsonStub }) };
+  //   });
+
+  //   it('should return status 200 with json object `req.user`', function() {
+  //     controller.getCurrentUser(req, res);
+
+  //     expect(res.status.calledOnce);
+  //     expect(res.status.calledWith(200));
+
+  //     expect(jsonStub.calledOnce);
+  //     expect(jsonStub.calledWith(req.user));
+  //   });
+  // });
 
   // describe('module.createUser', function() {
   //   var User;
@@ -72,6 +125,12 @@ describe('UNIT: userController.js', function() {
   //     });
   //   });
   // });
+
+  // describe('#createUser', function() {
+
+  // });
+
+
 
   describe('#createUser', function() {
     var req;
@@ -120,11 +179,12 @@ describe('UNIT: userController.js', function() {
     afterEach(function() {
       // console.log(mongoose.Model.prototype.save);
       console.log('unwrapping');
-      mongoose.Model.prototype.save.restore();
+      // mongoose.Model.prototype.save.restore();
+      userModel._model.save.restore();
       // console.log(mongoose.Model.prototype.save);
     });
 
-    it('should call `User.save`', function(done) {
+    xit('should call `User.save`', function(done) {
       /**
        * How we stub `#save` will vary with each test, so we must do it
        * manually each time.
@@ -163,14 +223,17 @@ describe('UNIT: userController.js', function() {
 
     it('should do what...', function(done) {
       console.log('wrapping');
-      console.log(mongoose.Model.prototype.save);
-      sinon.stub(mongoose.Model.prototype, 'save', function() {
-
-      });
+      console.log('model', userModel._model);
+      // console.log('save', userModel._model.save);
+      var saveStub = sinon.stub(userModel._model, 'save');
+      // console.log(saveStub);
+      // saveStub.callsArgWith(0, null);
+      saveStub.yields(null);
       // sinon.spy(res, 'end');
       controller.createUser(req, res);
       setTimeout(function() {
-        expect(res.status.called).to.equal(true);
+        expect(saveStub.called).to.equal(true);
+        // expect(res.status.called).to.equal(true);
         done();
       }, 0)
     });
