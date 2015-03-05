@@ -4,7 +4,7 @@
     .controller('DocsController', DocsController);
 
     /**
-    *
+    * Controlls the display of our documentation
     *
     *
     *
