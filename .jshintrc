@@ -11,8 +11,7 @@
       "angular": false,
       "ZeroClipboard": false,
       "document": false,
-      "c3": false,
-      "d3": false
+      "c3": false
     },
     "immed": true,
     "indent": 2,
