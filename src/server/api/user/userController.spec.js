@@ -167,7 +167,6 @@ describe('UNIT: userController.js', function() {
       //   status: sinon.stub.returns({ end: sinon.stub() }),
       //   end: sinon.stub()
       // };
-
     });
 
     // after(function() {
@@ -179,24 +178,27 @@ describe('UNIT: userController.js', function() {
     afterEach(function() {
       // console.log(mongoose.Model.prototype.save);
       console.log('unwrapping');
+      userModel.prototype.save.restore();
       // mongoose.Model.prototype.save.restore();
-      userModel._model.save.restore();
+      // userModel._model.save.restore();
       // console.log(mongoose.Model.prototype.save);
     });
 
-    xit('should call `User.save`', function(done) {
+    it('should call `User.save`', function(done) {
       /**
        * How we stub `#save` will vary with each test, so we must do it
        * manually each time.
        */
-      sinon.stub(mongoose.Model.prototype, 'save');
+       // console.log('save', userModel.prototype.save);
+       sinon.stub(userModel.prototype, 'save');
+      // sinon.stub(mongoose.Model.prototype, 'save');
       controller.createUser(req, res);
       /**
        * Since Mongoose's `save` is asynchronous, run our expectations on the
        * next cycle of the event loop.
        */
       setTimeout(function() {
-        expect(mongoose.Model.prototype.save.callCount).to.equal(1);
+        expect(userModel.prototype.save.callCount).to.equal(1);
         done();
       }, 0);
     });
@@ -223,12 +225,13 @@ describe('UNIT: userController.js', function() {
 
     it('should do what...', function(done) {
       console.log('wrapping');
-      console.log('model', userModel._model);
+      // console.log('model', userModel._model);
       // console.log('save', userModel._model.save);
-      var saveStub = sinon.stub(userModel._model, 'save');
+      // var saveStub = sinon.stub(userModel._model, 'save');
+      var saveStub = sinon.stub(userModel.prototype, 'save');
       // console.log(saveStub);
       // saveStub.callsArgWith(0, null);
-      saveStub.yields(null);
+      // saveStub.yields(null);
       // sinon.spy(res, 'end');
       controller.createUser(req, res);
       setTimeout(function() {
