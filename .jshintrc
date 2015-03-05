@@ -10,7 +10,9 @@
       "inject": false,
       "angular": false,
       "ZeroClipboard": false,
-      "document": false
+      "document": false,
+      "c3": false,
+      "d3": false
     },
     "immed": true,
     "indent": 2,
