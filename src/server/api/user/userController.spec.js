@@ -9,7 +9,7 @@ var request = require('supertest');
 var sinon = require('sinon');
 // var mockery = require('mockery');
 var passportStub = require('passport-stub');
-var controller = require('./userController')
+var controller = require('./userController');
 var userModel = require('./userModel');
 var mongoose = require('mongoose');
 var mongooseMock = require('mongoose-mock');
@@ -151,7 +151,7 @@ describe('UNIT: userController.js', function() {
 
     // Special stub to simulate error on model save
     var stubSaveErr = function(cb) {
-      cb('Staged error in #save')
+      cb('Staged error in #save');
     };
 
     // Stub out req and res
@@ -238,7 +238,7 @@ describe('UNIT: userController.js', function() {
         expect(saveStub.called).to.equal(true);
         // expect(res.status.called).to.equal(true);
         done();
-      }, 0)
+      }, 0);
     });
 
     // it('should do what...', function(done) {
