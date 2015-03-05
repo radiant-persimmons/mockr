@@ -11,9 +11,9 @@ module.exports = {
     var newUser = new User({ 'username': username, 'userID': userID });
     newUser.save(function (err) {
       if (err){
-        res.end();
+        console.log('inside error');
+        res.status(500).json({ message: 'User#createUser: Error saving user model' });
         return console.log('Error: ', err);
-
       }
       console.log('User created');
       res.status(201).end();
