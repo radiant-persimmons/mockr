@@ -223,7 +223,7 @@ describe('UNIT: userController.js', function() {
     //   }, 0);
     // });
 
-    it('should do what...', function(done) {
+    it('should do call res.end after save', function(done) {
       console.log('wrapping');
       // console.log('model', userModel._model);
       // console.log('save', userModel._model.save);

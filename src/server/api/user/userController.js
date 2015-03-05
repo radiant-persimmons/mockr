@@ -9,7 +9,6 @@ module.exports = {
     var username = req.body.username;
     var userID = req.body.userID;
     var newUser = new User({ 'username': username, 'userID': userID });
-    console.log(newUser);
     newUser.save(function (err) {
       if (err){
         console.log('inside error');
