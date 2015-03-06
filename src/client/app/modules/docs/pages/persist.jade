@@ -1,4 +1,66 @@
 div.container-fluid.doc-box
   h1 Using persistant data
   div
-    p stuff goes here
+    p.
+      Mockr gives the user the option to have an endpoint persist data.  
+      If the user choses this option the endpoint that they create will have no preloaded data associated with it.  
+      However they will be able to POST PUT and DELETE as well as GET data from that endpoint.
+    p.
+      Persitant data will allow users to add and modify data as if they had a fully funtioning server.
+    p.
+      How to work with your endpoint
+    p.
+      -Get all the data: GET http://mockr-hr.herokuapp.com/1/:username/:route
+    p.
+      Ex: GET http://mockr-hr.herokuapp.com/1/james/comments
+    p.
+      ### Params you can pass
+    p.
+      **-createdAt**
+    p.
+      Values: ASC(default), DESC
+    p.
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?createdAt=DESC
+    p.
+      **-updatedAt**
+    p.
+      Values: ASC(default), DESC
+    p.
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?updatedAt=ASC
+    p.
+      **-start**
+    p.
+      Values: Any integer
+    p.
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?start=20
+    p.
+      **-size**
+    p.
+      Values: Any integer
+    p.
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?size=10
+    p.
+      **combination**
+    p.
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?createdAt=ASC&start=10&size=20
+      -Get specific object: GET http://mockr-hr.herokuapp.com/1/:username/:route?id=:id
+    p.
+      Insert the id of the object you want to get as a url parameter
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?id=1
+    p.
+      -Post new data: POST http://mockr-hr.herokuapp.com/1/:username/:route
+    p.
+      Pass the object you want to create in the request body 
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments
+    p.
+      -Edit data: PUT http://mockr-hr.herokuapp.com/1/:username/:route?id=:id
+    p.
+      Insert the id of the object you want to change as a url parameter 
+    p.
+      Pass the new data of the object in the request body
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?id=3
+    p.
+      -Delete data: DELETE http://mockr-hr.herokuapp.com/1/:username/:route?id=:id
+    p.
+      Insert the id of the object you want to delete as a url parameter
+      Ex: http://mockr-hr.herokuapp.com/1/james/comments?id=3
