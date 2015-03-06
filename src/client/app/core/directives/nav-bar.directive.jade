@@ -1,22 +1,23 @@
 header(role="header" id="header")
-  //- nav.navbar.navbar-inverse.navbar-fixed-top
-  nav.navbar.navbar-inverse
-    .container-fluid
+  nav.navbar.navbar-default.navbar-fixed-top
+    .container
       .navbar-header
         button(type="button" class="navbar-toggle collapsed")
-        a(class="navbar-brand" href="/" ng-hide="vm.loggedIn")
+        a.navbar-brand(href="/" ng-hide="vm.loggedIn")
           img(src="/images/mockr-logo.png")
-        a(class="navbar-brand" href="/home" ng-show="vm.loggedIn")
+        a.navbar-brand(href="/home" ng-show="vm.loggedIn")
           img(src="/images/mockr-logo.png")
-      ul(class="nav navbar-nav navbar-right")
+        p.navbar-text Mockr
+      ul.nav.navbar-nav.navbar-right
         li
-          a(href="/docs") Docs
+          a(href="/") About
+        li
+          a(href="/docs") Documentation
         li(ng-hide="vm.loggedIn")
           a(href="#" ng-click="vm.login()") Login
         li(ng-show="vm.loggedIn")
           a {{ vm.username }}
         li.user-avatar(ng-show="vm.loggedIn")
-          a
-            img(ng-src="{{ vm.avatar }}")
+          img(ng-src="{{ vm.avatar }}")
         li(ng-show="vm.loggedIn")
           a(href="#" ng-click="vm.logout()") Logout
