@@ -208,11 +208,10 @@ describe('UNIT: userController.js', function() {
 
     it('should run res.status(201).end() after saving is successful', function(done) {
 
-      status.withArgs(201);
       controller.createUser(req, res);
 
       setTimeout(function() {
-        expect(res.status.called).to.equal(true);
+        expect(res.status.calledWith(201)).to.equal(true);
         expect(res.status().end.called).to.equal(true);
         done();
       }, 100);
@@ -221,12 +220,11 @@ describe('UNIT: userController.js', function() {
 
     it('should run res.status(500).json() after saving is not successul', function(done) {
 
-      status.withArgs(500);
       delete req.body.username;
       controller.createUser(req, res);
 
       setTimeout(function() {
-        expect(res.status.called).to.equal(true);
+        expect(res.status.calledWith(500)).to.equal(true);
         expect(res.status().json.called).to.equal(true);
         done();
       }, 100);
@@ -268,14 +266,15 @@ describe('UNIT: userController.js', function() {
       }, 0);
     });
 
-    xit('should run res.status(500).json() if there is an error', function(done) {
+    it('should run res.status(500).json() if there is an error', function(done) {
       //something to make User.findOne fail
-
+      sinon.stub(userModel, 'findOne').yields('err exists');
       controller.getUser(req, res);
 
       setTimeout(function() {
         expect(res.status.calledWith(500)).to.equal(true);
         expect(res.status().json.called).to.equal(true);
+        userModel.findOne.restore();
         done();
       }, 100);
     });
