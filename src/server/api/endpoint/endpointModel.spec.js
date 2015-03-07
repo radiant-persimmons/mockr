@@ -1,3 +1,6 @@
+/*jshint -W079 */
+
+
 var Endpoint = require('./endpointModel.js');
 var expect = require('chai').expect;
 
@@ -9,7 +12,7 @@ describe('Unit: Endpoint Model', function() {
     });
   });
 
-  it("should not store the endpoint if there is no username or route", function(done) {
+  it('should not store the endpoint if there is no username or route', function(done) {
     var endpoint = new Endpoint({
       username: 'Jake'
     });
@@ -23,7 +26,7 @@ describe('Unit: Endpoint Model', function() {
     });
   });
 
-  it("stores username, route, methods, persistence, businessLogic, data and count", function(done) {
+  it('stores username, route, methods, persistence, businessLogic, data and count', function(done) {
     var endpoint = new Endpoint({
       username: 'Jake',
       route: 'messages',
