@@ -3,13 +3,17 @@ div.main-landing
     div.container
       h2.title Mockr
       p.intro A Front End Developer's friend to get a backend up and running in under 5 minutes
-      div.buttons
-        button Im a button
-        button Im a button too
-      ul.list-inline
-        li View on Github
-        li Full Documentation
-        li Created by: Team Mockr
+      div.btns
+        a(href="http://themes.3rdwavemedia.com/").btnA.btns.btn.btn-default Demo
+        a(href="http://themes.3rdwavemedia.com/").btnB.btns.btn.btn-default Get Started
+
+      ul.list-inline.meta
+        li
+          a(href="https://github.com/radiant-persimmons/mockr" target="_blank") View on Github
+        li
+          a(href="/documentation") Full Documentation
+        li 
+          a(href="#team") Created by: Team Mockr
     div.social-media
       div.social-media-inner
         ul.list-inline.github
@@ -20,7 +24,7 @@ div.main-landing
   div.about
     div.container
       h2.title What is Mockr?
-      p.intro Mockr speeds up full-stack application production by supporting front end development before the back end is complete. More than a typical mocking tool, Mockr can emulate a persistent data store, allowing developers to dynamically alter response content through their API requests.
+      p.centerme Mockr speeds up full-stack application production by supporting front end development before the back end is complete. More than a typical mocking tool, Mockr can emulate a persistent data store, allowing developers to dynamically alter response content through their API requests.
       div.row
         div.item.col-md-4.col-sm-6.col-xs-12
           h3.sub-title Designed for developers
@@ -56,9 +60,9 @@ div.main-landing
     div.container
       h2.title Get Started
       h3.sub-title Part 1
-      p Create a route in Mockr
-
-      p Make a request to Mockr in Chrome
+      p 1. Create a route in Mockr
+      img(src="/../../images/addRouteScreenShot.png" width="500px" height="auto")
+      p 2. Make a request to Mockr in Chrome
 
       p See Response
 
@@ -69,8 +73,45 @@ div.main-landing
       pre.language-javascript
         code.language-javascript
           p Hello World 
+          <p> Hello World </p>
       //- <pre><code class="language-css">p { color: red }</code></pre>
-
+  div.team
+    div.container
+      h2.title The Mockr Team
+      div.row
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures
+            img(src="/../../images/andrew.jpg" height="200px")
+            div.picture-links
+              img(src="/../../images/github.png" href="https://github.com/AndrewSouthpaw" height="50px")
+              img(src="/../../images/linkedIn.png" href="https://www.linkedin.com/profile/view?id=109257905&authType=NAME_SEARCH&authToken=v_2X&locale=en_US&trk=tyah2&trkInfo=idx%3A1-1-1%2CtarId%3A1425765494920%2Ctas%3Aandrew+smith" height="50px")
+          h3.sub-title Andrew Smith
+          p Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ FontAwesome icons available
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures 
+            img(src="/../../images/jake.jpg" height="200px")
+            div.picture-links
+              img(src="/../../images/github.png" href="linkedin" height="50px")
+              img(src="/../../images/linkedIn.png" href="linkedin" height="50px")
+          h3.sub-title Jake Obron
+          p Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ FontAwesome icons available
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures
+            img(src="/../../images/karim.jpg" height="200px")
+            div.picture-links
+              img(src="/../../images/github.png" href="linkedin" height="50px")
+              img(src="/../../images/linkedIn.png" href="linkedin" height="50px")
+          h3.sub-title Karim Kyler
+          p Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ FontAwesome icons available
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures
+            img(src="/../../images/ruben.jpg" height="200px")
+            div.picture-links
+              img(src="/../../images/github.png" href="linkedin" height="50px")
+              img(src="/../../images/linkedIn.png" href="linkedin" height="50px")
+          h3.sub-title Ruben Vicario
+          p Outline a benefit here. Tell users what your plugin/software can do for them. You can change the icon above to any of the 400+ FontAwesome icons available
+        
 
 
 
