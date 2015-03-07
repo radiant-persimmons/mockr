@@ -135,19 +135,9 @@ describe('UNIT: userController.js', function() {
   describe('#createUser', function() {
     var req;
     var res;
-
-    req = {
-      body: {
-        username: 'Andrew',
-        userID: 1
-      }
-    };
-
-    var endStub = sinon.stub();
-    res = {
-      status: sinon.stub.returns({ end: endStub }),
-      end: sinon.stub()
-    };
+    var status;
+    var end;
+    var json;
 
     // Special stub to simulate error on model save
     var stubSaveErr = function(cb) {
@@ -156,32 +146,24 @@ describe('UNIT: userController.js', function() {
 
     // Stub out req and res
     beforeEach(function() {
-      // req = {
-      //   body: {
-      //     username: 'Andrew',
-      //     userID: 1
-      //   }
-      // };
+      req = {
+        body: {
+          username: 'Andrew',
+          userID: 1
+        }
+      };
+      
+      status = sinon.stub(); 
+      end = sinon.stub();
+      json = sinon.stub();
 
-      // res = {
-      //   status: sinon.stub.returns({ end: sinon.stub() }),
-      //   end: sinon.stub()
-      // };
+      res = {
+        status: status.returns({ end: end, json: json })
+      };
     });
-
-    // after(function() {
-    //   mongoose.Model.prototype.save.restore();
-    // });
-
 
     // restore regular functionality
     afterEach(function() {
-      // console.log(mongoose.Model.prototype.save);
-      console.log('unwrapping');
-      userModel.prototype.save.restore();
-      // mongoose.Model.prototype.save.restore();
-      // userModel._model.save.restore();
-      // console.log(mongoose.Model.prototype.save);
     });
 
     it('should call `User.save`', function(done) {
@@ -199,11 +181,12 @@ describe('UNIT: userController.js', function() {
        */
       setTimeout(function() {
         expect(userModel.prototype.save.callCount).to.equal(1);
+        userModel.prototype.save.restore();
         done();
-      }, 0);
+      }, 1000);
     });
 
-    // it('should store `username` and `userID` on user', function(done) {
+    xit('should store `username` and `userID` on user', function(done) {
     //   var userData;
 
     //   // Special stub to reveal model data
@@ -221,36 +204,90 @@ describe('UNIT: userController.js', function() {
 
     //     done();
     //   }, 0);
-    // });
+    });
 
-    it('should do call res.end after save', function(done) {
-      console.log('wrapping');
-      // console.log('model', userModel._model);
-      // console.log('save', userModel._model.save);
-      // var saveStub = sinon.stub(userModel._model, 'save');
-      var saveStub = sinon.stub(userModel.prototype, 'save');
-      // console.log(saveStub);
-      // saveStub.callsArgWith(0, null);
-      // saveStub.yields(null);
-      // sinon.spy(res, 'end');
+    it('should run res.status(201).end() after saving is successful', function(done) {
+
+      status.withArgs(201);
       controller.createUser(req, res);
+
       setTimeout(function() {
-        expect(saveStub.called).to.equal(true);
-        // expect(res.status.called).to.equal(true);
+        expect(res.status.called).to.equal(true);
+        expect(res.status().end.called).to.equal(true);
+        done();
+      }, 100);
+      //it might be a good idea to use a mock to check the status code
+    });
+
+    it('should run res.status(500).json() after saving is not successul', function(done) {
+
+      status.withArgs(500);
+      delete req.body.username;
+      controller.createUser(req, res);
+
+      setTimeout(function() {
+        expect(res.status.called).to.equal(true);
+        expect(res.status().json.called).to.equal(true);
+        done();
+      }, 100);
+    });
+  });
+
+  describe('#getUser', function() {
+    var req;
+    var res;
+    var status;
+    var json;
+
+    beforeEach(function() {
+      req = {
+        params: {
+          username: 'AndrewSouthpaw',
+          userID: 1
+        }
+      };  
+
+      status = sinon.stub(); 
+      json = sinon.stub();
+
+      res = {
+        status: status.returns({ json: json })
+      };
+    });
+
+    it('should call User.findOne', function(done) {
+      sinon.stub(userModel, 'findOne');
+
+      controller.getUser(req, res);
+
+      console.log('userModel findOne', userModel.findOne);
+      setTimeout(function() {
+        expect(userModel.findOne.callCount).to.equal(1);
+        userModel.findOne.restore();
         done();
       }, 0);
     });
 
-    // it('should do what...', function(done) {
-    //   console.log('wrapping');
-    //   console.log(mongoose.Model.prototype.save);
-    //   sinon.stub(mongoose.Model.prototype, 'save', stubSaveErr);
-    //   // sinon.spy(res, 'end');
-    //   controller.createUser(req, res);
-    //   setTimeout(function() {
-    //     expect(res.status.called).to.equal(true);
-    //     done();
-    //   }, 0)
-    // });
+    xit('should run res.status(500).json() if there is an error', function(done) {
+      //something to make User.findOne fail
+
+      controller.getUser(req, res);
+
+      setTimeout(function() {
+        expect(res.status.calledWith(500)).to.equal(true);
+        expect(res.status().json.called).to.equal(true);
+        done();
+      }, 100);
+    });
+
+    it('should run res.status(200).json() if there is no error', function(done) {
+      controller.getUser(req, res);
+
+      setTimeout(function() {
+        expect(res.status.calledWith(200)).to.equal(true);
+        expect(res.status().json.called).to.equal(true);
+        done();
+      }, 100);
+    });
   });
 });
