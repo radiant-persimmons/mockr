@@ -145,6 +145,10 @@ describe('UNIT: userController.js', function() {
     var status;
     var json;
 
+    before(function() {
+      sinon.stub(userModel, 'findOne');
+    });
+
     beforeEach(function() {
       req = {
         params: {
@@ -161,37 +165,49 @@ describe('UNIT: userController.js', function() {
       };
     });
 
+    afterEach(function() {
+      userModel.findOne.reset();
+    });
+
+    after(function() {
+      userModel.findOne.restore();
+    });
+
     it('should call User.findOne', function(done) {
-      sinon.stub(userModel, 'findOne');
+      // sinon.stub(userModel, 'findOne');
 
       controller.getUser(req, res);
 
       setTimeout(function() {
         expect(userModel.findOne.callCount).to.equal(1);
-        userModel.findOne.restore();
+        // userModel.findOne.restore();
         done();
       }, 0);
     });
 
     it('should run res.status(500).json() if there is an error', function(done) {
       //something to make User.findOne fail
-      sinon.stub(userModel, 'findOne').yields('err exists');
+      // sinon.stub(userModel, 'findOne').yields('err exists');
+      userModel.findOne.yields('err exists');
       controller.getUser(req, res);
 
       setTimeout(function() {
         expect(res.status.calledWith(500)).to.equal(true);
         expect(res.status().json.called).to.equal(true);
-        userModel.findOne.restore();
+        // userModel.findOne.restore();
+        reloadStub(userModel, 'findOne');
         done();
       }, 0);
     });
 
     it('should run res.status(200).json() if there is no error', function(done) {
+      userModel.findOne.yields(null);
       controller.getUser(req, res);
 
       setTimeout(function() {
         expect(res.status.calledWith(200)).to.equal(true);
         expect(res.status().json.called).to.equal(true);
+        reloadStub(userModel, 'findOne');
         done();
       }, 0);
     });
