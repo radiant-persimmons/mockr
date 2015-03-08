@@ -18,10 +18,10 @@ describe('UNIT: userController.js', function() {
     var end;
     var json;
 
-    // Special stub to simulate error on model save
-    var stubSaveErr = function(cb) {
-      cb('Staged error in #save');
-    };
+    // Stub `#save` for all these tests
+    before(function() {
+      sinon.stub(userModel.prototype, 'save');
+    });
 
     // Stub out req and res
     beforeEach(function() {
@@ -41,18 +41,23 @@ describe('UNIT: userController.js', function() {
       };
     });
 
-    // restore regular functionality
+    // Reset call count after each test
     afterEach(function() {
+      userModel.prototype.save.reset();
     });
 
+    // Restore after all tests finish
+    after(function() {
+      userModel.prototype.save.restore();
+    });
+
+    // Helper function to restore stub to bland version
+    function reloadSaveStub() {
+      userModel.prototype.save.restore();
+      sinon.stub(userModel.prototype, 'save');
+    }
+
     it('should call `User.save`', function(done) {
-      /**
-       * How we stub `#save` will vary with each test, so we must do it
-       * manually each time.
-       */
-       // console.log('save', userModel.prototype.save);
-       sinon.stub(userModel.prototype, 'save');
-      // sinon.stub(mongoose.Model.prototype, 'save');
       controller.createUser(req, res);
       /**
        * Since Mongoose's `save` is asynchronous, run our expectations on the
@@ -60,53 +65,67 @@ describe('UNIT: userController.js', function() {
        */
       setTimeout(function() {
         expect(userModel.prototype.save.callCount).to.equal(1);
-        userModel.prototype.save.restore();
         done();
-      }, 1000);
+      }, 0);
     });
 
-    xit('should store `username` and `userID` on user', function(done) {
-    //   var userData;
+    it('should store `username` and `userID` on user', function(done) {
+      var userData;
 
-    //   // Special stub to reveal model data
-    //   // var stubSaveData = function(cb) {
-    //   //   userData = this;
-    //   // };
+      // Special stub to reveal model data
+      var stubSaveData = function(cb) {
+        console.log('inside stubSaveData');
+        userData = this;
+      };
 
-    //   sinon.stub(mongoose.Model.prototype, 'save', function(cb) {
-    //     userData = this;
-    //   });
-    //   controller.createUser(req, res);
-    //   setTimeout(function() {
-    //     expect(userData.username).to.equal('Andrew');
-    //     expect(userData.userID).to.equal(1);
+      // swap out old stub for the specialized one
+      userModel.prototype.save.restore();
+      sinon.stub(userModel.prototype, 'save', stubSaveData);
 
-    //     done();
-    //   }, 0);
+      controller.createUser(req, res);
+      setTimeout(function() {
+        expect(userData.username).to.equal('Andrew');
+        expect(userData.userID).to.equal(1);
+
+        // return to ordinary stub
+        reloadSaveStub();
+
+        done();
+      }, 0);
     });
 
     it('should run res.status(201).end() after saving is successful', function(done) {
 
+      userModel.prototype.save.yields(null);
+
       controller.createUser(req, res);
 
       setTimeout(function() {
-        expect(res.status.calledWith(201)).to.equal(true);
-        expect(res.status().end.called).to.equal(true);
+        expect(res.status.calledWith(201)).to.equal(true, 'not called with 201');
+        expect(res.status().end.called).to.equal(true, 'res.status.end not called');
+
+        // reload save stub because yield was set
+        reloadSaveStub();
+
         done();
-      }, 100);
-      //it might be a good idea to use a mock to check the status code
+      }, 0);
     });
 
     it('should run res.status(500).json() after saving is not successul', function(done) {
 
-      delete req.body.username;
+      // delete req.body.username;
+      userModel.prototype.save.yields('err')
       controller.createUser(req, res);
 
       setTimeout(function() {
         expect(res.status.calledWith(500)).to.equal(true);
         expect(res.status().json.called).to.equal(true);
+
+        // reload stub because yields was set
+        reloadSaveStub();
+
         done();
-      }, 100);
+      }, 0);
     });
   });
 
@@ -155,7 +174,7 @@ describe('UNIT: userController.js', function() {
         expect(res.status().json.called).to.equal(true);
         userModel.findOne.restore();
         done();
-      }, 100);
+      }, 0);
     });
 
     it('should run res.status(200).json() if there is no error', function(done) {
@@ -165,7 +184,7 @@ describe('UNIT: userController.js', function() {
         expect(res.status.calledWith(200)).to.equal(true);
         expect(res.status().json.called).to.equal(true);
         done();
-      }, 100);
+      }, 0);
     });
   });
 });
