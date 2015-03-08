@@ -1,5 +1,8 @@
 /*jshint -W079 */
 
+// Set environment to test, always do this.
+process.env.NODE_ENV = 'test';
+
 var expect = require('chai').expect;
 var User = require('./userModel');
 

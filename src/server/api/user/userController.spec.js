@@ -5,132 +5,11 @@ process.env.NODE_ENV = 'test';
 
 // Dependencies
 var expect = require('chai').expect;
-var request = require('supertest');
 var sinon = require('sinon');
-// var mockery = require('mockery');
-var passportStub = require('passport-stub');
 var controller = require('./userController');
 var userModel = require('./userModel');
-var mongoose = require('mongoose');
-var mongooseMock = require('mongoose-mock');
-var proxyquire = require('proxyquire');
-
-// // userController, will be required after mock is set
-// var controller;
 
 describe('UNIT: userController.js', function() {
-
-  // var saveSpy;
-
-  // before(function() {
-  //   mockery.enable({
-  //     warnOnReplace: false,
-  //     warnOnUnregistered: false,
-  //     useCleanCache: true
-  //   });
-
-  //   // User model mock
-  //   var userMock = function(params) {
-  //     this.username = params.username;
-  //     this.userID = params.userID;
-  //     this.save = function(cb) {
-  //       cb();
-  //     };
-  //     s
-  //   };
-
-  //   mockery.registerMock('./userModel', userMock);
-
-  //   controller = require('./userController');
-  // });
-
-  // after(function() {
-  //   mockery.disable();
-  // });
-
-  // describe('#createUser', function() {
-
-  // });
-
-  // it('test', function(done) {
-  //   var req = {
-  //     body: {
-  //       username: 'Andrew',
-  //       userID: 1
-  //     }
-  //   };
-  //   var res = {
-  //     status: function(statusCode) {
-  //       return {
-  //         end: function() {}
-  //       };
-  //     }
-  //   }
-  //   controller.createUser(req, res);
-  //   done();
-  // });
-
-  // describe('module.getCurrentUser', function() {
-  //   var req;
-  //   var res;
-  //   var jsonStub;
-
-  //   // set up stubs on req and res
-  //   beforeEach(function() {
-  //     req = { user: 'Andrew' };
-  //     jsonStub = sinon.stub();
-  //     res = { status: sinon.stub().returns({ json: jsonStub }) };
-  //   });
-
-  //   it('should return status 200 with json object `req.user`', function() {
-  //     controller.getCurrentUser(req, res);
-
-  //     expect(res.status.calledOnce);
-  //     expect(res.status.calledWith(200));
-
-  //     expect(jsonStub.calledOnce);
-  //     expect(jsonStub.calledWith(req.user));
-  //   });
-  // });
-
-  // describe('module.createUser', function() {
-  //   var User;
-  //   var req;
-  //   var res;
-
-  //   beforeEach(function() {
-  //     User = proxyquire('./userModel', { 'mongoose': mongooseMock });
-  //     req = {
-  //       body: {
-  //         username: 'Andrew',
-  //         userID: 1
-  //       }
-  //     };
-  //     res = {
-  //       status: function(statusCode) {
-  //         return {
-  //           end: function() {}
-  //         };
-  //       }
-  //     }
-  //   });
-
-  //   describe('functionality', function() {
-  //     it('calls save', function() {
-  //       var cb = sinon.spy();
-  //       controller.createUser(req, res);
-  //       console.log(User);
-  //       console.log(Object.keys(User));
-  //       expect(User.save.called).to.equal(true);
-  //     });
-  //   });
-  // });
-
-  // describe('#createUser', function() {
-
-  // });
-
-
 
   describe('#createUser', function() {
     var req;
@@ -152,8 +31,8 @@ describe('UNIT: userController.js', function() {
           userID: 1
         }
       };
-      
-      status = sinon.stub(); 
+
+      status = sinon.stub();
       end = sinon.stub();
       json = sinon.stub();
 
@@ -243,9 +122,9 @@ describe('UNIT: userController.js', function() {
           username: 'AndrewSouthpaw',
           userID: 1
         }
-      };  
+      };
 
-      status = sinon.stub(); 
+      status = sinon.stub();
       json = sinon.stub();
 
       res = {
