@@ -9,6 +9,23 @@ var sinon = require('sinon');
 var controller = require('./userController');
 var userModel = require('./userModel');
 
+/**
+ * Helper to unwrap and re-wrap a method with a callback.
+ * @param  {object}   object Object to be stubbed
+ * @param  {string}   method Method on the object to be stubbed
+ * @param  {function} cb     Optional callback to be the stub
+ * @return {undefined}
+ */
+function reloadStub(object, method, cb) {
+  if (typeof object === 'undefined' || typeof method === 'undefined') {
+    console.error('reloadStub expects an object and method');
+  } else {
+    object[method].restore();
+    typeof cb === 'function' ? sinon.stub(object, method, cb)
+                             : sinon.stub(object, method);
+  }
+}
+
 describe('UNIT: userController.js', function() {
 
   describe('#createUser', function() {
@@ -51,16 +68,10 @@ describe('UNIT: userController.js', function() {
       userModel.prototype.save.restore();
     });
 
-    // Helper function to restore stub to bland version
-    function reloadSaveStub() {
-      userModel.prototype.save.restore();
-      sinon.stub(userModel.prototype, 'save');
-    }
-
     it('should call `User.save`', function(done) {
       controller.createUser(req, res);
       /**
-       * Since Mongoose's `save` is asynchronous, run our expectations on the
+       * Since Mongoose's `new` is asynchronous, run our expectations on the
        * next cycle of the event loop.
        */
       setTimeout(function() {
@@ -79,8 +90,7 @@ describe('UNIT: userController.js', function() {
       };
 
       // swap out old stub for the specialized one
-      userModel.prototype.save.restore();
-      sinon.stub(userModel.prototype, 'save', stubSaveData);
+      reloadStub(userModel.prototype, 'save', stubSaveData);
 
       controller.createUser(req, res);
       setTimeout(function() {
@@ -88,7 +98,7 @@ describe('UNIT: userController.js', function() {
         expect(userData.userID).to.equal(1);
 
         // return to ordinary stub
-        reloadSaveStub();
+        reloadStub(userModel.prototype, 'save');
 
         done();
       }, 0);
@@ -105,7 +115,7 @@ describe('UNIT: userController.js', function() {
         expect(res.status().end.called).to.equal(true, 'res.status.end not called');
 
         // reload save stub because yield was set
-        reloadSaveStub();
+        reloadStub(userModel.prototype, 'save');
 
         done();
       }, 0);
@@ -122,7 +132,7 @@ describe('UNIT: userController.js', function() {
         expect(res.status().json.called).to.equal(true);
 
         // reload stub because yields was set
-        reloadSaveStub();
+        reloadStub(userModel.prototype, 'save');
 
         done();
       }, 0);
@@ -156,7 +166,6 @@ describe('UNIT: userController.js', function() {
 
       controller.getUser(req, res);
 
-      console.log('userModel findOne', userModel.findOne);
       setTimeout(function() {
         expect(userModel.findOne.callCount).to.equal(1);
         userModel.findOne.restore();
