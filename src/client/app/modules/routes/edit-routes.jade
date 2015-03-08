@@ -49,11 +49,17 @@ form(name="editForm")
                             ng-class="{ 'alert-danger' : editForm.status.$invalid && !editForm.status.$pristine }"
                             role="alert"
                             required)
-
+  
   div.business-logic.form-group(ng-show="vm.formInfo.persistence")
+    p You can access this parameters inside your business logic:
+    ul
+      li(ng-repeat="key in vm.accessibleKeys")
+        {{key}}
+
     label Business Logic
     textarea.form-control(rows="3"
                             ng-model="vm.formInfo.businessLogic")
+
 
   div.submit-area.form-inline
     //- div.form-group
