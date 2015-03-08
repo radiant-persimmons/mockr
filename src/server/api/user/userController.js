@@ -11,11 +11,9 @@ module.exports = {
     var newUser = new User({ 'username': username, 'userID': userID });
     newUser.save(function (err) {
       if (err){
-        console.log('inside error');
         res.status(500).json({ message: 'User#createUser: Error saving user model' });
         return console.log('Error: ', err);
       }
-      console.log('User created');
       return res.status(201).end();
     });
   },
@@ -27,7 +25,6 @@ module.exports = {
       //specify user!!!
       if (err) return res.status(500).json({ message: err });
       //return user
-      console.log(user);
       return res.status(200).json(user);
     });
   },
@@ -36,8 +33,6 @@ module.exports = {
   getUsers: function (req, res) {
     User.find(function (err, users) {
       if (err) return res.status(500).json({ message: err });
-      //return users
-      console.log(users);
       return res.status(200).json(users);
     });
   },

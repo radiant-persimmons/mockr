@@ -212,4 +212,62 @@ describe('UNIT: userController.js', function() {
       }, 0);
     });
   });
+
+  describe('#getUsers', function() {
+
+    var req;
+    var res;
+    var status;
+    var json;
+
+    before(function() {
+      sinon.stub(userModel, 'find');
+    });
+
+    beforeEach(function() {
+      req = {
+        // params: {
+        //   username: 'AndrewSouthpaw',
+        //   userID: 1
+        // }
+      };
+
+      status = sinon.stub();
+      json = sinon.stub();
+
+      res = {
+        status: status.returns({ json: json })
+      };
+    });
+
+    afterEach(function() {
+      userModel.find.reset();
+    });
+
+    after(function() {
+      userModel.find.restore();
+    });
+
+    it('should call `User.find`', function() {
+      controller.getUsers(req, res);
+      expect(userModel.find.called).to.be.true;
+    });
+
+    it('should return status 200 with users on success', function() {
+      var result = [{ username: 'Andrew' }, { username: 'Billy' }];
+      userModel.find.yields(null, result);
+      controller.getUsers(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+      expect(res.status().json.called).to.be.true;
+      expect(res.status().json.calledWith(result)).to.be.true;
+      reloadStub(userModel, 'find');
+    });
+
+    it('should return status 500 with error message on fail', function() {
+      userModel.find.yields('error message', null);
+      controller.getUsers(req, res);
+      expect(res.status().json.calledWith(sinon.match({ message: 'error message' }))).to.be.true;
+    });
+
+  });
 });
