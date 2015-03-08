@@ -1,11 +1,18 @@
-div.container-fluid.doc-box
+div.app-content
   h1 Adding an Endpoint
   div
     p Input the name of the route you want to create
-    img.doc-img(src="./images/test.jpg")
+    img(src="./images/test.jpg")
     p Click on the + button
+    img(src="./images/test.jpg")
+    
     p If the input field is red or the button is disabled you are breaking one or more rules for creating an endpoint.  Please consult the rules below if you are having trouble.
-    ul Rules for creating an API Endpoint:
-      li Endpoint cannot start with a slash ('/') BAD: /test  GOOD: test
-      li Endpoint cannot contain a double slash ('//') BAD: test//api  GOOD: test/api
-      li Endpoint cannot contain any special characters ('!@#$%^\&*()<>{}[]') BAD: test@api
+    code
+      ul Rules for creating an API Endpoint:
+        li Endpoint cannot start with a slash ('/') BAD: /test  GOOD: test
+        li Endpoint cannot contain a double slash ('//') BAD: test//api  GOOD: test/api
+        li Endpoint cannot contain any special characters ('!@#$%^\&*()<>{}[]') BAD: test@api
+    p If you have a valid input you will be directed to specify the type of route.
+    
+    img(src="./images/test.jpg")
+    
