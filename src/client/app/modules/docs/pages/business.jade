@@ -6,7 +6,16 @@ div.app-content
       
       When adding the route or editing it the user can specify some business logic that gets applied to the data
       
-      as it gets posted to the api endpoint.  
+      as it gets posted to the api endpoint. Remember that you can only use pure Javascript.
+
+      The business logic you insert will be run when you do a POST request to the API endpoint you create in Mockr. You can access all the keys you passed in the request body. You can also access 'res' to end the response.
+
+      Ex: If you do a POST to http://mockr.co/1/james/comments and pass {username: 'James', msg: 'Hi'}, you will have access to 'username' and 'msg' inside the business logic.
+
+      Ex Business Logic: '(function() {msg = msg.upperCase(); }()'
+
+      Ex Business Logic: '(function() {res = 'end response with a 500'}()'
+
     p.
       Some examples of code:
       
