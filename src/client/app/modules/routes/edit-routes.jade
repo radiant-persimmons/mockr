@@ -2,8 +2,8 @@ h1 Edit Route
 form(name="editForm")
   h3 {{ vm.formInfo.route }}
   h5 Public API URL:
-    code http://mockr-hr.herokuapp.com/1/{{vm.username}}/{{vm.formInfo.route}}
-    button#copy-button(data-clipboard-text="http://mockr-hr.herokuapp.com/1/{{vm.username}}/{{vm.formInfo.route}}"
+    code http://www.mockr.co/1/{{vm.username}}/{{vm.formInfo.route}}
+    button#copy-button(data-clipboard-text="http://www.mockr.co/1/{{vm.username}}/{{vm.formInfo.route}}"
                        title="Copy to clipboard"
                        ng-click="vm.displayCopyMessage()")
       span.glyphicon.glyphicon-copy
@@ -49,7 +49,7 @@ form(name="editForm")
                             ng-class="{ 'alert-danger' : editForm.status.$invalid && !editForm.status.$pristine }"
                             role="alert"
                             required)
-  
+
   div.business-logic.form-group(ng-show="vm.formInfo.persistence")
     p You can access this parameters inside your business logic:
     ul
