@@ -2,24 +2,24 @@ div.app-content
   h1 Business Logic
   div
     p.
-      Mockr provides the option for the user to add business logic to the data that they persist.  
+      Mockr provides the option for the user to run business logic on the data that they persist.  
       
-      When adding the route or editing it the user can specify some business logic that gets applied to the data
+      When adding the route or editing it, the user can specify some business logic that gets applied to the data
       
       as it gets posted to the api endpoint. Remember that you can only use pure Javascript.
-
+    
+    p.
       The business logic you insert will be run when you do a POST request to the API endpoint you create in Mockr. You can access all the keys you passed in the request body. You can also access 'res' to end the response.
 
       Ex: If you do a POST to http://mockr.co/1/james/comments and pass {username: 'James', msg: 'Hi'}, you will have access to 'username' and 'msg' inside the business logic.
-
-      Ex Business Logic: '(function() {msg = msg.upperCase(); }()'
-
-      Ex Business Logic: '(function() {res = 'end response with a 500'}()'
-
-    p.
+    
+    h4.
       Some examples of code:
-      
-    span If you have a username property on one of the objects
-      code.
-        test
-      
+
+    pre
+      code.language-javascript.
+        '(function() {msg = msg.upperCase(); }()'
+
+    pre
+      code.language-javascript.
+      '(function() {res = 'end response with a 500'}()'
