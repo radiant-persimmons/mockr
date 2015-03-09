@@ -29,6 +29,7 @@
     vm.searchData   = '';     // set the default search/filter term
 
     vm.tableHead = vm.formInfo.data[0];
+    vm.accessibleKeys = [];
 
     vm.displayCopyMessage = displayCopyMessage;
     vm.updateRoute = updateRoute;
@@ -126,6 +127,8 @@
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
           vm.formInfo.businessLogic = res.businessLogic;
           vm.tableHead = vm.formInfo.data[0];
+
+          setKeysForBusinessLogic(vm.tableHead);
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
@@ -154,6 +157,15 @@
           // `event.target` === the element that was clicked
         } );
       } );
+    }
+
+    function setKeysForBusinessLogic(object) {
+      vm.accessibleKeys.push('res');
+      for(var key in object) {
+        if(key !== 'id' && key !== 'createdAt' && key !== 'updatedAt') {
+          vm.accessibleKeys.push(key);
+        }
+      }
     }
   }
 })();
