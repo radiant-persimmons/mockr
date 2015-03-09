@@ -42,13 +42,10 @@ module.exports = {
     var newData = req.body;
 
     User.update({'username': username}, newData, function (err, numberAffected, raw) {
-      //specify user!!!
       if (err) return res.status(500).json({ message: err });
 
-      if (!numberAffected) return res.status(404).end('User not found.');
+      if (!numberAffected) return res.status(404).json({ message: 'User not found' });
 
-      //return users
-      console.log('user modified', raw);
       return res.status(201).end();
     });
   }

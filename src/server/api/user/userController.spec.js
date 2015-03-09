@@ -270,4 +270,74 @@ describe('UNIT: userController.js', function() {
     });
 
   });
+
+  describe('#editUser', function() {
+
+    var req;
+    var res;
+    var status;
+    var json;
+    var bodyData;
+
+    before(function() {
+      sinon.stub(userModel, 'update');
+    });
+
+    beforeEach(function() {
+      bodyData = { data: 'new data' };
+
+      req = {
+        params: {
+          username: 'Andrew'
+        },
+        body: bodyData
+      };
+
+      status = sinon.stub();
+      json = sinon.stub();
+
+      res = {
+        status: status.returns({
+          end: sinon.stub(),
+          json: json
+        })
+      };
+    });
+
+    afterEach(function() {
+      userModel.update.reset();
+    });
+
+    after(function() {
+      userModel.update.restore();
+    });
+
+    it('should call `User.update` with parameters', function() {
+      controller.editUser(req, res);
+      expect(userModel.update.calledWith(sinon.match({ username: 'Andrew' }), bodyData)).to.be.true;
+    });
+
+    it('should return 500 and error message on database error', function() {
+      userModel.update.yields('error', null, null);
+      controller.editUser(req, res);
+      expect(res.status.calledWith(500)).to.be.true;
+      expect(res.status().json.calledWith(sinon.match({ message: 'error' }))).to.be.true;
+      reloadStub(userModel, 'update');
+    });
+
+    it('should return 404 and message on user not found', function() {
+      userModel.update.yields(null, null, null);
+      controller.editUser(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+      expect(res.status().json.calledWith(sinon.match({ message: 'User not found' }))).to.be.true;
+      reloadStub(userModel, 'update');
+    });
+
+    it('should return 201 on success', function() {
+      userModel.update.yields(null, 1, 'success');
+      controller.editUser(req, res);
+      expect(res.status.calledWith(201)).to.be.true;
+      expect(res.status().end.called).to.be.true;
+    });
+  });
 });
