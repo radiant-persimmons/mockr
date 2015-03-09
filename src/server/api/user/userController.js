@@ -1,10 +1,16 @@
 var User = require('./userModel');
 
 module.exports = {
+  /**
+   * Returns session user
+   */
   getCurrentUser: function(req, res){
     res.status(200).json(req.user);
   },
 
+  /**
+   * Creates user from request and saves to database
+   */
   createUser: function (req, res) {
     var username = req.body.username;
     var userID = req.body.userID;
@@ -18,7 +24,9 @@ module.exports = {
     });
   },
 
-  //TODO: return user, specify user
+  /**
+   * Returns the database model associated with a username
+   */
   getUser: function (req, res) {
     var username = req.params.username;
     User.findOne({'username': username}, function (err, user) {
@@ -29,7 +37,9 @@ module.exports = {
     });
   },
 
-
+  /**
+   * Returns all user models of the database
+   */
   getUsers: function (req, res) {
     User.find(function (err, users) {
       if (err) return res.status(500).json({ message: err });
@@ -37,6 +47,9 @@ module.exports = {
     });
   },
 
+  /**
+   * Updates the user database model
+   */
   editUser: function (req, res) {
     var username = req.params.username;
     var newData = req.body;
