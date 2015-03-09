@@ -1,4 +1,5 @@
 /*jshint -W079 */
+/*jshint expr:true */
 
 // Set environment to test, always do this.
 process.env.NODE_ENV = 'test';
@@ -124,7 +125,7 @@ describe('UNIT: userController.js', function() {
     it('should run res.status(500).json() after saving is not successul', function(done) {
 
       // delete req.body.username;
-      userModel.prototype.save.yields('err')
+      userModel.prototype.save.yields('err');
       controller.createUser(req, res);
 
       setTimeout(function() {
