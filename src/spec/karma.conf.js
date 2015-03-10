@@ -5,23 +5,35 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '../',
+    basePath: '../..',
 
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
 
     // list of files / patterns to load in the browser
     files: [
       // src files
-      // 'client/app/core/controllers/app.controller.js',
-      // TODO: set src files
+      paths.bower + '/jquery/dist/jquery.min.js',
+      paths.bower + '/angular/angular.min.js',
+      paths.bower + '/angular-ui-router/release/angular-ui-router.min.js',
+      'node_modules/angular-mocks/angular-mocks.js',
+      paths.bower + '/lodash/lodash.min.js',
+      paths.client.root + '/app/app.js',
+      paths.client.root + '/app/modules/modules.js',
+      paths.client.root + '/app/modules/**/**/*.js',
+      paths.client.root + '/app/core/core.js',
+      paths.client.root + '/app/core/**/**/*.js',
+
+      // template files
+      // paths.client.root + '/app/**/*.html',
+      paths.build.html,
 
       // spec files
-      paths.spec.client,
-      paths.client.root + '/**/*.spec.js'
+      paths.spec.client.integration,
+      paths.spec.client.unit,
     ],
 
 
@@ -29,6 +41,7 @@ module.exports = function(config) {
     exclude: [
     ],
 
+    // plugins: ['karma-ng-html2js-preprocessor'],
 
     preprocessors: {
       /**
@@ -37,13 +50,26 @@ module.exports = function(config) {
        * (these files will be instrumented by Istanbul)
        */
       // TODO set source files for coverage
-      'client/**/*.js': ['coverage']
+      'src/client/**/*.js': ['coverage'],
+
+      /**
+       * Convert template views into Angular modules that can be loaded into
+       * $templateCache. See http://stackoverflow.com/questions/15214760/
+       * unit-testing-angularjs-directive-with-templateurl
+       */
+      'build/html/**/*.html': ['ng-html2js']
+    },
+
+    // HTML template preprocessor config
+    ngHtml2JsPreprocessor: {
+      stripPrefix: 'build'//,
+      // moduleName: 'my.templates'
     },
 
     // optionally, configure the coverage reporter
     coverageReporter: {
       type : 'lcov',
-      dir : '../coverage/client',
+      dir : 'coverage/client',
       subdir: '.'
     },
 

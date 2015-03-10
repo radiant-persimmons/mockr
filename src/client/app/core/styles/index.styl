@@ -1,63 +1,137 @@
-body, html
-  width      : 100%
-  height     : 100%
-  margin     : 0
-  padding    : 0
-  // background : #f1f1f1
-
-
 body
-  padding:10px
-  background-color:#2C3E50
-  *
-    box-sizing : border-box
+  height: 100%
+  padding-top:80px
+  background-color: white
+
 
 .navbar
   .user-avatar
     a
       padding: 0px
     img
+      position: relative
       max-width: 50px
+      top: 5px
 
   .navbar-brand
     img
       position: relative
       max-height: 65px
-      top: -22px
+      top: -8px
 
-  background-color:#ECF0F1
-  border: 1px solid
-  border-color:#3498DB
-  padding:10px
-  border-radius:4px
+    background-color:transparent
+    padding:0px
+    border-radius:4px
+    margin-top: 3px
+
+  .container
+    width: 95%
+    border: none
+    background-color: transparent
+    padding: 10px 0px
+    margin: 0px 20px
+
+  background-color: #17baef
+  border: solid black 0px
+
+.navbar-default
+  .navbar-text
+  .navbar-nav > li > a
+    margin: 0
+  .navbar-text
+    color: #fff
+    font-size: 28px
+    padding: 10px
+  .navbar-nav > li > a
+    color: #0a7396
+    font-size: 18px
+    padding: 20px 15px
 
 .content
+  padding: 0 10px 10px 10px
+  border-radius:15px
+
+.container-fluid
   background-color:#ECF0F1
-  border: 1px solid
-  border-color:#3498DB
+  border-radius:15px
   padding:10px
-  border-radius:4px
+  margin-left:14px
+  padding-left:15px
+  margin-top:14px
+  margin-right:14px
 
-.title
-  flex       : 1 0 auto
-  background : #ffffff
-  padding    : 40px
-
-.current-routes-list > h3
-  text-decoration: underline
+.container
+  padding-left:4%
+  padding-right:4%
+  padding-bottom:4%
+  padding-top:4%
+  border-radius: 15px
 
 .method-body
-  background-color:#2980B9
-  border: 1px solid
-  padding:5px
-  border-radius:4px
+  padding-left:2%
+  padding-right:2%
+  padding-bottom:2%
+  padding-top:2%
+  border : solid black 1px
+  border-radius: 15px
 
-  & > h1
-    display    : flex
-    margin     : 0
-    line-height: 0
-    font-size  : 100px
-    text-align : center
-    color      : #444444
-    align-items: center
-    justify-content: center
+.GET-inputBox
+  background-color: #9EF492
+
+.POST-inputBox
+  background-color: #F4EA8E
+
+.PUT-inputBox
+  background-color: #8EB5F4
+
+.DELETE-inputBox
+  background-color: #F49292
+
+.doc-box
+  width: 100%
+  clear: both
+
+.doc-list
+  padding: .25%
+  float: left
+  width: 15%
+  color: #e7e0d8
+
+.doc-list a
+  color: white
+
+.current-doc
+  float: right
+  width: 85%
+
+#myChart
+  width: 400px
+  height: 300px
+
+.widget-number
+  width: 400px
+  height: 300px
+  float: right
+  border: 1px solid grey
+  background-color: #47bbb3
+
+.widget-content
+  font-family: 'Open Sans'
+  vertical-align: middle
+  text-align: center
+  padding: 20% 5%
+
+.widget-header
+  font-size: 20px
+
+.widget-text
+  color: white
+
+.widget-data
+  font-size: 70px
+
+.app-content
+  img
+    max-width: 50%
+    padding: 3px
+    background: white

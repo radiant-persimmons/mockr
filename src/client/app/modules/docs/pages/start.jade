@@ -1,0 +1,33 @@
+div.app-content
+  h1 Getting Started
+  div
+    p.
+      After you create an account, you can sign-in to Mockr using your new Github account.
+      Once you have signed in to Mockr, you will be able to start creating custom API endpoints
+      that the front end of your application can make HTTP requests to and get back correct status
+      codes and appropriate response bodies.
+      
+    img(src="/../../images/create2.jpg")
+    
+    p.
+      You have several options to choose from when creating a new route. The first option is to
+      have static response, headers and body data from GET, POST, PUT, DELETE requests. The user can specify
+      what the response will be when a request is made to each endpoint and for each HTTP verb.
+    
+    img(src="/../../images/new-route.jpg")
+    
+    
+    p.
+      The second option is to have persistent data enabled for a particular endpoint such that the user is
+      able to make requests to the endpoint. On a POST request, the users data will be stored in the database
+      and will be able to be retrieved by a GET request. Put requests will also only update the data without
+      over writing it.
+      
+    img(src="/../../images/persist.jpg")
+    
+    
+    p.
+      Another feature of persistent data is that the user is able to specify business logic that gets applied
+      to incoming requests to the endpoint.  This logic is run in a Node virtual machine along side the
+      primary server.  If the user inputs invalid JavaScript or creates an infinte loop the virtual machine will crash
+      but the server will return a status of 500 server error.

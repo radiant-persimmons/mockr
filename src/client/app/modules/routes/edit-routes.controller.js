@@ -5,12 +5,14 @@
     .controller('EditRoutesController', EditRoutesController);
 
   /* @ngInject */
-  function EditRoutesController($state, $stateParams, user, routes) {
+  function EditRoutesController($state, $stateParams, $timeout, user, routes) {
     var vm = this;
 
     vm.allMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     vm.buttonStatus = 'SAVE';
+    vm.copiedMessageDisplay = false;
     vm.errorMessage = '';
+    vm.username = '';
 
     // form info regarding this route
     vm.formInfo = {
@@ -22,6 +24,14 @@
       businessLogic: ''
     };
 
+    vm.sortType     = 'id'; // set the default sort type
+    vm.sortReverse  = false;  // set the default sort order
+    vm.searchData   = '';     // set the default search/filter term
+
+    vm.tableHead = vm.formInfo.data[0];
+    vm.accessibleKeys = [];
+
+    vm.displayCopyMessage = displayCopyMessage;
     vm.updateRoute = updateRoute;
     vm.deleteRoute = deleteRoute;
     vm.toggleMethod = toggleMethod;
@@ -40,6 +50,12 @@
       getRoute().then(function() {
         console.log('route received');
       });
+
+      user.registerCb(function() {
+        vm.username = user.getUser().username;
+      });
+
+      activateZeroClipboard();
     }
 
     /**
@@ -68,7 +84,10 @@
      * deletes route entirely from database
      */
     function deleteRoute(argument) {
-      routes.deleteRoute(vm.formInfo.route);
+      routes.deleteRoute(vm.formInfo.route)
+        .then(function(res) {
+          $state.go('home.home');
+        });
     }
 
     /**
@@ -107,6 +126,9 @@
           vm.formInfo.data = res.data;
           vm.formInfo.methodKeys = Object.keys(vm.formInfo.methods);
           vm.formInfo.businessLogic = res.businessLogic;
+          vm.tableHead = vm.formInfo.data[0];
+
+          setKeysForBusinessLogic(vm.tableHead);
           return;
         }).catch(function(err) {
           console.error('error fetching route', vm.formInfo.route);
@@ -114,8 +136,36 @@
         });
 
     }
+
+    /**
+     * Display the 'Copied!' message, and set it to disappear after an
+     * interval.
+     */
+    function displayCopyMessage() {
+      vm.copiedMessageDisplay = true;
+      $timeout(function() {
+        vm.copiedMessageDisplay = false;
+      }, 1000);
+    }
+
+    function activateZeroClipboard() {
+      var client = new ZeroClipboard( document.getElementById('copy-button') );
+
+      client.on( 'ready', function( readyEvent ) {
+        client.on( 'aftercopy', function( event ) {
+          // `this` === `client`
+          // `event.target` === the element that was clicked
+        } );
+      } );
+    }
+
+    function setKeysForBusinessLogic(object) {
+      vm.accessibleKeys.push('res');
+      for(var key in object) {
+        if(key !== 'id' && key !== 'createdAt' && key !== 'updatedAt') {
+          vm.accessibleKeys.push(key);
+        }
+      }
+    }
   }
-
-
-
 })();

@@ -10,19 +10,15 @@
     var service = {
       routes: [],
       addRoute: addRoute,
+      deleteRoute: deleteRoute,
+      fetch: fetch,
       getRoute: getRoute,
-      updateRoute: updateRoute,
-      fetch: fetch
+      updateRoute: updateRoute
     };
 
     return service;
 
   ////////////////////////////////////
-
-
-    //TODO: Make this work
-    function deleteRoute(){}
-
 
     /**
     * adds a route to the database
@@ -31,34 +27,34 @@
     * @return {promise} $http returns a promise to be used later
     */
     function addRoute(body){
-
       return $http({
         method: 'POST',
         url: '/api/users/' + user.getUser().username + '/endpoints',
         data: body
       }).then(function(results) {
-        console.log('SUCCESS', results);
         // store route in data store
         service.routes.push(body.route);
       })
       .catch(function(err){
-        console.log('ERROR', err);
+        console.error('Error adding route:', err);
       });
     }
 
-    //TODO this needs fixed
-    function updateRoute(body){
+
+
+    /**
+     * deletes specified route from server
+     */
+    function deleteRoute(route){
       return $http({
-        method: 'PUT',
-        url: '/api/users/' + user.getUser().username + '/endpoints/' + body.route,
-        data: body
-      }).then(function(result) {
-        console.log('UPDATE SUCCESS:', result);
-      }).catch(function(err) {
-        console.log('UPDATE ERROR:', err);
+        method: 'DELETE',
+        url: '/api/users/' + user.getUser().username + '/endpoints/' + route,
+      }).then(function(res) {
+        service.routes = _.filter(service.routes, function(e) { return e !== route; });
+      }).catch(function(res) {
+        console.error('Error deleting route', res);
       });
     }
-
 
     /**
     * fetches the users active routes from the database and stores the for display
@@ -74,26 +70,44 @@
           service.routes.push(result.data[route].route);
         }
       }).catch(function(err) {
-        console.log('ERROR!!', err);
+        console.error('Error fetching routes', err);
       });
     }
 
+    /**
+     * returns database model for a specific route
+     * @param  {string} route Name of route, e.g. /api/messages
+     * @return {object}       Route model from the database
+     */
     function getRoute(route) {
-      console.log('inside routes service');
-      console.log(user.getUser().username, route);
       return $http({
         method: 'GET',
         url: '/api/users/' + user.getUser().username + '/endpoints/' + route
       }).then(function(result) {
-        console.log('result from routes.getRoute', result);
         return result.data;
-        //for (var route in result) {
-          //_this.routes.push(result[route]);
-        //}
       }).catch(function(err) {
-        console.log('ERROR!!', err);
+        console.error('Error getting route', route, ':', err);
       });
     }
+
+    /**
+     * Updates database route model with the information provided
+     * @param  {object} body Route model to update the database
+     * @return {undefined}
+     */
+    function updateRoute(body){
+      return $http({
+        method: 'PUT',
+        url: '/api/users/' + user.getUser().username + '/endpoints/' + body.route,
+        data: body
+      }).then(function(result) {
+      }).catch(function(err) {
+        console.error('UPDATE ERROR:', err);
+      });
+    }
+
+
+
 
   }
 

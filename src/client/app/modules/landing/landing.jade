@@ -1,0 +1,142 @@
+div.main-landing
+  div.promo
+    div.container
+      h2.title Mockr
+      p.intro A Front End Developer's friend to get a back-end up and running in under 5 minutes
+      div.btns
+        a(href="http://themes.3rdwavemedia.com/").btnA.btns.btn.btn-default Demo
+        a(ng-click='vm.getStartedLogin()').btnB.btns.btn.btn-default Get Started
+
+      ul.list-inline.meta
+        li
+          a(href="https://github.com/radiant-persimmons/mockr" target="_blank") View on Github
+        li
+          a(href="/documentation") Full Documentation
+        li 
+          a(href="#team") Created by: Team Mockr
+    div.social-media
+      div.social-media-inner
+        ul.list-inline.github
+          li.github-star
+            iframe(src="http://ghbtns.com/github-btn.html?user=&repo=radiant-persimmons/mockr&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20")
+          li.github-fork
+            iframe(src="http://ghbtns.com/github-btn.html?user=&repo=radiant-persimmons/mockr&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20")
+  div.about
+    div.container
+      h2.title What is Mockr?
+      p.centerme Mockr speeds up full-stack application production by supporting front end development before the back end is complete. More than a typical mocking tool, Mockr can emulate a persistent data store, allowing developers to dynamically alter response content through their API requests.
+      
+      video(width="320" height="240" controls)
+        source(src="/../../images/mockr_animation.mov")
+
+      div.row
+        div.item.col-md-4.col-sm-6.col-xs-12
+          h3.sub-title Designed for Engineers
+          p Creating a full stack application can be frustrating and time consuming. Mockr provides an easy-to-use interface that allows developers to get their application running and data-flowing fast.
+        div.item.col-md-4.col-sm-6.col-xs-12
+          h3.sub-title Data Persistance
+          p Mockr provides developers the option send data to our server and benefit from their data being updated in our database and persist over the lifetime of their application.
+        div.item.col-md-4.col-sm-6.col-xs-12
+          h3.sub-title Mock Data
+          p Want to use mock data? No problem. Create a route on Mockr and add what you want returned from the server when you make a request to that specifc endpoint from your front-end. 
+        div.item.col-md-4.col-sm-6.col-xs-12
+          h3.sub-title Business Logic
+          p Implement your own business logic to ensure consistency in your data. This will give you the option to manipulate your data before it is inserted into our database.
+        div.item.col-md-4.col-sm-6.col-xs-12
+          h3.sub-title Customize Endpoints
+          p Unlike some other websites, we let you customize your endpoints so you can name them whatever you would like.
+        div.item.col-md-4.col-sm-6.col-xs-12
+          h3.sub-title Analytics
+          p After you create a route, Click on the graph button next a route to see how many people are accessing your site!
+  div.features   
+    div.container
+      h2.title Features
+      ul.feature-list
+          li Specify your own Mock Data
+          li Opt-in for Data Persistance
+          li Built on Bootstrap 3.3
+          li Enable Business Logic
+          li Custom Endpoints
+          li Analytics for Endpoints
+          li Easily create, edit and delete routes
+
+  div.get-started
+    div.container
+      h2.title Get Started
+      h3.sub-title Part 1
+      p 1. Create a route in Mockr
+      img(src="/../../images/addRouteScreenShot.png" width="500px" height="auto")
+      p 2. Make a request to Mockr in Chrome
+
+      p See Response
+
+      h3.sub-title Part 2
+      p See Ajax request below in our sample messaging application
+      p Change out the request to Mockr url with your desired Endpoints
+      p See the Response
+      pre
+        code.language-javascript.
+          var hello = function(str){
+            return str;
+          }
+          
+        
+  div.team
+    div.container
+      h2.title The Mockr Team
+      div.row
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures
+            img(src="/../../images/andrew.jpg" height="200px")
+            div.picture-links
+              a(href="https://github.com/AndrewSouthpaw")
+                img.github(src="/../../images/github.png" height="50px")
+              a(href="https://www.linkedin.com/profile/view?id=109257905&authType=NAME_SEARCH&authToken=v_2X&locale=en_US&trk=tyah2&trkInfo=idx%3A1-1-1%2CtarId%3A1425765494920%2Ctas%3Aandrew+smith")  
+                img.linkedIn(src="/../../images/linkedIn.png"  height="50px")
+          h3.sub-title Andrew Smith
+          p Software Engineer
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures 
+            img(src="/../../images/jake.jpg" height="200px")
+            div.picture-links
+              a(href="https://github.com/jbobron")
+                img.github(src="/../../images/github.png" href="linkedin" height="50px")
+              a(href="http://www.linkedin.com/in/jacobobron")
+                img.linkedIn(src="/../../images/linkedIn.png" href="linkedin" height="50px")
+          h3.sub-title Jake Obron
+          p Software Engineer
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures
+            img(src="/../../images/karim.jpg" height="200px")
+            div.picture-links
+              a(href="https://github.com/khkyler")
+                img.github(src="/../../images/github.png" height="50px")
+              a(href="https://www.linkedin.com/profile/view?id=236067269&authType=NAME_SEARCH&authToken=wTq7&locale=en_US&trk=tyah2&trkInfo=idx%3A1-1-1%2CtarId%3A1425779565543%2Ctas%3Akarim")
+                img.linkedIn(src="/../../images/linkedIn.png" height="50px")
+          h3.sub-title Karim Kyler
+          p Software Engineer
+        div.item.col-md-3.col-sm-6.col-xs-12
+          div.pictures
+            img(src="/../../images/ruben.jpg" height="200px")
+            div.picture-links
+              a(href="https://github.com/ruben1")
+                img.github(src="/../../images/github.png" height="50px")
+              a(href="https://www.linkedin.com/profile/view?id=174580014&authType=OUT_OF_NETWORK&authToken=GHYY&locale=es_ES&srchid=616871191425779601521&srchindex=1&srchtotal=156194&trk=vsrp_people_res_name&trkInfo=VSRPsearchId%3A616871191425779601521%2CVSRPtargetId%3A174580014%2CVSRPcmpt%3Aprimary%2CVSRPnm%3A")
+                img.linkedIn(src="/../../images/linkedIn.png" height="50px")
+          h3.sub-title Ruben Vicario
+          p Software Engineer
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+

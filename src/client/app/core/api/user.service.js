@@ -33,7 +33,7 @@
         // After getting info, mark as resolved and run registered callbacks
         resolved = true;
         fnCallbacks.forEach(function(cb) {
-          cb();
+          return cb();
         });
       });
     }
@@ -53,10 +53,15 @@
      * @return {undefined}  None
      */
     function registerCb(cb) {
+      if (typeof cb !== 'function') {
+        throw 'user#registerCb: only takes functions as callbacks';
+      }
+
       if (resolved) {
-        cb();
+        return cb();
       } else {
         fnCallbacks.push(cb);
+        return true;
       }
     }
 

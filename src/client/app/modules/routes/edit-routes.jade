@@ -1,6 +1,13 @@
 h1 Edit Route
-form
+form(name="editForm")
   h3 {{ vm.formInfo.route }}
+  h5 Public API URL:
+    code http://www.mockr.co/1/{{vm.username}}/{{vm.formInfo.route}}
+    button#copy-button(data-clipboard-text="http://www.mockr.co/1/{{vm.username}}/{{vm.formInfo.route}}"
+                       title="Copy to clipboard"
+                       ng-click="vm.displayCopyMessage()")
+      span.glyphicon.glyphicon-copy
+    span.clipboard-copy-message(ng-show="vm.copiedMessageDisplay")  Copied!
   div.checkbox-inline
     label
       input(type="checkbox"
@@ -8,12 +15,9 @@ form
             ng-click="vm.togglePersistence()")
       {{ 'Persistent' }}
 
-  div.persistent-data-display(ng-show="vm.formInfo.persistence")
-    label Persistent data
-    p {{ vm.formInfo.data.length === 0 ? 'No data' : vm.formInfo.data | json }}
-
   div.methods-selector.form-group(ng-hide="vm.formInfo.persistence")
-    div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
+    div.method.checkbox-inline(ng-repeat="method in vm.allMethods" ng-class="method + '-inputBox'")
+
       label
         input(type="checkbox"
               ng-checked="!!vm.formInfo.methods[method]"
@@ -21,13 +25,18 @@ form
         {{ method }}
 
   div.method-body.form-group(ng-hide="vm.formInfo.persistence"
-                             ng-repeat="method in vm.formInfo.methodKeys")
+                             ng-repeat="method in vm.formInfo.methodKeys"  ng-class="method + '-inputBox'" )
     label {{ method }}
 
     div.form-group
       label Status code
       input.form-control(type="number"
-                         ng-model="vm.formInfo.methods[method].status")
+                         name="status"
+                         ng-model="vm.formInfo.methods[method].status"
+                         ng-pattern="/^(?!.*\/\/)[0-9][0-9]*$/"
+                         ng-class="{ 'alert-danger' : editForm.response.$invalid && !editForm.response.$pristine }"
+                         role="alert"
+                         required)
     div.form-group
       label Headers
       textarea.form-control(rows="1"
@@ -35,14 +44,29 @@ form
     div.form-group
       label Response
       textarea.form-control(rows="3"
-                            ng-model="vm.formInfo.methods[method].data")
+                            ng-model="vm.formInfo.methods[method].data"
+                            name="response"
+                            ng-class="{ 'alert-danger' : editForm.status.$invalid && !editForm.status.$pristine }"
+                            role="alert"
+                            required)
 
   div.business-logic.form-group(ng-show="vm.formInfo.persistence")
-  div.form-group
+    p You can access this parameters inside your business logic:
+    ul
+      li(ng-repeat="key in vm.accessibleKeys")
+        {{key}}
+
     label Business Logic
     textarea.form-control(rows="3"
-                          ng-model="vm.formInfo.businessLogic")
+                            ng-model="vm.formInfo.businessLogic")
 
-  div.submit-area.form-group
-    button.btn.btn-primary(ng-click="vm.updateRoute()") {{ vm.buttonStatus }}
-    div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
+
+  div.submit-area.form-inline
+    //- div.form-group
+    button.btn.btn-primary(ng-click="vm.updateRoute()" ng-disabled="editForm.$invalid"
+                           style="padding-right: 15px") {{ vm.buttonStatus }}
+    //- div.form-group
+    button.btn.btn-danger(ng-click="vm.deleteRoute()" ng-disabled="editForm.$invalid") DELETE
+
+  div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
+

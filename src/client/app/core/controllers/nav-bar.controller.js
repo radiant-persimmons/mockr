@@ -4,11 +4,13 @@
     .controller('NavbarController', NavbarController);
 
   /* @ngInject */
-  function NavbarController(user) {
+  function NavbarController(user, auth) {
     var vm = this;
     vm.avatar = '';
     vm.loggedIn = false;
     vm.username = '';
+    vm.login = login;
+    vm.logout = logout;
 
     activate();
 
@@ -16,6 +18,14 @@
 
     function activate() {
       user.registerCb(userResolved);
+    }
+
+    function login() {
+      auth.login();
+    }
+
+    function logout() {
+      auth.logout();
     }
 
     function userResolved() {

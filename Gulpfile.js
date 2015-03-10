@@ -140,6 +140,7 @@ gulp
 gulp
   .task('lint', tasks.lint)
   .task('karma', tasks.karma)
+  .task('nightwatch', tasks.nightwatch)
   .task('mocha', tasks.mocha)
   .task('test',
     $.sequence('lint',

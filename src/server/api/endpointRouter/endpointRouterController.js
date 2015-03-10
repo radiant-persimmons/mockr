@@ -1,8 +1,10 @@
+var _ = require('lodash');
 var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
 var url = require('url');
-var vm = require('vm');
 var logic = require('../../utils/businessLogic.js');
+var utils = require('../../utils');
+var _ = require('lodash');
 
 var getData = function(req, res, next) {
   var username = req.params.username;
@@ -12,37 +14,34 @@ var getData = function(req, res, next) {
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
-    if(!endpoint) {
+    if (!endpoint) {
       return res.status(500).end(err);
     } else {
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {
+        if (err) return res.status(500).json(err); 
 
-      //if persistance is set to true, we let the user persist data through their API endpoint
-      if(endpoint.persistence === true) {
-
-        //if we have params, get specific data from data inserted through API created
-        if(req.query.id) {
-          var queryID = parseInt(req.query.id);
-          for(var i=0; i<endpoint.data.length; i++) {
-            var dataPoint = endpoint.data[i];
-            if(dataPoint.id === queryID) {
-              return res.status(200).json(dataPoint);
-            }
+        //if persistance is set to true, we let the user persist data, manipulate it and read it through their API endpoint
+        if(endpoint.persistence === true) {
+          //apply queries passed through the endpoint url
+          data = utils.applyQueries(req, endpoint.data);
+          if(!data) {
+            return res.status(500).end();
           }
-          return res.status(500).end();
-        } else {
-          //add headers in the response
-          //get data from data inserted through API created
-          data = endpoint.data;
           return res.status(200).json(data);
+
+        //else, if persistance is set to false
+        } else {
+          //TODO check if we have nested object with that method
+          //if GET method data hasn't been set, end response
+          if (!endpoint.methods[method]) return res.status(500).end();
+          //add headers in the response
+
+          //get statusCode and data from user input
+          var statusCode = endpoint.methods[method].status;
+          data = endpoint.methods[method].data;
+          return res.status(statusCode).json(data);
         }
-      } else {
-        //TODO check if we have nested object with that method
-        if(!endpoint.methods[method]) return res.status(500).end();
-        var statusCode = endpoint.methods[method].status;
-        //get data from user input
-        data = endpoint.methods[method].data;
-        return res.status(statusCode).json(data);
-      }
+      });
     }
   });
 };
@@ -54,50 +53,43 @@ var postData = function(req, res, next) {
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
-    if(!endpoint) {
+    if (!endpoint) {
       return res.status(500).end(err);
     } else {
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {  
+        if (err) return res.status(500).json(err); 
+        //if persistance is set to true, we let the user persist data through their API endpoint
+        if (endpoint.persistence === true) {
+          //run business logic
+          logic.runLogic(endpoint.businessLogic, req, function(err, newContent) {
+            if (err) return res.status(500).json(err);
+            if (newContent.res) return res.status(500).json(newContent.res);
 
-      //if persistance is set to true, we let the user persist data through their API endpoint
-      if(endpoint.persistence === true) {
-        //run business logic
+            newContent = utils.augmentPostData(newContent, endpoint);
 
-        //get business logic from db and pass it
+            //update endpoint.data of that endpoint
+            utils.insertPostDataToDb(username, route, newContent, function(err) {
+              if (err) return res.status(500).json(err); 
 
-        logic.runLogic(endpoint.businessLogic, req, function(err, newContent) {
-          if(err) return res.status(500).json(err);
-          if(newContent.res) return res.status(500).json(newContent.res);
-          console.log('result--_>', newContent);
+              //update count of objects in db
+              utils.updateObjectCount(username, route, endpoint, function(err) {
+                if (err) return res.status(500).json(err); 
+                return res.status(201).end();
+              });
+            }); 
+          });
+        } else {
+          //if GET method data hasn't been set, end response
+          if (!endpoint.methods[method]) return res.status(500).end();
 
-          //var newContent = req.body;
-
-          //TODO --> we could do some data validation in here, checking for specific key-value pairs that the user passed through the UI
-          //TODO --> Have to save to db the increment of the count
-          newContent.id = endpoint.count++;
-          //for(var column in newContent) {
-            //if(!endpoint.schemaDB[column]) {
-              //console.log('before deleting', newContent);
-              //delete newContent[column];
-              //console.log('after deleting newContent', newContent);
-            //}
-          //}
-          //update endpoint.data of that endpoint
-          Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent}}, function(err, numAffected, rawResponse) {
-            if (err) return res.status(500).json(err); 
-            console.log(numAffected, rawResponse);
-            return res.status(201).end();
-          }); 
-        });
-      } else {
-        if(!endpoint.methods[method]) return res.status(500).end();
-        var statusCode = endpoint.methods[method].status;
-        //get data from user input
-        var data = endpoint.methods[method].data;
-        return res.status(statusCode).json(data);
-      }
+          //get statusCode and data from user input
+          var statusCode = endpoint.methods[method].status;
+          var data = endpoint.methods[method].data;
+          return res.status(statusCode).json(data);
+        }
+      });
     }
   });
-
 };
 
 var changeData = function(req, res, next) {
@@ -107,56 +99,44 @@ var changeData = function(req, res, next) {
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
-    if(!endpoint) {
+    if (!endpoint) {
       return res.status(500).end(err);
     } else {
-      console.log('method', method);
-
-      //if persistance is set to true, we let the user persist data through their API endpoint
-      if(endpoint.persistence === true) {
-        //we need a parameter passed to know what to change
-        if(!req.query.id) {
-          //we need some data to know what to look for
-          return res.status(500).end();
-        } else {
-          var newContent = req.body;
-
-          //for(var column in newContent) {
-          //  if(!endpoint.schemaDB[column]) {
-          //    delete newContent[column];
-          //  }
-          //}
-          var queryID = parseInt(req.query.id);
-          var deleteQuery = {id: queryID};
-
-          var updateHandler = function(err, numAffected, rawResponse) {
-            if (err) return res.status(500).json(err);
-            console.log(numAffected, rawResponse);
-            Endpoint.update({ 'username': username, 'route': route }, {$push: {'data': newContent} }, function(err, numAffected, rawResponse) {
-              if (err) return res.status(500).json(err);
-              console.log(numAffected, rawResponse);
-              return res.status(201).end();
-            });
-          };
-
-          for(var i = 0; i < endpoint.data.length; i++) {
-            var dataPoint = endpoint.data[i];
-            if(dataPoint.id === queryID) {
-              //update data
-              //delete dataPoint;
-              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery} }, updateHandler);
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {
+        if (err) return res.status(500).json(err); 
+        //if persistance is set to true, we let the user persist data through their API endpoint
+        if (endpoint.persistence === true) {
+          //we need a parameter passed to know what to change
+          if (!req.query.id) {
+            return res.status(500).end();
+          } else {
+            var queryID = parseInt(req.query.id);
+            var dataPoint = utils.lookForDataPoint(endpoint.data, queryID);
+            if(!dataPoint) {
+              return res.status(500).end();
             }
+
+            var newContent = utils.updateData(req.body, dataPoint);
+            //delete dataPoint;
+            var deleteQuery = {id: queryID};
+
+            utils.removeDataFromDb(username, route, deleteQuery, function(err) {
+              if (err) return res.status(500).json(err);
+              utils.insertPostDataToDb(username, route, newContent, function(err) {
+                if (err) return res.status(500).json(err);
+                return res.status(201).end();
+              });
+            });
           }
-          return res.status(500).end();
+        } else {
+          if (!endpoint.methods[method]) return res.status(500).end();
+
+          //get statusCode and data from user input
+          var statusCode = endpoint.methods[method].status;
+          var data = endpoint.methods[method].data;
+          return res.status(statusCode).json(data);
         }
-      } else {
-        if(!endpoint.methods[method]) return res.status(500).end();
-        var statusCode = endpoint.methods[method].status;
-        //get data from user input
-        //check what verb is normally used?? PUT or PATCH
-        var data = endpoint.methods[method].data;
-        return res.status(statusCode).json(data);
-      }
+      });
     }
   });
 };
@@ -165,47 +145,45 @@ var deleteData = function(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
+  var data;
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
     if (err) return res.status(500).end(err);
-    if(!endpoint) {
+    if (!endpoint) {
       return res.status(500).end(err);
     } else {
-
-      var updateHandler = function(err, numAffected, rawResponse) {
-        if (err) return res.status(500).json(err);
-        console.log('data pull successul');
-        console.log(numAffected, rawResponse);
-        return res.status(201).end();
-      };
-
-      //if persistance is set to true, we let the user persist data through their API endpoint
-      if(endpoint.persistence === true) {
-        //we need a parameter passed to know what to change
-        if(!req.query.id) {
-          //we need some data to know what to look for
-          return res.status(500).end();
-        } else {
-          console.log('gets here');
-          var queryID = parseInt(req.query.id);
-          var deleteQuery = {id: queryID};
-          for(var i = 0; i < endpoint.data.length; i++) {
-            var dataPoint = endpoint.data[i];
-            if(dataPoint.id === queryID) {
-              console.log('passes conditional');
-              //delete datapoint passed by the user
-              Endpoint.update({ 'username': username, 'route': route }, {$pull: {'data': deleteQuery}}, updateHandler);
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {
+        if (err) return res.status(500).json(err); 
+        //if persistance is set to true, we let the user persist data through their API endpoint
+        if (endpoint.persistence === true) {
+          //we need a parameter passed to know what to change
+          if (!req.query.id) {
+            //if no id is passed in the url endpoint, end connection
+            return res.status(500).end();
+          } else {
+            data = endpoint.data;
+            var queryID = parseInt(req.query.id);
+            var dataPoint = utils.lookForDataPoint(data, queryID);
+            if(!dataPoint) {
+              return res.status(500).end();
             }
+
+            var deleteQuery = {id: queryID};
+
+            utils.removeDataFromDb(username, route, deleteQuery, function(err) {
+              if (err) return res.status(500).json(err);
+              return res.status(201).end();
+            });
           }
-          return res.status(500).end();
+        } else {
+          if(!endpoint.methods[method]) return res.status(500).end();
+
+          //get statusCode and data from user input
+          var statusCode = endpoint.methods[method].status;
+          data = endpoint.methods[method].data;
+          return res.status(statusCode).json(data);
         }
-      } else {
-        if(!endpoint.methods[method]) return res.status(500).end();
-        var statusCode = endpoint.methods[method].status;
-        //get data from user input
-        var data = endpoint.methods[method].data;
-        return res.status(statusCode).json(data);
-      }
+      });
     }
   });
 };

@@ -1,5 +1,5 @@
 h1 New Route
-form
+form(name="editForm")
   h3 {{ vm.formInfo.route }}
 
   div.checkbox-inline
@@ -10,7 +10,7 @@ form
       {{ 'Persistent' }}
 
   div.methods-selector.form-group(ng-hide="vm.formInfo.persistence")
-    div.method.checkbox-inline(ng-repeat="method in vm.allMethods")
+    div.method.checkbox-inline(ng-repeat="method in vm.allMethods" ng-class="method + 'checkbox'")
       label
         input(type="checkbox"
               ng-checked="!!vm.formInfo.methods[method]"
@@ -18,28 +18,36 @@ form
         {{ method }}
 
   div.method-body.form-group(ng-hide="vm.formInfo.persistence"
-                             ng-repeat="method in vm.formInfo.methodKeys")
+                             ng-repeat="method in vm.formInfo.methodKeys" ng-class="method + '-inputBox'")
     label {{ method }}
 
     div.form-group
       label Status code
-      input.form-control(type="number"
-                         ng-model="vm.formInfo.methods[method].status")
+      input.form-control.status(type="number"
+                         ng-model="vm.formInfo.methods[method].status"
+                         name="status"
+                         ng-pattern="/^(?!.*\/\/)[0-9][0-9]*$/"
+                         ng-class="{ 'alert-danger' : editForm.status.$invalid && !editForm.status.$pristine }"
+                         role="alert"
+                         required)
     div.form-group
       label Headers
-      textarea.form-control(rows="1"
+      textarea.form-control.headers(rows="1"
                             ng-model="vm.formInfo.methods[method].headers")
     div.form-group
       label Response
-      textarea.form-control(rows="3"
-                            ng-model="vm.formInfo.methods[method].data")
+      textarea.form-control.response-body(rows="3"
+                            ng-model="vm.formInfo.methods[method].data"
+                            name="response"
+                            ng-class="{ 'alert-danger' : editForm.response.$invalid && !editForm.response.$pristine }"
+                            role="alert"
+                            required)
 
   div.business-logic.form-group(ng-show="vm.formInfo.persistence")
-    div.form-group
-      label Business Logic
-      textarea.form-control(rows="3"
+    label Business Logic
+    textarea.form-control(rows="3"
                             ng-model="vm.formInfo.businessLogic")
 
   div.submit-area.form-group
-    button.btn.btn-primary(ng-click="vm.saveRoute()") {{ vm.buttonStatus }}
+    button.btn.btn-primary(ng-click="vm.saveRoute()" ng-disabled="editForm.$invalid") {{ vm.buttonStatus }}
     div.alert.alert-danger(ng-show="vm.errorMessage") {{ vm.errorMessage }}
