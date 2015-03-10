@@ -186,7 +186,7 @@ describe('routes service', function() {
       $httpBackend
         .expectGET('/api/users/Andrew/endpoints')
         .respond(401);
-      routes.fetch('Andrew')
+      routes.fetch('Andrew');
 
       $httpBackend.flush();
 
@@ -245,7 +245,7 @@ describe('routes service', function() {
       $httpBackend
         .expectGET('/api/users/Andrew/endpoints/api/test')
         .respond(401);
-      routes.getRoute('api/test')
+      routes.getRoute('api/test');
 
       $httpBackend.flush();
 
