@@ -20,6 +20,7 @@ module.exports = function(config) {
       paths.bower + '/angular/angular.min.js',
       paths.bower + '/angular-ui-router/release/angular-ui-router.min.js',
       'node_modules/angular-mocks/angular-mocks.js',
+      paths.bower + '/lodash/lodash.min.js',
       paths.client.root + '/app/app.js',
       paths.client.root + '/app/modules/modules.js',
       paths.client.root + '/app/modules/**/**/*.js',

@@ -49,6 +49,14 @@ describe('user service', function() {
       expect(user.getUser()).to.eql({ username: 'AndrewSouthpaw' });
     });
 
+    it('should handle error', function() {
+      $httpBackend
+        .expectGET('/api/user')
+        .respond(400);
+
+      $httpBackend.flush();
+    });
+
   });
 
   describe('#loggedIn', function() {
