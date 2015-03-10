@@ -102,7 +102,7 @@
           height: 300
         },
         color: {
-          pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728']
+          pattern: ['#9ef492', '#f4ea8e', '#8eb5f4', '#f49292', '#2ca02c', '#98df8a', '#d62728']
         },
         data: {
           x: 'days',
