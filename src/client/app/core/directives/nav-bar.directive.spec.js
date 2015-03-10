@@ -1,3 +1,6 @@
+/*jshint -W079 */
+/*jshint expr:true */
+
 describe('UNIT: navbar directive', function() {
   var element;
   var scope;
@@ -11,8 +14,12 @@ describe('UNIT: navbar directive', function() {
     var NavbarControllerStub = function() {
       var vm = this;
       vm.loggedIn = false;
-    }
+    };
 
+    /**
+     * Since `run.config.js` uses `auth` and `user` services, we need to stub
+     * them here so the app can finish loading.
+     */
     beforeEach(module(function($provide) {
       $provide.value('auth', {});
       $provide.value('user', {});
@@ -21,12 +28,20 @@ describe('UNIT: navbar directive', function() {
     // Load directive template provided by ng-html2js
     beforeEach(module('/html/core/directives/nav-bar.directive.html'));
 
+    /**
+     * Provide stubbed version of directive controller in lieu of real
+     * one.
+     */
     beforeEach(function() {
       module('app.core', function($provide, $controllerProvider) {
         $controllerProvider.register('NavbarController', NavbarControllerStub);
       });
     });
 
+    /**
+     * Handle other templates that should be stubbed, create a new scope,
+     * compile the directive into an element, and run a digest cycle.
+     */
     beforeEach(inject(function($compile, $rootScope, _$httpBackend_) {
       /**
        * Because the directive is part of app.core, the whole page will be
@@ -40,6 +55,8 @@ describe('UNIT: navbar directive', function() {
       scope = $rootScope.$new();
       element = $compile('<navbar></navbar>')(scope);
       scope.$digest();
+
+      // Flush $httpBackend to clear out template requests
       $httpBackend.flush();
     }));
 
@@ -53,7 +70,7 @@ describe('UNIT: navbar directive', function() {
     var NavbarControllerStub = function() {
       var vm = this;
       vm.loggedIn = true;
-    }
+    };
 
     beforeEach(module(function($provide) {
       $provide.value('auth', {});

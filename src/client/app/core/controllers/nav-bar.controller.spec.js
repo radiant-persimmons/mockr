@@ -1,3 +1,6 @@
+/*jshint -W079 */
+/*jshint expr:true */
+
 describe('UNIT: nav-bar.controller.js', function() {
 
   var auth;
