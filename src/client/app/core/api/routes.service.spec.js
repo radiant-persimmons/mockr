@@ -93,5 +93,107 @@ describe('routes service', function() {
     });
   });
 
+  describe('#deleteRoute', function() {
+
+    var body;
+
+    it('returns a $http promise object', function() {
+      expect(routes.deleteRoute()).to.be.a('object');
+      expect(routes.deleteRoute()).to.have.keys(['$$state']);
+    });
+
+    it('should call $http DELETE with current user', function() {
+      var success = false;
+
+      $httpBackend
+        .expectDELETE('/api/users/Andrew/endpoints/api/test')
+        .respond(201);
+
+      routes.deleteRoute('api/test')
+        .then(function() {
+          success = true;
+        });
+      $httpBackend.flush();
+
+      expect(success).to.be.ok;
+    });
+
+    it('should remove the route from list of routes on success', function() {
+      routes.routes = ['api/test', 'api/test2'];
+
+      $httpBackend
+        .expectDELETE('/api/users/Andrew/endpoints/api/test')
+        .respond(201);
+      routes.deleteRoute('api/test');
+      $httpBackend.flush();
+
+      expect(routes.routes).to.eql(['api/test2']);
+    });
+
+    it('should not affect routes on failure', function() {
+      routes.routes = ['api/test'];
+
+      $httpBackend
+        .expectDELETE('/api/users/Andrew/endpoints/api/test')
+        .respond(401);
+      routes.deleteRoute('api/test');
+      $httpBackend.flush();
+
+      expect(routes.routes).to.eql(['api/test']);
+    });
+
+  });
+
+  describe('#fetch', function() {
+    var body;
+
+    it('returns a $http promise object', function() {
+      expect(routes.fetch()).to.be.a('object');
+      expect(routes.fetch()).to.have.keys(['$$state']);
+    });
+
+    it('should call $http DELETE with current user', function() {
+      var success = false;
+
+      $httpBackend
+        .expectGET('/api/users/Andrew/endpoints')
+        .respond(201);
+
+      routes.fetch('Andrew')
+        .then(function() {
+          success = true;
+        });
+      $httpBackend.flush();
+
+      expect(success).to.be.true;
+    });
+
+    it('should set routes from server', function() {
+      routes.routes = ['api/test2'];
+
+      $httpBackend
+        .expectGET('/api/users/Andrew/endpoints')
+        .respond([{route: 'api/test1'}]);
+      routes.fetch('Andrew');
+      $httpBackend.flush();
+
+      expect(routes.routes).to.eql(['api/test1']);
+    });
+
+    it('handles an error', function() {
+      routes.routes = [];
+
+      $httpBackend
+        .expectGET('/api/users/Andrew/endpoints')
+        .respond(401);
+      routes.fetch('Andrew')
+
+      $httpBackend.flush();
+
+      expect(routes.routes).to.eql([]);
+    });
+
+
+  });
 
 });
