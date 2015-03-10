@@ -4,7 +4,6 @@ describe('UNIT: test directive', function() {
   var $httpBackend;
 
   function TestControllerStub() {
-    console.log('hello navbar stub');
     var vm = this;
     vm.name = 'hello';
   }

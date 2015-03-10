@@ -5,7 +5,6 @@
 
   /* @ngInject */
   function TestController(user, auth) {
-    console.log('TestController');
     vm.name = 'andrew'
   }
 

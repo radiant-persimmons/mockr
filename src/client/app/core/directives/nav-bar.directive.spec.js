@@ -1,43 +1,96 @@
-// describe('UNIT: navbar directive', function() {
-//   console.log('UNIT NAVBAR');
-//   var element;
-//   var scope;
-//   var $httpBackend;
+describe('UNIT: navbar directive', function() {
+  var element;
+  var scope;
+  var $httpBackend;
 
-//   function NavbarControllerStub() {
-//     console.log('hello navbar stub');
-//     var vm = this;
-//     vm.test = 'hello';
-//   }
+  describe('before login', function() {
+    /**
+     * Because it's not clear how to do otherwise, different controller stubs
+     * are provided to represent different states in the navbar.
+     */
+    var NavbarControllerStub = function() {
+      var vm = this;
+      vm.loggedIn = false;
+    }
 
-//   beforeEach(module(function($provide) {
-//     $provide.value('auth', {});
-//     $provide.value('user', {});
-//   }));
+    beforeEach(module(function($provide) {
+      $provide.value('auth', {});
+      $provide.value('user', {});
+    }));
 
-//   beforeEach(function() {
-//     module('app.core', function($provide, $controllerProvider) {
-//       $controllerProvider.register('NavbarController', NavbarControllerStub);
-//     });
-//   });
+    // Load directive template provided by ng-html2js
+    beforeEach(module('/html/core/directives/nav-bar.directive.html'));
 
-//   // beforeEach(module('app.core'), function($provide, $controllerProvider) {
-//   //   $controllerProvider.register('NavbarController', NavbarControllerStub);
-//   // });
+    beforeEach(function() {
+      module('app.core', function($provide, $controllerProvider) {
+        $controllerProvider.register('NavbarController', NavbarControllerStub);
+      });
+    });
 
-//   beforeEach(inject(function($compile, $rootScope, _$httpBackend_) {
-//     $httpBackend = _$httpBackend_;
-//     $httpBackend
-//       .expectGET('/html/core/directives/nav-bar.directive.html')
-//       .respond(200);
+    beforeEach(inject(function($compile, $rootScope, _$httpBackend_) {
+      /**
+       * Because the directive is part of app.core, the whole page will be
+       * loaded. Anticipate template requests for the landing page.
+       */
+      $httpBackend = _$httpBackend_;
+      $httpBackend
+        .expectGET('/html/modules/landing/landing.html')
+        .respond(200);
 
-//     element = $compile('<navbar></navbar>');
-//     $httpBackend.flush();
-//     scope = $rootScope.$new();
-//     scope.$digest();
-//   }));
+      scope = $rootScope.$new();
+      element = $compile('<navbar></navbar>')(scope);
+      scope.$digest();
+      $httpBackend.flush();
+    }));
 
-//   it('should show login button, and logo links to root', function() {
-//     // expect()
-//   });
-// });
+    it('should show login button, and logo links to root', function() {
+      expect(element.find('a[href="/"]').hasClass('ng-hide')).to.be.false;
+      expect(element.find('a[href="/home"]').hasClass('ng-hide')).to.be.true;
+    });
+  });
+
+  describe('after login', function() {
+    var NavbarControllerStub = function() {
+      var vm = this;
+      vm.loggedIn = true;
+    }
+
+    beforeEach(module(function($provide) {
+      $provide.value('auth', {});
+      $provide.value('user', {});
+    }));
+
+    // Load directive template provided by ng-html2js
+    beforeEach(module('/html/core/directives/nav-bar.directive.html'));
+
+    beforeEach(function() {
+      module('app.core', function($provide, $controllerProvider) {
+        $controllerProvider.register('NavbarController', NavbarControllerStub);
+      });
+    });
+
+    beforeEach(inject(function($compile, $rootScope, _$httpBackend_) {
+      /**
+       * Because the directive is part of app.core, the whole page will be
+       * loaded. Anticipate template requests for the landing page.
+       */
+      $httpBackend = _$httpBackend_;
+      $httpBackend
+        .expectGET('/html/modules/landing/landing.html')
+        .respond(200);
+
+      scope = $rootScope.$new();
+      element = $compile('<navbar></navbar>')(scope);
+      scope.$digest();
+      $httpBackend.flush();
+    }));
+
+    it('should show username, avatar, logout, and logo links to home', function() {
+      expect(element.find('a[href="/"]').hasClass('ng-hide')).to.be.true;
+      expect(element.find('a[href="/home"]').hasClass('ng-hide')).to.be.false;
+
+      expect(element.find('ul li a[ng-click="vm.login()"]').parent().hasClass('ng-hide')).to.be.true;
+      expect(element.find('ul li a[ng-click="vm.logout()"]').parent().hasClass('ng-hide')).to.be.false;
+    });
+  });
+});
