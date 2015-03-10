@@ -196,4 +196,88 @@ describe('routes service', function() {
 
   });
 
+  describe('#getRoute', function() {
+
+    var body;
+
+    it('returns a $http promise object', function() {
+      expect(routes.getRoute()).to.be.a('object');
+      expect(routes.getRoute()).to.have.keys(['$$state']);
+    });
+
+    it('should call $http DELETE with current user', function() {
+      var success = false;
+
+      $httpBackend
+        .expectGET('/api/users/Andrew/endpoints/api/test')
+        .respond(201);
+
+      routes.getRoute('api/test')
+        .then(function() {
+          success = true;
+        });
+      $httpBackend.flush();
+
+      expect(success).to.be.true;
+    });
+
+    it('should set routes from server', function() {
+      var success = false;
+
+      $httpBackend
+        .expectGET('/api/users/Andrew/endpoints/api/test')
+        .respond({route: 'api/test'});
+
+      routes.getRoute('api/test')
+        .then(function(res) {
+          console.log('res', res);
+          if (res.route === 'api/test') success = true;
+        });
+
+      $httpBackend.flush();
+
+      expect(success).to.be.true;
+    });
+
+    it('handles an error', function() {
+      routes.routes = [];
+
+      $httpBackend
+        .expectGET('/api/users/Andrew/endpoints/api/test')
+        .respond(401);
+      routes.getRoute('api/test')
+
+      $httpBackend.flush();
+
+      expect(routes.routes).to.eql([]);
+    });
+  });
+
+  describe('#updateRoute', function() {
+    it('returns promise object', function() {
+      expect(routes.updateRoute({route: 'api/test'})).to.have.keys(['$$state']);
+    });
+
+    it('makes a request to server', function() {
+      $httpBackend
+        .expectPUT('/api/users/Andrew/endpoints/api/test')
+        .respond(200);
+
+      routes.updateRoute({route: 'api/test'});
+
+      // No assertions needed; will throw exception if $httpBackend not called
+      $httpBackend.flush();
+    });
+
+    it('handles error', function() {
+      $httpBackend
+        .expectPUT('/api/users/Andrew/endpoints/api/test')
+        .respond(401);
+
+      routes.updateRoute({route: 'api/test'});
+
+      // No assertions needed; will throw exception if $httpBackend not called
+      $httpBackend.flush();
+    });
+  });
 });

@@ -36,7 +36,7 @@
         service.routes.push(body.route);
       })
       .catch(function(err){
-        console.log('ERROR', err);
+        console.error('Error adding route:', err);
       });
     }
 
@@ -70,7 +70,7 @@
           service.routes.push(result.data[route].route);
         }
       }).catch(function(err) {
-        console.log('ERROR!!', err);
+        console.error('Error fetching routes', err);
       });
     }
 
@@ -80,19 +80,13 @@
      * @return {object}       Route model from the database
      */
     function getRoute(route) {
-      console.log('inside routes service');
-      console.log(user.getUser().username, route);
       return $http({
         method: 'GET',
         url: '/api/users/' + user.getUser().username + '/endpoints/' + route
       }).then(function(result) {
-        console.log('result from routes.getRoute', result);
         return result.data;
-        //for (var route in result) {
-          //_this.routes.push(result[route]);
-        //}
       }).catch(function(err) {
-        console.log('ERROR!!', err);
+        console.error('Error getting route', route, ':', err);
       });
     }
 
@@ -108,7 +102,7 @@
         data: body
       }).then(function(result) {
       }).catch(function(err) {
-        console.err('UPDATE ERROR:', err);
+        console.error('UPDATE ERROR:', err);
       });
     }
 
