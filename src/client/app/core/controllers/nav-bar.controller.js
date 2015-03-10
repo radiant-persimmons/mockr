@@ -5,6 +5,7 @@
 
   /* @ngInject */
   function NavbarController(user, auth) {
+    console.log('navbar controller');
     var vm = this;
     vm.avatar = '';
     vm.loggedIn = false;
