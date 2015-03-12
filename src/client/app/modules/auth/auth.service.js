@@ -5,7 +5,7 @@
     .factory('auth', auth);
 
   /* @ngInject */
-  function auth($http) {
+  function auth($window) {
 
     var service = {
       login: login,
@@ -20,12 +20,12 @@
      * logins user in by directing to server route for passport authentication
      */
     function login() {
-      window.location = '/api/auth/login';
+      $window.location.replace('/api/auth/login');
     }
 
     // logout user by directing to server route
     function logout() {
-      window.location = '/api/auth/logout';
+      $window.location.replace('/api/auth/logout');
     }
   }
 
