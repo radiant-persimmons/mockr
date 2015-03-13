@@ -4,7 +4,7 @@
 
 Version 0.1.0
 
-> A back end mocker tool for people whom don't know how to spell.
+> A front end developer's best friend to have a mock back end when the real back end isn't finished.
 
 ## Team
 
@@ -24,7 +24,7 @@ Version 0.1.0
 
 ## Usage
 
-> stuff
+> Visit [www.mockr.co](http://www.mockr.co) for usage info and documentation.
 
 ## Requirements
 
@@ -53,7 +53,6 @@ gulp
 Start learning about the project by reading the [Wiki](https://github.com/radiant-persimmons/mockr/wiki).
 
 View the project roadmap [here](https://waffle.io/radiant-persimmons/mockr).
-
 
 ## Contributing
 
