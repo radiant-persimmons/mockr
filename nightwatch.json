@@ -10,10 +10,7 @@
     "server_path" : "node_modules/selenium-server/lib/runner/selenium-server-standalone-2.45.0.jar",
     "port" : 4444,
     "log_path" : "",
-    "host" : "127.0.0.1",
-    "cli_args" : {
-      "webdriver.chrome.driver" : "src/spec/chromedriver"
-    }
+    "host" : "127.0.0.1"
   },
 
   "test_settings" : {
