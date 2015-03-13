@@ -4,6 +4,7 @@ module.exports = {
       .url('http://localhost:3000/')
       .assert.title('Mockr')
       .waitForElementPresent('button', 1000)
+      .end()
       // .click('.loginButton button')
       // .setValue('#login_field', ['mockr.app@gmail.com'])
       // .setValue('#password', ['MockMe2015'])

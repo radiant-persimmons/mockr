@@ -143,13 +143,15 @@ gulp
   .task('nightwatch', tasks.nightwatch)
   .task('mocha', tasks.mocha)
   .task('test',
-    $.sequence('clean',
+    $.sequence(//'clean',
                'lint',
-               // Build Jade templates for Karma tests
-               'jade:dev',
-               // Build HTML templates for Karma tests
-               'html:dev',
+               'prod',
+               // // Build Jade templates for Karma tests
+               // 'jade:dev',
+               // // Build HTML templates for Karma tests
+               // 'html:dev',
                'karma',
+               // 'nightwatch',
                'mocha')
   );
 
