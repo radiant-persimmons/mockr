@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/server/index.js",
     "postinstall": "node_modules/bower/bin/bower install && gulp deploy",
-    "test": "gulp test"
+    "test": "gulp test && (node src/server/index.js & sleep 5 && ./node_modules/nightwatch/bin/nightwatch)"
   },
   "repository": {
     "type": "git",
@@ -82,6 +82,7 @@
     "karma-sinon": "^1.0.4",
     "mocha": "^2.1.0",
     "passport-stub": "^1.0.1",
+    "selenium-server": "2.45.0",
     "sinon": "^1.12.2",
     "supertest": "^0.15.0"
   }

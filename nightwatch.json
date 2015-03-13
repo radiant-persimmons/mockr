@@ -7,8 +7,8 @@
 
   "selenium" : {
     "start_process" : true,
-    "server_path" : "src/spec/selenium-server-standalone-2.44.0.jar",
-    "port" : 99.0,
+    "server_path" : "node_modules/selenium-server/lib/runner/selenium-server-standalone-2.45.0.jar",
+    "port" : 4444,
     "log_path" : "",
     "host" : "127.0.0.1",
     "cli_args" : {
@@ -19,7 +19,7 @@
   "test_settings" : {
     "default" : {
       "launch_url" : "http://localhost",
-      "selenium_port"  : 99.0,
+      "selenium_port"  : 4444,
       "selenium_host"  : "localhost",
       "silent": true,
       "screenshots" : {
@@ -31,14 +31,7 @@
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
-    },
-
-    "chrome" : {
-      "desiredCapabilities": {
-        "browserName": "chrome",
-        "javascriptEnabled": true,
-        "acceptSslCerts": true
-      }
     }
+
   }
 }
