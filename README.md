@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/radiant-persimmons/mockr.svg?branch=develop)](https://travis-ci.org/radiant-persimmons/mockr) [![Coverage Status](https://coveralls.io/repos/radiant-persimmons/mockr/badge.svg?branch=develop)](https://coveralls.io/r/radiant-persimmons/mockr?branch=develop) [![Stories in Ready](https://badge.waffle.io/radiant-persimmons/mockr.svg?label=ready&title=Backlog)](http://waffle.io/radiant-persimmons/mockr)
 
+[Mockr Website](http://www.mockr.co)
+
 Version 0.1.0
 
 > A front end developer's best friend to have a mock back end when the real back end isn't finished.
