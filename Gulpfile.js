@@ -9,157 +9,162 @@
 
   /* Tasks */
 
-var tasks = lib.tasks
+  var tasks = lib.tasks
 
-// ================= DEFAULT
+  // ================= DEFAULT
 
-gulp
-  .task('default', $.sequence('dev'));
+  gulp
+    .task('default', $.sequence('dev'));
 
-//================== DEV
-gulp
-  .task( 'dev',
-    $.sequence( 'clean'
-              , 'build:dev'
-              , 'start:dev'
-              ));
+  //================== DEV
+  gulp
+    .task( 'dev',
+      $.sequence( 'clean'
+                , 'build:dev'
+                , 'start:dev'
+                ));
 
-// ====== BUILD
-gulp
-  .task( 'js:dev'    , tasks.js.dev     )
-  .task( 'css:dev'   , tasks.css.dev    )
-  .task( 'styl:dev'  , tasks.styl.dev   )
-  .task( 'html:dev'  , tasks.html.dev   )
-  .task( 'jade:dev'  , tasks.jade.dev   )
-  .task( 'images:dev', tasks.images.dev )
-  .task( 'build:dev' ,
-    $.sequence( 'js:dev'
-              , 'css:dev'
-              , 'styl:dev'
-              , 'html:dev'
-              , 'jade:dev'
-              , 'images:dev'
-              ));
+  // ====== BUILD
+  gulp
+    .task( 'js:dev'    , tasks.js.dev     )
+    .task( 'css:dev'   , tasks.css.dev    )
+    .task( 'styl:dev'  , tasks.styl.dev   )
+    .task( 'html:dev'  , tasks.html.dev   )
+    .task( 'jade:dev'  , tasks.jade.dev   )
+    .task( 'images:dev', tasks.images.dev )
+    .task( 'build:dev' ,
+      $.sequence( 'js:dev'
+                , 'css:dev'
+                , 'styl:dev'
+                , 'html:dev'
+                , 'jade:dev'
+                , 'images:dev'
+                ));
 
-// ====== START
-gulp
-  .task( 'vendor:dev' , tasks.vendor.dev )
-  .task( 'inject:dev' , tasks.inject.dev )
-  .task( 'server:dev' , tasks.server.dev )
-  .task( 'watch:dev'  , tasks.watch.dev  )
-  .task( 'start:dev'  ,
-    $.sequence(
-                'vendor:dev'
-              , 'inject:dev'
-              , 'server:dev'
-              , 'watch:dev'
-              ));
-
-
-// //================== STAGE
-
-gulp
-  .task('stage',
-    $.sequence('clean',
-               'build:stage',
-               'start:stage'));
-
-// ====== BUILD
-
-gulp
-  .task('js:stage', tasks.js.stage)
-  .task('css:stage', tasks.css.stage)
-  .task('styl:stage', tasks.styl.stage)
-  .task('html:stage', tasks.html.stage)
-  .task('jade:stage', tasks.jade.stage)
-  .task('images:stage', tasks.images.stage)
-  .task('build:stage',
-    $.sequence('js:stage',
-               'css:stage',
-               'styl:stage',
-               'html:stage',
-               'jade:stage',
-               'images:stage'));
+  // ====== START
+  gulp
+    .task( 'vendor:dev' , tasks.vendor.dev )
+    .task( 'inject:dev' , tasks.inject.dev )
+    .task( 'server:dev' , tasks.server.dev )
+    .task( 'watch:dev'  , tasks.watch.dev  )
+    .task( 'start:dev'  ,
+      $.sequence(
+                  'vendor:dev'
+                , 'inject:dev'
+                , 'server:dev'
+                , 'watch:dev'
+                ));
 
 
+  // //================== STAGE
+
+  gulp
+    .task('stage',
+      $.sequence('clean',
+                 'build:stage',
+                 'start:stage'));
+
+  // ====== BUILD
+
+  gulp
+    .task('js:stage', tasks.js.stage)
+    .task('css:stage', tasks.css.stage)
+    .task('styl:stage', tasks.styl.stage)
+    .task('html:stage', tasks.html.stage)
+    .task('jade:stage', tasks.jade.stage)
+    .task('images:stage', tasks.images.stage)
+    .task('build:stage',
+      $.sequence('js:stage',
+                 'css:stage',
+                 'styl:stage',
+                 'html:stage',
+                 'jade:stage',
+                 'images:stage'));
 
 
-// ====== START
-
-gulp
-  .task('vendor:stage', tasks.vendor.stage)
-  .task('inject:stage', tasks.inject.stage)
-  .task('server:stage', tasks.server.stage)
-  .task('watch:stage', tasks.watch.stage)
-  .task('start:stage',
-    $.sequence(
-      'vendor:stage',
-      'inject:stage',
-      'server:stage',
-      'watch:stage'
-    ));
 
 
-//================== PROD
+  // ====== START
 
-gulp
-  .task('prod',
-    $.sequence(
-      'clean',
-      'build:stage',
-      'vendor:stage',
-      'inject:stage'
-    )
-  );
-
-//================== DEPLOY
-
-gulp
-  .task('deploy', function() {
-    if (process.env.NODE_ENV === 'production') gulp.start('prod');
-  });
+  gulp
+    .task('vendor:stage', tasks.vendor.stage)
+    .task('inject:stage', tasks.inject.stage)
+    .task('server:stage', tasks.server.stage)
+    .task('watch:stage', tasks.watch.stage)
+    .task('start:stage',
+      $.sequence(
+        'vendor:stage',
+        'inject:stage',
+        'server:stage',
+        'watch:stage'
+      ));
 
 
-//================== CLEAN
-gulp
-  .task('clean', del.bind(null, ['build']));
+  //================== PROD
 
-/******************************************************************************
- * GitHub commands
- *****************************************************************************/
+  gulp
+    .task('prod',
+      $.sequence(
+        'clean',
+        'build:stage',
+        'vendor:stage',
+        'inject:stage'
+      )
+    );
 
-gulp
-  .task('git:rebase', tasks.git.rebase)
-  .task('git:push', tasks.git.push)
-  .task('git:pr', $.sequence('lint', 'git:rebase', 'git:push'));
+  //================== DEPLOY
 
-/******************************************************************************
- * Testing suite
- *****************************************************************************/
+  gulp
+    .task('deploy', function() {
+      if (process.env.NODE_ENV === 'production') gulp.start('prod');
+    });
 
-gulp
-  .task('lint', tasks.lint)
-  .task('karma', tasks.karma)
-  .task('nightwatch', tasks.nightwatch)
-  .task('mocha', tasks.mocha)
-  .task('test',
-    $.sequence(//'clean',
-               'lint',
-               'prod',
-               // // Build Jade templates for Karma tests
-               // 'jade:dev',
-               // // Build HTML templates for Karma tests
-               // 'html:dev',
-               'karma',
-               // 'nightwatch',
-               'mocha')
-  );
 
-/**
- * coveralls
- * =========
- * Sends code coverage data to Coveralls.
- */
-gulp.task('coveralls', tasks.coveralls);
+  //================== CLEAN
+  gulp
+    .task('clean', del.bind(null, ['build']));
+
+  /******************************************************************************
+   * GitHub commands
+   *****************************************************************************/
+
+  gulp
+    .task('git:rebase', tasks.git.rebase)
+    .task('git:push', tasks.git.push)
+    .task('git:pr', $.sequence('lint', 'git:rebase', 'git:push'));
+
+  /******************************************************************************
+   * Testing suite
+   *****************************************************************************/
+
+  gulp
+    .task('lint', tasks.lint)
+    .task('karma', tasks.karma)
+    .task('mocha', tasks.mocha)
+    .task('test',
+      $.sequence('lint',
+                 'prod',
+                 'karma',
+                 'mocha')
+    );
+
+
+  /**
+   * Nightwatch task is defined here for convenience to devs, they can run the
+   * nightwatch tests directly with `gulp nightwatch`. However, it is not part
+   * of `gulp test` because it needs the node server to be running. As such,
+   * it is called from the command line within the `npm test` command, which
+   * is executed by CI.
+   */
+
+  gulp
+    .task('nightwatch', tasks.nightwatch);
+
+  /**
+   * coveralls
+   * =========
+   * Sends code coverage data to Coveralls.
+   */
+  gulp.task('coveralls', tasks.coveralls);
 
 })();
