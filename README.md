@@ -4,7 +4,7 @@
 
 [Mockr Website](http://www.mockr.co)
 
-Version 0.1.0
+Version 0.2.2
 
 > A front end developer's best friend to have a mock back end when the real back end isn't finished.
 
