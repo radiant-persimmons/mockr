@@ -1,29 +1,9 @@
-var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var passport = require('passport');
+var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var request = require('request');
-var config = require('../config/env');
-var utils = require('../utils');
-var User = require('../api/user/userModel');
+var utils = require('../../utils');
 
-module.exports = function(app) {
-
-  //initialize passport
-  app.use(passport.initialize());
-
-  //use sessions on passport
-  app.use(passport.session());
-
-  passport.serializeUser(function(user, done) {
-    done(null, user.userID);
-  });
-
-  passport.deserializeUser(function(id, done) {
-    User.findOne({userID: id}, function(err, user) {
-      done(err, user);
-    });
-  });
-
-  // GitHub
+module.exports.setup = function(config) {
   passport.use('github',
     new OAuth2Strategy({
       authorizationURL: 'https://github.com/login/oauth/authorize',
@@ -54,5 +34,4 @@ module.exports = function(app) {
       });
     }
   ));
-
 };

@@ -1,5 +1,5 @@
 var userController = require('./userController');
-var auth = require('../auth/authController');
+var auth = require('../../auth/authController');
 
 module.exports = function(router) {
   // Returns session user
