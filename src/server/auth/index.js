@@ -24,7 +24,7 @@ module.exports = function(app) {
   });
 
   // Configure passport for routers
-  require('./github/passport').setup(passport, config);
+  require('./github/passport').setup(config);
 
   // Set passport routers onto router
   var router = express.Router();

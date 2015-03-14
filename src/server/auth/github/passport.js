@@ -1,8 +1,9 @@
+var passport = require('passport');
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var request = require('request');
 var utils = require('../../utils');
 
-module.exports.setup = function(passport, config) {
+module.exports.setup = function(config) {
   passport.use('github',
     new OAuth2Strategy({
       authorizationURL: 'https://github.com/login/oauth/authorize',
