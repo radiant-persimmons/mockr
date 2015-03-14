@@ -1,5 +1,5 @@
-var Endpoint = require('./endpointController.js');
-var auth = require('../auth/authController.js');
+var Endpoint = require('./endpointController');
+var auth = require('../../auth/authController');
 
 module.exports = function(router) {
   router.route('/api/users/:username/endpoints')

@@ -2,11 +2,14 @@ var router = require('express').Router();
 var path = require('path');
 
 module.exports = function applicationRouter(app) {
+  // Place authentication routes on app
+  app.use('/auth', require('./auth')(app));
 
-  require('./api/auth')(router);
+  // Place API endpoints on router
   require('./api/user')(router);
   require('./api/endpoint')(router);
   require('./api/endpointRouter')(router);
+
 
   /**
    * catchall router if the request hasn't been handled by the other routes.
@@ -18,5 +21,6 @@ module.exports = function applicationRouter(app) {
     res.sendFile(path.resolve(__dirname + '/../../build/index.html'));
   });
 
+  // Place router on app
   app.use(router);
 };

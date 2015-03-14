@@ -29,16 +29,16 @@ describe('UNIT: auth.service.js', function() {
   });
 
   describe('#login', function() {
-    it('should set window to /api/auth/login', function() {
+    it('should set window to /auth/github', function() {
       auth.login();
-      expect($window.location.replace.calledWith('/api/auth/login')).to.be.true;
+      expect($window.location.replace.calledWith('/auth/github')).to.be.true;
     });
   });
 
   describe('#logout', function() {
-    it('should set window to /api/auth/logout', function() {
+    it('should set window to /auth/logout', function() {
       auth.logout();
-      expect($window.location.replace.calledWith('/api/auth/logout')).to.be.true;
+      expect($window.location.replace.calledWith('/auth/logout')).to.be.true;
     });
   });
 

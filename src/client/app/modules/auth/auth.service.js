@@ -20,12 +20,12 @@
      * logins user in by directing to server route for passport authentication
      */
     function login() {
-      $window.location.replace('/api/auth/login');
+      $window.location.replace('/auth/github');
     }
 
     // logout user by directing to server route
     function logout() {
-      $window.location.replace('/api/auth/logout');
+      $window.location.replace('/auth/logout');
     }
   }
 
