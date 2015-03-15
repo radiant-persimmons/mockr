@@ -1,4 +1,4 @@
-/* jshint -W024 */
+/*jshint -W079 */
 /* jshint expr:true */
 
 // Set environment to test, always do this.
