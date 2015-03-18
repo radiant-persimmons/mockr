@@ -23,7 +23,7 @@ describe('UNIT: layout/current-routes.controller.js', function() {
     userStub = {
       getUser: sinon.stub().returns({ username: 'Andrew' }),
       registerCb: sinon.stub()
-    }
+    };
     userStub.registerCb.yields(null);
 
     $provide.value('$state', $stateStub);
