@@ -19,7 +19,7 @@
     * from the database and displays it for the user
     */
     function activate() {
-      user.registerCb(function(){
+      user.registerCb(function() {
         routes.fetch(user.getUser().username)
           .then(function() {});
       });
@@ -35,9 +35,6 @@
       vm.routes = routes.routes;
     });
 
-    function goToAnalytics(route) {
-      $state.go('home.analytics', { route: route });
-    }
   }
 
 }).call(this);

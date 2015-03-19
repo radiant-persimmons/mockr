@@ -5,7 +5,7 @@
     .controller('AddRoutesController', AddRoutesController);
 
   /* @ngInject */
-  function AddRoutesController($state, routes, user) {
+  function AddRoutesController($state) {
     var vm = this;
 
     vm.formInfo = {
