@@ -207,34 +207,38 @@ describe('UNIT: userController.js', function() {
     });
 
     it('should call User.findOne', function(done) {
-      // sinon.stub(userModel, 'findOne');
-
       controller.getUser(req, res);
 
       setTimeout(function() {
         expect(userModel.findOne.callCount).to.equal(1);
-        // userModel.findOne.restore();
         done();
       }, 0);
     });
 
-    it('should run res.status(500).json() if there is an error', function(done) {
-      //something to make User.findOne fail
-      // sinon.stub(userModel, 'findOne').yields('err exists');
+    it('should report error with status 500 if there is an error', function(done) {
       userModel.findOne.yields('err exists');
       controller.getUser(req, res);
 
       setTimeout(function() {
-        expect(res.status.calledWith(500)).to.equal(true);
-        expect(res.status().json.called).to.equal(true);
-        // userModel.findOne.restore();
+        expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 500)).to.be.true;
+        reloadStub(userModel, 'findOne');
+        done();
+      }, 0);
+    });
+
+    it('should report no user found with status 404', function(done) {
+      userModel.findOne.yields(null, null);
+      controller.getUser(req, res);
+
+      setTimeout(function() {
+        expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 404)).to.be.true;
         reloadStub(userModel, 'findOne');
         done();
       }, 0);
     });
 
     it('should run res.status(200).json() if there is no error', function(done) {
-      userModel.findOne.yields(null);
+      userModel.findOne.yields(null, 'user');
       controller.getUser(req, res);
 
       setTimeout(function() {
@@ -258,12 +262,7 @@ describe('UNIT: userController.js', function() {
     });
 
     beforeEach(function() {
-      req = {
-        // params: {
-        //   username: 'AndrewSouthpaw',
-        //   userID: 1
-        // }
-      };
+      req = {};
 
       status = sinon.stub();
       json = sinon.stub();

@@ -11,7 +11,8 @@ module.exports = function(router) {
     .post(userController.createUser); //not used, user will be created automatically when logged in with passport
 
   router.route('/api/users/:username')
-    .get(auth.isAuthenticatedUser, userController.getUser)
+    .get(userController.getUser)
+    // .get(auth.isAuthenticatedUser, userController.getUser)
     .put(auth.isAuthenticatedUser, userController.editUser)
     .delete();
 };

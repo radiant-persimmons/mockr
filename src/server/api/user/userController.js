@@ -25,12 +25,11 @@ module.exports = {
   /**
    * Returns the database model associated with a username
    */
-  getUser: function (req, res) {
+  getUser: function (req, res, next) {
     var username = req.params.username;
     User.findOne({'username': username}, function (err, user) {
-      //specify user!!!
-      if (err) return res.status(500).json({ message: err });
-      //return user
+      if (err) return reportError(err, next, 'Error finding user', 500);
+      if (!user) return reportError(err, next, 'Could not find user', 404);
       return res.status(200).json(user);
     });
   },
