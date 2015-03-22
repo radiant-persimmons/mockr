@@ -352,16 +352,14 @@ describe('UNIT: userController.js', function() {
     it('should return 500 and error message on database error', function() {
       userModel.update.yields('error', null, null);
       controller.editUser(req, res);
-      expect(res.status.calledWith(500)).to.be.true;
-      expect(res.status().json.calledWith(sinon.match({ message: 'error' }))).to.be.true;
+      expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 500)).to.be.true;
       reloadStub(userModel, 'update');
     });
 
     it('should return 404 and message on user not found', function() {
       userModel.update.yields(null, null, null);
       controller.editUser(req, res);
-      expect(res.status.calledWith(404)).to.be.true;
-      expect(res.status().json.calledWith(sinon.match({ message: 'User not found' }))).to.be.true;
+      expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 404)).to.be.true;
       reloadStub(userModel, 'update');
     });
 

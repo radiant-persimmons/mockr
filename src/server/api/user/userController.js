@@ -47,15 +47,13 @@ module.exports = {
   /**
    * Updates the user database model
    */
-  editUser: function (req, res) {
+  editUser: function (req, res, next) {
     var username = req.params.username;
     var newData = req.body;
 
     User.update({'username': username}, newData, function (err, numberAffected, raw) {
-      if (err) return res.status(500).json({ message: err });
-
-      if (!numberAffected) return res.status(404).json({ message: 'User not found' });
-
+      if (err) return reportError(err, next, 'Error updating user', 500);
+      if (!numberAffected) return reportError(err, next, 'User not found', 404);
       return res.status(201).end();
     });
   }
