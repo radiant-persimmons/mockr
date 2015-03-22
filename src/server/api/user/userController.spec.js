@@ -8,23 +8,7 @@ process.env.NODE_ENV = 'test';
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var mockery = require('mockery');
-
-/**
- * Helper to unwrap and re-wrap a method with a callback.
- * @param  {object}   object Object to be stubbed
- * @param  {string}   method Method on the object to be stubbed
- * @param  {function} cb     Optional callback to be the stub
- * @return {undefined}
- */
-function reloadStub(object, method, cb) {
-  if (typeof object === 'undefined' || typeof method === 'undefined') {
-    console.error('reloadStub expects an object and method');
-  } else {
-    object[method].restore();
-    typeof cb === 'function' ? sinon.stub(object, method, cb)
-                             : sinon.stub(object, method);
-  }
-}
+var reloadStub = require('../../../spec/utils/reloadStub');
 
 describe('UNIT: userController.js', function() {
 
