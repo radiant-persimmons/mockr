@@ -210,12 +210,12 @@ describe('UNIT: userController.js', function() {
       }, 0);
     });
 
-    it('should report no user found with status 404', function(done) {
+    it('should report no user found with status 400', function(done) {
       userModel.findOne.yields(null, null);
       controller.getUser(req, res);
 
       setTimeout(function() {
-        expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 404)).to.be.true;
+        expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 400)).to.be.true;
         reloadStub(userModel, 'findOne');
         done();
       }, 0);
@@ -340,10 +340,10 @@ describe('UNIT: userController.js', function() {
       reloadStub(userModel, 'update');
     });
 
-    it('should return 404 and message on user not found', function() {
+    it('should return 400 and message on user not found', function() {
       userModel.update.yields(null, null, null);
       controller.editUser(req, res);
-      expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 404)).to.be.true;
+      expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 400)).to.be.true;
       reloadStub(userModel, 'update');
     });
 
