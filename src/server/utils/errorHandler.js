@@ -1,4 +1,5 @@
 'use strict';
+var config = require('../config/env');
 
 module.exports = function(err, req, res, next) {
   // defaults
@@ -15,11 +16,11 @@ module.exports = function(err, req, res, next) {
   var stack = '';
   while (deepestErr) {
     stack = deepestErr.stack;
-    deepestErr = deepestErr.cause();
+    deepestErr = (deepestErr.cause && deepestErr.cause()) || null;
   }
   console.error(stack + '\n-----------------');
 
   // send error
   res.status(err.status);
-  res.json({ message: err.message });
+  res.json({ message: config.env === 'production' ? err.message : err.toString() });
 };
