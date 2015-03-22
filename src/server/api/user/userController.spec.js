@@ -7,8 +7,7 @@ process.env.NODE_ENV = 'test';
 // Dependencies
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var controller = require('./userController');
-var userModel = require('./userModel');
+var mockery = require('mockery');
 
 /**
  * Helper to unwrap and re-wrap a method with a callback.
@@ -28,6 +27,37 @@ function reloadStub(object, method, cb) {
 }
 
 describe('UNIT: userController.js', function() {
+
+  var reportErrorStub;
+  var controller;
+  var userModel;
+
+  before(function() {
+    // mock the error reporter
+    mockery.enable({
+      warnOnReplace: false,
+      warnOnUnregistered: false,
+      useCleanCache: true
+    });
+
+    reportErrorStub = sinon.stub();
+
+    mockery.registerMock('../../utils/errorReporter', reportErrorStub);
+
+    // load controller and model
+    controller = require('./userController');
+    userModel = require('./userModel');
+  });
+
+  afterEach(function() {
+    // reset dependencies call count
+    reportErrorStub.reset();
+  });
+
+  after(function() {
+    // disable mock after tests complete
+    mockery.disable();
+  });
 
   describe('#createUser', function() {
     var req;
@@ -122,15 +152,17 @@ describe('UNIT: userController.js', function() {
       }, 0);
     });
 
-    it('should run res.status(500).json() after saving is not successul', function(done) {
+    it('should report error if encountered', function(done) {
 
       // delete req.body.username;
       userModel.prototype.save.yields('err');
       controller.createUser(req, res);
 
       setTimeout(function() {
-        expect(res.status.calledWith(500)).to.equal(true);
-        expect(res.status().json.called).to.equal(true);
+        expect(reportErrorStub.calledWith(sinon.match.any,
+                                          sinon.match.any,
+                                          'Error saving user model',
+                                          500)).to.be.true;
 
         // reload stub because yields was set
         reloadStub(userModel.prototype, 'save');

@@ -1,3 +1,4 @@
+var reportError = require('../../utils/errorReporter');
 var User = require('./userModel');
 
 module.exports = {
@@ -11,15 +12,12 @@ module.exports = {
   /**
    * Creates user from request and saves to database
    */
-  createUser: function (req, res) {
+  createUser: function (req, res, next) {
     var username = req.body.username;
     var userID = req.body.userID;
     var newUser = new User({ 'username': username, 'userID': userID });
     newUser.save(function (err) {
-      if (err){
-        res.status(500).json({ message: 'User#createUser: Error saving user model' });
-        return console.log('Error: ', err);
-      }
+      if (err) return reportError(err, next, 'Error saving user model', 500);
       return res.status(201).end();
     });
   },

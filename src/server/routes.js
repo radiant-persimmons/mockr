@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var path = require('path');
+var errorHandler = require('./utils/errorHandler');
 
 module.exports = function applicationRouter(app) {
   // Place authentication routes on app
@@ -23,4 +24,8 @@ module.exports = function applicationRouter(app) {
 
   // Place router on app
   app.use(router);
+
+  // Set error handling
+  app.use(errorHandler);
+
 };
