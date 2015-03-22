@@ -5,7 +5,7 @@ var verror = require('verror');
  * to next middleware
  * @param  {Error}    err     Original error
  * @param  {Function} next    middleware
- * @param  {String}   message Wrapper message
+ * @param  {String}   message [opt] Wrapper message
  * @param  {Number}   status  Status number for response
  * @return {undefined}
  */
@@ -17,7 +17,7 @@ module.exports = function(err, next, message, status) {
   // wrap error
   var wrappedErr = new verror.WError(err, message);
   wrappedErr.status = status;
-  console.log('next', next);
+
   // pass to error handler
   next(wrappedErr);
 };

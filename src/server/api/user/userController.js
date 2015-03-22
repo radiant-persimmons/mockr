@@ -29,7 +29,7 @@ module.exports = {
     var username = req.params.username;
     User.findOne({'username': username}, function (err, user) {
       if (err) return reportError(err, next, 'Error finding user', 500);
-      if (!user) return reportError(err, next, 'User does not exist', 400);
+      if (!user) return reportError(new Error('User does not exist'), next, 'Failed to find user ' + username, 400);
       return res.status(200).json(user);
     });
   },
@@ -53,7 +53,7 @@ module.exports = {
 
     User.update({'username': username}, newData, function (err, numberAffected, raw) {
       if (err) return reportError(err, next, 'Error updating user', 500);
-      if (!numberAffected) return reportError(err, next, 'User does not exist', 400);
+      if (!numberAffected) return reportError(new Error('User does not exist'), next, 'Failed to edit user ' + username, 400);
       return res.status(201).end();
     });
   }

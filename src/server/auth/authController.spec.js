@@ -6,12 +6,29 @@ process.env.NODE_ENV = 'test';
 
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var ctrl = require('./authController');
+var mockery = require('mockery');
+// var ctrl = require('./authController');
 
 describe('UNIT: authController.js', function() {
   var next;
   var req;
   var res;
+  var reportErrorStub;
+  var ctrl;
+
+  before(function() {
+    mockery.enable({
+      warnOnReplace: false,
+      warnOnUnregistered: false,
+      useCleanCache: true
+    });
+
+    reportErrorStub = sinon.stub();
+
+    mockery.registerMock('../utils/errorReporter', reportErrorStub);
+
+    ctrl = require('./authController');
+  });
 
   beforeEach(function() {
     res = {
@@ -19,6 +36,14 @@ describe('UNIT: authController.js', function() {
       redirect: sinon.stub()
     };
     next = sinon.stub();
+  });
+
+  afterEach(function() {
+    reportErrorStub.reset();
+  });
+
+  after(function() {
+    mockery.disable();
   });
 
   describe('#isAuthenticatedUser', function() {
@@ -37,8 +62,7 @@ describe('UNIT: authController.js', function() {
         params: { username: 'Billy' }
       };
       ctrl.isAuthenticatedUser(req, res, next);
-      expect(res.status.calledWith(401)).to.be.true;
-      expect(res.status().json.calledWith(sinon.match({ message: 'Not authenticated' }))).to.be.true;
+      expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 401)).to.be.true;
     });
   });
 
@@ -64,8 +88,7 @@ describe('UNIT: authController.js', function() {
     it('should return 401 when req.user does not exist', function() {
       req = {};
       ctrl.restricted(req, res, next);
-      expect(res.status.calledWith(401)).to.be.true;
-      expect(res.status().json.calledWith(sinon.match({ message: 'Not authenticated' }))).to.be.true;
+      expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 401)).to.be.true;
     });
   });
 });

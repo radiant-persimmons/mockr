@@ -8,14 +8,14 @@ module.exports = function(err, req, res, next) {
   // log error
   console.error('-----------------');
   console.error('[' + new Date(Date.now()) + ']: ' + err.toString());
+  console.error('Status: ' + err.status);
 
   // log innermost stack
   var deepestErr = err;
   var stack = '';
   while (deepestErr) {
     stack = deepestErr.stack;
-    // Causes in `verror` stored under `.we_cause` or `.jse_cause`
-    deepestErr = deepestErr.we_cause || deepestErr.jse_cause;
+    deepestErr = deepestErr.cause();
   }
   console.error(stack + '\n-----------------');
 
