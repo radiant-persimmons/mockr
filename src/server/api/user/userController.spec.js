@@ -298,7 +298,7 @@ describe('UNIT: userController.js', function() {
     it('should return status 500 with error message on fail', function() {
       userModel.find.yields('error message', null);
       controller.getUsers(req, res);
-      expect(res.status().json.calledWith(sinon.match({ message: 'error message' }))).to.be.true;
+      expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 500)).to.be.true;
     });
 
   });

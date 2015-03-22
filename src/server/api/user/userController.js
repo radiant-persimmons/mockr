@@ -37,9 +37,9 @@ module.exports = {
   /**
    * Returns all user models of the database
    */
-  getUsers: function (req, res) {
+  getUsers: function (req, res, next) {
     User.find(function (err, users) {
-      if (err) return res.status(500).json({ message: err });
+      if (err) return reportError(err, next, 'Error finding users', 500);
       return res.status(200).json(users);
     });
   },
