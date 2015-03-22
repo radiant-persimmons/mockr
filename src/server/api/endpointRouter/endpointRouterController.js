@@ -1,63 +1,71 @@
 var _ = require('lodash');
+var url = require('url');
 var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
-var url = require('url');
 var logic = require('../../utils/businessLogic.js');
 var utils = require('../../utils');
-var _ = require('lodash');
+var reportError = require('../../utils/errorReporter');
 
-var getData = function(req, res, next) {
+module.exports = {
+  getData: getData,
+  postData: postData,
+  changeData: changeData,
+  deleteData: deleteData
+};
+
+///////////
+
+function getData(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
   var data;
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
-    if (err) return res.status(500).end(err);
-    if (!endpoint) {
-      return res.status(500).end(err);
-    } else {
-      utils.incrementCallCount(username, route, endpoint, method, function(err) {
-        if (err) return res.status(500).json(err); 
-
-        //if persistance is set to true, we let the user persist data, manipulate it and read it through their API endpoint
-        if(endpoint.persistence === true) {
-          //apply queries passed through the endpoint url
-          data = utils.applyQueries(req, endpoint.data);
-          if(!data) {
-            return res.status(500).end();
-          }
-          return res.status(200).json(data);
-
-        //else, if persistance is set to false
-        } else {
-          //TODO check if we have nested object with that method
-          //if GET method data hasn't been set, end response
-          if (!endpoint.methods[method]) return res.status(500).end();
-          //add headers in the response
-
-          //get statusCode and data from user input
-          var statusCode = endpoint.methods[method].status;
-          data = endpoint.methods[method].data;
-          return res.status(statusCode).json(data);
-        }
-      });
+    if (err || !endpoint) {
+      return utils.findOneEndpointErrorHandler(err, username, route,
+                                               'Failed to get endpoint data');
     }
+
+    utils.incrementCallCount(username, route, endpoint, method, function(err) {
+      if (err) return reportError(err, next, 'Failed to get endpoint data', 500);
+
+      //if persistance is set to true, we let the user persist data, manipulate it and read it through their API endpoint
+      if(endpoint.persistence === true) {
+        // apply queries passed through the endpoint url
+        data = utils.applyQueries(req, endpoint.data);
+
+        if (!data) return reportError(err, next, 'Failed to get endpoint data', 500);
+        return res.status(200).json(data);
+
+      //else, if persistance is set to false
+      } else {
+        //TODO check if we have nested object with that method
+        //if GET method data hasn't been set, end response
+        if (!endpoint.methods[method]) return reportError(err, next, 'Failed to get endpoint data', 500);
+        // TODO add headers in the response
+
+        //get statusCode and data from user input
+        var statusCode = endpoint.methods[method].status;
+        data = endpoint.methods[method].data;
+        return res.status(statusCode).json(data);
+      }
+    });
   });
 };
 
-var postData = function(req, res, next) {
+function postData(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
-    if (err) return res.status(500).end(err);
-    if (!endpoint) {
-      return res.status(500).end(err);
+    if (err || !endpoint) {
+      return utils.findOneEndpointErrorHandler(err, username, route,
+                                               'Failed to create endpoint data');
     } else {
-      utils.incrementCallCount(username, route, endpoint, method, function(err) {  
-        if (err) return res.status(500).json(err); 
+      utils.incrementCallCount(username, route, endpoint, method, function(err) {
+        if (err) return res.status(500).json(err);
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {
           //run business logic
@@ -69,14 +77,14 @@ var postData = function(req, res, next) {
 
             //update endpoint.data of that endpoint
             utils.insertPostDataToDb(username, route, newContent, function(err) {
-              if (err) return res.status(500).json(err); 
+              if (err) return res.status(500).json(err);
 
               //update count of objects in db
               utils.updateObjectCount(username, route, endpoint, function(err) {
-                if (err) return res.status(500).json(err); 
+                if (err) return res.status(500).json(err);
                 return res.status(201).end();
               });
-            }); 
+            });
           });
         } else {
           //if GET method data hasn't been set, end response
@@ -92,18 +100,18 @@ var postData = function(req, res, next) {
   });
 };
 
-var changeData = function(req, res, next) {
+function changeData(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
-    if (err) return res.status(500).end(err);
-    if (!endpoint) {
-      return res.status(500).end(err);
+    if (err || !endpoint) {
+      return utils.findOneEndpointErrorHandler(err, username, route,
+                                               'Failed to update endpoint data');
     } else {
       utils.incrementCallCount(username, route, endpoint, method, function(err) {
-        if (err) return res.status(500).json(err); 
+        if (err) return res.status(500).json(err);
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {
           //we need a parameter passed to know what to change
@@ -141,19 +149,19 @@ var changeData = function(req, res, next) {
   });
 };
 
-var deleteData = function(req, res, next) {
+function deleteData(req, res, next) {
   var username = req.params.username;
   var route = req.params[0];
   var method = req.method;
   var data;
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
-    if (err) return res.status(500).end(err);
-    if (!endpoint) {
-      return res.status(500).end(err);
+    if (err || !endpoint) {
+      return utils.findOneEndpointErrorHandler(err, username, route,
+                                               'Failed to get endpoint data');
     } else {
       utils.incrementCallCount(username, route, endpoint, method, function(err) {
-        if (err) return res.status(500).json(err); 
+        if (err) return res.status(500).json(err);
         //if persistance is set to true, we let the user persist data through their API endpoint
         if (endpoint.persistence === true) {
           //we need a parameter passed to know what to change
@@ -186,12 +194,4 @@ var deleteData = function(req, res, next) {
       });
     }
   });
-};
-
-
-module.exports = {
-  getData: getData,
-  postData: postData,
-  changeData: changeData,
-  deleteData: deleteData
 };

@@ -34,7 +34,7 @@ var applyQueries = function(req, data) {
   //check if request url contains start param
   if (req.query.start) {
     data = data.slice(req.query.start);
-  } 
+  }
   //check if request url contains size param
   if (req.query.size) {
     data = data.slice(0, req.query.size);
@@ -73,7 +73,7 @@ var insertPostDataToDb = function(username, route, newContent, cb) {
   //update endpoint.data of that endpoint
   Endpoint.update({ 'username': username, 'route': route }, { $push: {'data': newContent}}, function(err, numAffected, rawResponse) {
     cb(err);
-  });  
+  });
 };
 
 var removeDataFromDb = function(username, route, deleteQuery, cb) {
@@ -110,7 +110,16 @@ var getDay = function() {
   return day;
 };
 
+function findOneEndpointErrorHandler(err, username, route, message) {
+  if (err) {
+    err = new verror(err, 'db error finding endpoint /%s/%s', username, route);
+    return reportError(err, next, message, 500);
+  }
 
+  // otherwise, endpoint doesn't exist
+  err = new verror('endpoint /%s/%s does not exist', username, route);
+  return reportError(err, next, message, 400);
+}
 
 module.exports = {
   createUserIfNotExistant: createUserIfNotExistant,
@@ -123,6 +132,7 @@ module.exports = {
   getTime: getTime,
   updateData: updateData,
   getDay: getDay,
-  incrementCallCount: incrementCallCount
+  incrementCallCount: incrementCallCount,
+  findOneEndpointErrorHandler: findOneEndpointErrorHandler
 };
 
