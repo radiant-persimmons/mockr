@@ -34,7 +34,7 @@ var applyQueries = function(req, data) {
   //check if request url contains start param
   if (req.query.start) {
     data = data.slice(req.query.start);
-  } 
+  }
   //check if request url contains size param
   if (req.query.size) {
     data = data.slice(0, req.query.size);
@@ -73,7 +73,7 @@ var insertPostDataToDb = function(username, route, newContent, cb) {
   //update endpoint.data of that endpoint
   Endpoint.update({ 'username': username, 'route': route }, { $push: {'data': newContent}}, function(err, numAffected, rawResponse) {
     cb(err);
-  });  
+  });
 };
 
 var removeDataFromDb = function(username, route, deleteQuery, cb) {
@@ -109,8 +109,6 @@ var getDay = function() {
   }
   return day;
 };
-
-
 
 module.exports = {
   createUserIfNotExistant: createUserIfNotExistant,
