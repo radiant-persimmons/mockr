@@ -19,7 +19,7 @@ function getEndpoints(req, res, next) {
       if (err) return reportError(err, next, 'Could not get endpoints for ' + username, 500);
       res.json(endpoints);
     });
-};
+}
 
 function createEndpoint(req, res, next) {
   var username = req.params.username;
@@ -78,7 +78,7 @@ function createEndpoint(req, res, next) {
       });
     });
   });
-};
+}
 
 
 function getEndpoint(req, res, next) {
@@ -91,7 +91,7 @@ function getEndpoint(req, res, next) {
     res.json(endpoint);
   });
 
-};
+}
 
 function editEndpoint(req, res, next) {
   var username = req.params.username;
@@ -113,7 +113,7 @@ function editEndpoint(req, res, next) {
     if (err) return reportError(err, next, 'db error finding and updating endpoint', 500);
     res.status(201).end();
   });
-};
+}
 
 function deleteEndpoint(req, res, next) {
   var username = req.params.username;
@@ -123,6 +123,6 @@ function deleteEndpoint(req, res, next) {
     if (err) return reportError(err, next, 'db error deleting endpoint', 500);
     res.status(201).end();
   });
-};
+}
 
 
