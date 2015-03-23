@@ -1,5 +1,7 @@
 'use strict';
 
+var reportError = require('../utils/errorReporter');
+
 module.exports = {
   isAuthenticatedUser: isAuthenticatedUser,
   logout: logout,
@@ -15,7 +17,7 @@ function isAuthenticatedUser(req, res, next) {
   if (req.user && req.params.username === req.user.username) {
     next();
   } else {
-    res.status(401).json({ message: 'Not authenticated' });
+    reportError(new Error('Session user does not match route username parameter'), next, 'Access forbidden', 401);
   }
 }
 
@@ -35,6 +37,6 @@ function restricted(req, res, next) {
   if (req.user) {
     next();
   } else {
-    res.status(401).json({ message: 'Not authenticated' });
+    reportError(new Error('No session exists; user not authenticated'), next, 'Access forbidden', 401);
   }
 }
