@@ -1,3 +1,8 @@
+/**
+ * Handles the necessary lookups, error-checking, etc., required for all
+ * endpoint requests before performing the actual work entailed by the method.
+ */
+
 var VError = require('verror');
 var url = require('url');
 var User = require('../user/userModel.js');
@@ -52,7 +57,7 @@ function handler(req, res, next) {
       if (err) return reportError(err, next, 'Failed to get endpoint data', 500);
 
       if(endpoint.persistence === true) {
-        actions[method](req, res, next, username, route, method, endpoint);
+        actions[method](req, res, next, username, route, endpoint);
 
       //else, if persistance is set to false
       } else {
@@ -72,7 +77,18 @@ function handler(req, res, next) {
   });
 }
 
-function changeDataHandler(req, res, next, username, route, method, endpoint) {
+/**
+ * Special handler for additional lookups on methods that involve changing
+ * data in place, e.g. PUT and DELETE.
+ * @param  {Object}   req      Request
+ * @param  {Object}   res      Response
+ * @param  {Function} next     Next
+ * @param  {string}   username Username
+ * @param  {string}   route    Route, e.g. api/test
+ * @param  {object}   endpoint Endpoint model from db
+ * @return {undefined}
+ */
+function changeDataHandler(req, res, next, username, route, endpoint) {
 
   var actions = {
     PUT: methodController.updateData,
@@ -85,8 +101,14 @@ function changeDataHandler(req, res, next, username, route, method, endpoint) {
 
   var queryID = parseInt(req.query.id);
   var dataPoint = utils.lookForDataPoint(endpoint.data, queryID);
-  if (!dataPoint) return reportError(new VError('no item with ID %s', queryID),
+  if (!dataPoint) return reportError(new VError('no document with ID %s', queryID),
                                      next, 'invalid ID', 400);
 
-  actions[method](req, res, next, username, route, queryID, dataPoint);
+  var deleteQuery = {id: queryID};
+
+  utils.removeDataFromDb(username, route, deleteQuery, function(err) {
+    if (err) return reportError(new VError(err, 'failed to remove data from db'), next);
+
+    actions[req.method](req, res, next, username, route, dataPoint);
+  });
 }
