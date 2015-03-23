@@ -110,17 +110,6 @@ var getDay = function() {
   return day;
 };
 
-function findOneEndpointErrorHandler(err, username, route, message) {
-  if (err) {
-    err = new verror(err, 'db error finding endpoint /%s/%s', username, route);
-    return reportError(err, next, message, 500);
-  }
-
-  // otherwise, endpoint doesn't exist
-  err = new verror('endpoint /%s/%s does not exist', username, route);
-  return reportError(err, next, message, 400);
-}
-
 module.exports = {
   createUserIfNotExistant: createUserIfNotExistant,
   applyQueries: applyQueries,
@@ -132,7 +121,6 @@ module.exports = {
   getTime: getTime,
   updateData: updateData,
   getDay: getDay,
-  incrementCallCount: incrementCallCount,
-  findOneEndpointErrorHandler: findOneEndpointErrorHandler
+  incrementCallCount: incrementCallCount
 };
 
