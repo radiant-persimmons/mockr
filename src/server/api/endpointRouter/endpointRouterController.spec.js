@@ -210,7 +210,7 @@ describe('UNIT: endpointRouterController', function() {
 
     beforeEach(function() {
       req = {
-        method: 'GET',
+        method: 'DELETE',
         params: {
           username: 'Andrew',
           '0': 'api/test'
@@ -233,21 +233,27 @@ describe('UNIT: endpointRouterController', function() {
       utils = require('../../utils');
       sinon.stub(utils, 'lookForDataPoint');
       // Set way to return meaningful result
-      utils.lookForDataPoint.withArgs('Andrew')
+      utils.lookForDataPoint.withArgs(sinon.match.any, 1)
+        .returns({});
+      // and way to produce error
+      utils.lookForDataPoint.withArgs(sinon.match.any, 2)
+        .returns(null);
+      sinon.stub(utils, 'removeDataFromDb');
+      // set way to return meaningful result
+      utils.removeDataFromDb.withArgs('Andrew')
         .yields(null);
       // and way to produce error
-      utils.lookForDataPoint.withArgs('error')
+      utils.removeDataFromDb.withArgs('error')
         .yields('error');
-      sinon.stub(utils, 'removeDataFromDb');
 
       methodController = require('./methodController');
-      sinon.stub(methodController, 'getData');
+      sinon.stub(methodController, 'deleteData');
     });
 
     afterEach(function() {
       utils.lookForDataPoint.restore();
       utils.removeDataFromDb.restore();
-      methodController.getData.restore();
+      methodController.deleteData.restore();
     });
 
     it('should require query ID to be in request', function() {
@@ -255,12 +261,53 @@ describe('UNIT: endpointRouterController', function() {
       delete req.query.id;
       ctrl._changeDataHandler(req, res, next, username, route, endpoint);
       expect(reportErrorStub.args[0][3]).to.equal(400);
-
-      // reset req
-      req.query.id = 1;
     });
 
+    describe('looking up data point', function() {
+      it('should call util with data array and query ID number', function() {
+        ctrl._changeDataHandler(req, res, next, username, route, endpoint);
+        expect(utils.lookForDataPoint.calledWith(sinon.match.array, 1)).to.be.true;
+      });
+      it('should report 400 error if no document found', function() {
+        // trigger no return from utils.lookForDataPoint
+        req.query.id = 2;
+        ctrl._changeDataHandler(req, res, next, username, route, endpoint);
+        expect(reportErrorStub.args[0][2]).to.equal('invalid ID');
+        expect(reportErrorStub.args[0][3]).to.equal(400);
+      });
+    });
 
+    describe('with data point found', function() {
+      before(function() {
+        endpoint.data = [{ id: 1, msg: 'Hello' }];
+      });
+      after(function() {
+        endpoint.data = [];
+      });
+
+      it('should call utility remove data with query ID', function() {
+        ctrl._changeDataHandler(req, res, next, username, route, endpoint);
+        expect(utils.removeDataFromDb.calledWith('Andrew', 'api/test',
+                                                 sinon.match({ id: 1 }),
+                                                 sinon.match.func)).to.be.true;
+      });
+
+      describe('after calling to remove data', function() {
+        it('should report error if thrown', function() {
+          // trigger to throw error
+          username = 'error';
+          ctrl._changeDataHandler(req, res, next, username, route, endpoint);
+          expect(reportErrorStub.called).to.be.true;
+        });
+
+        it('should call methodController with correct params', function() {
+          ctrl._changeDataHandler(req, res, next, username, route, endpoint);
+          expect(methodController.deleteData.calledWith(
+            req, res, next, username, route, sinon.match.object
+          ));
+        });
+      });
+    });
   });
 
 });

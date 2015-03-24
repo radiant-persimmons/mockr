@@ -110,7 +110,6 @@ function _changeDataHandler(req, res, next, username, route, endpoint) {
 
   utils.removeDataFromDb(username, route, deleteQuery, function(err) {
     if (err) return reportError(new VError(err, 'failed to remove data from db'), next);
-
     actions[req.method](req, res, next, username, route, dataPoint);
   });
 }
