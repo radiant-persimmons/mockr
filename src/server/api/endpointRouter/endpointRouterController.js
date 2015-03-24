@@ -1,20 +1,25 @@
 /**
  * Handles the necessary lookups, error-checking, etc., required for all
  * endpoint requests before performing the actual work entailed by the method.
+ * @module
  */
 
 var VError = require('verror');
 var url = require('url');
-var User = require('../user/userModel.js');
+var sidedoor = require('sidedoor');
 var Endpoint = require('../endpoint/endpointModel.js');
 var utils = require('../../utils');
 var reportError = require('../../utils/errorReporter');
 var methodController = require('./methodController');
 
 module.exports = {
-  handler: handler,
-  changeDataHandler: changeDataHandler
+  handler: handler
 };
+
+// Private functions, exposed through sidedoor for unit testing
+sidedoor.expose(module, {
+  changeDataHandler: changeDataHandler
+});
 
 ///////////
 
@@ -47,7 +52,7 @@ function handler(req, res, next) {
   }
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
-    if (err) return reportError(new VError('db error finding /%s/%s', username, route),
+    if (err) return reportError(new VError(err, 'db error finding /%s/%s', username, route),
                                 next);
 
     if (!endpoint) return reportError(new VError('no endpoint exists for /%s/%s', username, route),

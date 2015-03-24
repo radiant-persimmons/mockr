@@ -85,6 +85,7 @@
     "mockery": "^1.4.0",
     "passport-stub": "^1.0.1",
     "selenium-server": "2.45.0",
+    "sidedoor": "^0.1.0",
     "sinon": "^1.12.2",
     "supertest": "^0.15.0"
   }
