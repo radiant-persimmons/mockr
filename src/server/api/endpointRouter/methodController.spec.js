@@ -225,9 +225,58 @@ describe('UNIT: methodController', function() {
         });
       });
     });
-
-
   });
+
+  describe('#updateData', function() {
+    var dataPoint;
+    var newContent;
+    beforeEach(function() {
+      // fake data
+      req.body = {};
+      dataPoint = {};
+      newContent = {};
+
+      // stub utils
+      sinon.stub(utils, 'updateData');
+      utils.updateData.returns(newContent);
+
+      sinon.stub(utils, 'insertPostDataToDb');
+      utils.insertPostDataToDb.withArgs('error').yields('error');
+      utils.insertPostDataToDb.withArgs(sinon.match.string).yields(null);
+    });
+
+    afterEach(function() {
+      utils.updateData.restore();
+      utils.insertPostDataToDb.restore();
+    });
+
+    it('calls utils.updateData', function() {
+      ctrl.updateData(req, res, next, username, route, dataPoint);
+      expect(utils.updateData.calledWith(req.body, dataPoint)).to.be.true;
+    });
+
+    it('inserts data to db', function() {
+      ctrl.updateData(req, res, next, username, route, dataPoint);
+      expect(utils.insertPostDataToDb.calledWith(username, route, newContent, sinon.match.func)).to.be.true;
+    });
+
+    describe('after inserting to db,', function() {
+      it('handles an error in response', function() {
+        // force error
+        username = 'error';
+        ctrl.updateData(req, res, next, username, route, dataPoint);
+        expect(reportErrorStub.called).to.be.true;
+      });
+
+      it('returns 201 on success', function() {
+        ctrl.updateData(req, res, next, username, route, dataPoint);
+        expect(res.status.calledWith(201)).to.be.true;
+        expect(res.status().end.called).to.be.true;
+      });
+    });
+  });
+
+
 });
 
 
