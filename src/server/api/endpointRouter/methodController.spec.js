@@ -98,8 +98,16 @@ describe('UNIT: methodController', function() {
 
   describe('#getData', function() {
     // Stub utils
+    var applyQueriesResult;
     beforeEach(function() {
+      applyQueriesResult = { id: 2, msg: 'from utils' };
       sinon.stub(utils, 'applyQueries');
+      // provide way to error
+      utils.applyQueries.withArgs('error')
+        .returns(null);
+      // and a "normal" result
+      utils.applyQueries.withArgs(sinon.match.object, sinon.match.array)
+        .returns(applyQueriesResult);
     });
     afterEach(function() {
       utils.applyQueries.restore();
@@ -110,7 +118,21 @@ describe('UNIT: methodController', function() {
       expect(utils.applyQueries.calledWith(req, endpoint.data)).to.be.true;
     });
 
+    it('should handle return 400 if no document found', function() {
+      // force error
+      req = 'error';
+      ctrl.getData(req, res, next, username, route, endpoint);
+      expect(reportErrorStub.args[0][3]).to.equal(400);
+    });
+
+    it('should return 200 and data when document found', function() {
+      ctrl.getData(req, res, next, username, route, endpoint);
+      expect(res.status.calledWith(200)).to.be.true;
+      expect(res.status().json.calledWith(sinon.match(applyQueriesResult))).to.be.true;
+    });
   });
+
+
 });
 
 
