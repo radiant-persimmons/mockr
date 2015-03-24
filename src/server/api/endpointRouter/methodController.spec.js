@@ -276,7 +276,18 @@ describe('UNIT: methodController', function() {
     });
   });
 
+  describe('#deleteData', function() {
+    var dataPoint;
+    beforeEach(function() {
+      dataPoint = {};
+    });
 
+    it('returns 201', function() {
+      ctrl.deleteData(req, res, next, username, route, dataPoint);
+      expect(res.status.calledWith(201)).to.be.true;
+      expect(res.status().end.called).to.be.true;
+    });
+  });
 });
 
 
