@@ -24,7 +24,13 @@ describe('UNIT: endpointRouterController', function() {
     endpoint = {
       username: 'Andrew',
       route: 'api/test',
-      methods: {},
+      methods: {
+        POST: {
+          status: 201,
+          headers: '',
+          data: 'Created'
+        }
+      },
       persistence: false,
       schemaDB: {},
       businessLogic: '',
@@ -37,15 +43,6 @@ describe('UNIT: endpointRouterController', function() {
     EndpointModelStub = {
       findOne: sinon.stub()
     };
-    // Provide way to yield a meaningful endpoint
-    EndpointModelStub.findOne.withArgs(sinon.match({ username: 'Andrew', route: 'api/test' }))
-      .yields(null, endpoint);
-    // Provide way to yield no endpoint match
-    EndpointModelStub.findOne.withArgs(sinon.match({ username: 'null' }))
-      .yields(null, null);
-    // Provide way to yield error
-    EndpointModelStub.findOne.withArgs(sinon.match({ username: 'error' }))
-      .yields('error');
 
     // Stub the reportError dependency
     reportErrorStub = sinon.stub();
@@ -77,10 +74,11 @@ describe('UNIT: endpointRouterController', function() {
   });
 
   describe('#handler', function() {
-    var utils = require('../../utils');
+    var utils;
     var req;
     var res;
     var next;
+    var methodController;
 
     beforeEach(function() {
       req = {
@@ -92,11 +90,14 @@ describe('UNIT: endpointRouterController', function() {
       };
 
       res = {
-
+        status: sinon.stub().returns({
+          json: sinon.stub()
+        })
       };
 
       next = sinon.stub();
 
+      utils = require('../../utils');
       sinon.stub(utils, 'incrementCallCount');
       // Set way to return meaningful result
       utils.incrementCallCount.withArgs('Andrew')
@@ -105,10 +106,13 @@ describe('UNIT: endpointRouterController', function() {
       utils.incrementCallCount.withArgs('error')
         .yields('error');
 
+      methodController = require('./methodController');
+      sinon.stub(methodController, 'getData');
     });
 
     afterEach(function() {
       utils.incrementCallCount.restore();
+      methodController.getData.restore();
     });
 
     it('should block unsupported methods', function() {
@@ -119,6 +123,21 @@ describe('UNIT: endpointRouterController', function() {
     });
 
     describe('finding an endpoint', function() {
+      before(function() {
+        // Provide way to yield a meaningful endpoint
+        EndpointModelStub.findOne.withArgs(sinon.match({ username: 'Andrew', route: 'api/test' }))
+          .yields(null, endpoint);
+        // Provide way to yield no endpoint match
+        EndpointModelStub.findOne.withArgs(sinon.match({ username: 'null' }))
+          .yields(null, null);
+        // Provide way to yield error
+        EndpointModelStub.findOne.withArgs(sinon.match({ username: 'error' }))
+          .yields('error');
+      });
+      after(function() {
+        EndpointModelStub.findOne = sinon.stub();
+      });
+
       it('should catch errors on Endpoint.findOne', function() {
         // trigger error
         req.params.username = 'error';
@@ -134,9 +153,48 @@ describe('UNIT: endpointRouterController', function() {
       });
     });
 
-    describe('incrementing call count', function() {
+    describe('after incrementing call count', function() {
+      before(function() {
+        // Bypass Endpoint model stub
+        EndpointModelStub.findOne.yields(null, endpoint);
+      });
+      after(function() {
+        EndpointModelStub.findOne = sinon.stub();
+      });
+
       it('should catch errors', function() {
-        // trigger error
+        req.params.username = 'error';
+        ctrl.handler(req, res, next);
+        expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, 'Failed to get endpoint data', 500)).to.be.true;
+      });
+
+      describe('if endpoint is persistent', function() {
+        it('should call methodController', function() {
+          endpoint.persistence = true;
+          ctrl.handler(req, res, next);
+          expect(methodController.getData.calledWith(sinon.match(req),
+                                                     sinon.match(res),
+                                                     sinon.match.func,
+                                                     'Andrew', 'api/test',
+                                                     sinon.match(endpoint))).to.be.true;
+
+          // undo changes to base data
+          endpoint.persistence = false;
+        });
+      });
+
+      describe('if endpoint is not persistent', function() {
+        it('should return error if no response set for that method', function() {
+          // using GET method...
+          ctrl.handler(req, res, next);
+          expect(reportErrorStub.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, 400)).to.be.true;
+        });
+        it('should send back status code and data', function() {
+          req.method = 'POST';
+          ctrl.handler(req, res, next);
+          expect(res.status.calledWith(endpoint.methods.POST.status)).to.be.true;
+          expect(res.status().json.calledWith(sinon.match(endpoint.methods.POST.data))).to.be.true;
+        });
       });
     });
   });
