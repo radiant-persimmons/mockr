@@ -8,14 +8,12 @@ process.env.NODE_ENV = 'test';
 var expect = require('chai').expect;
 var sinon = require('sinon');
 var mockery = require('mockery');
-var sidedoor = require('sidedoor');
-var reloadStub = require('../../../spec/utils/reloadStub');
 
 describe('UNIT: endpointRouterController', function() {
   var EndpointModelStub;
   var endpoint;
   var reportErrorStub;
-  var ctrl = {};
+  var ctrl;
 
   // Initial scaffolding: mock dependencies
   before(function() {
@@ -38,8 +36,7 @@ describe('UNIT: endpointRouterController', function() {
     mockery.registerMock('../../utils/errorReporter', reportErrorStub);
 
     // Load controller methods for testing
-    ctrl.handler = require('./endpointRouterController').handler;
-    ctrl._changeDataHandler = require('./endpointRouterController')._changeDataHandler;
+    ctrl = require('./endpointRouterController');
   });
 
   beforeEach(function() {
@@ -312,27 +309,3 @@ describe('UNIT: endpointRouterController', function() {
   });
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
