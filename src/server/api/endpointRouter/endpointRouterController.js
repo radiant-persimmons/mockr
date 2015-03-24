@@ -1,11 +1,11 @@
 /**
  * Handles the necessary lookups, error-checking, etc., required for all
  * endpoint requests before performing the actual work entailed by the method.
+ * @module
  */
 
 var VError = require('verror');
 var url = require('url');
-var User = require('../user/userModel.js');
 var Endpoint = require('../endpoint/endpointModel.js');
 var utils = require('../../utils');
 var reportError = require('../../utils/errorReporter');
@@ -13,7 +13,9 @@ var methodController = require('./methodController');
 
 module.exports = {
   handler: handler,
-  changeDataHandler: changeDataHandler
+
+  // helper functions exposed for unit testing
+  _changeDataHandler: _changeDataHandler
 };
 
 ///////////
@@ -31,8 +33,8 @@ function handler(req, res, next) {
     GET: methodController.getData,
     POST: methodController.postData,
     // Handle PUT and DELETE initially together in a special function
-    PUT: changeDataHandler,
-    DELETE: changeDataHandler
+    PUT: _changeDataHandler,
+    DELETE: _changeDataHandler
   };
 
   var username = req.params.username;
@@ -47,7 +49,7 @@ function handler(req, res, next) {
   }
 
   Endpoint.findOne({ 'username': username, 'route': route }, function (err, endpoint) {
-    if (err) return reportError(new VError('db error finding /%s/%s', username, route),
+    if (err) return reportError(new VError(err, 'db error finding /%s/%s', username, route),
                                 next);
 
     if (!endpoint) return reportError(new VError('no endpoint exists for /%s/%s', username, route),
@@ -88,7 +90,7 @@ function handler(req, res, next) {
  * @param  {object}   endpoint Endpoint model from db
  * @return {undefined}
  */
-function changeDataHandler(req, res, next, username, route, endpoint) {
+function _changeDataHandler(req, res, next, username, route, endpoint) {
 
   var actions = {
     PUT: methodController.updateData,
@@ -108,7 +110,6 @@ function changeDataHandler(req, res, next, username, route, endpoint) {
 
   utils.removeDataFromDb(username, route, deleteQuery, function(err) {
     if (err) return reportError(new VError(err, 'failed to remove data from db'), next);
-
     actions[req.method](req, res, next, username, route, dataPoint);
   });
 }

@@ -100,7 +100,6 @@ describe('UNIT: userController.js', function() {
 
       // Special stub to reveal model data
       var stubSaveData = function(cb) {
-        console.log('inside stubSaveData');
         userData = this;
       };
 
