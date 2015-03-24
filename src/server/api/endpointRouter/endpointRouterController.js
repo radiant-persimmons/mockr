@@ -6,20 +6,17 @@
 
 var VError = require('verror');
 var url = require('url');
-var sidedoor = require('sidedoor');
 var Endpoint = require('../endpoint/endpointModel.js');
 var utils = require('../../utils');
 var reportError = require('../../utils/errorReporter');
 var methodController = require('./methodController');
 
 module.exports = {
-  handler: handler
-};
+  handler: handler,
 
-// Private functions, exposed through sidedoor for unit testing
-sidedoor.expose(module, {
-  changeDataHandler: changeDataHandler
-});
+  // helper functions exposed for unit testing
+  _changeDataHandler: _changeDataHandler
+};
 
 ///////////
 
@@ -36,8 +33,8 @@ function handler(req, res, next) {
     GET: methodController.getData,
     POST: methodController.postData,
     // Handle PUT and DELETE initially together in a special function
-    PUT: changeDataHandler,
-    DELETE: changeDataHandler
+    PUT: _changeDataHandler,
+    DELETE: _changeDataHandler
   };
 
   var username = req.params.username;
@@ -93,7 +90,7 @@ function handler(req, res, next) {
  * @param  {object}   endpoint Endpoint model from db
  * @return {undefined}
  */
-function changeDataHandler(req, res, next, username, route, endpoint) {
+function _changeDataHandler(req, res, next, username, route, endpoint) {
 
   var actions = {
     PUT: methodController.updateData,

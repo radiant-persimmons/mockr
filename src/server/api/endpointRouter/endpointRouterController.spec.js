@@ -59,7 +59,7 @@ describe('UNIT: endpointRouterController', function() {
 
     // Load controller methods for testing
     ctrl.handler = require('./endpointRouterController').handler;
-    ctrl.changeDataHandler = sidedoor.get(__dirname + '/endpointRouterController');
+    ctrl._changeDataHandler = require('./endpointRouterController')._changeDataHandler;
   });
 
   // Refresh stub call counts after each test
@@ -197,6 +197,70 @@ describe('UNIT: endpointRouterController', function() {
         });
       });
     });
+  });
+
+  describe('#_changeDataHandler', function() {
+    var req;
+    var res;
+    var next;
+    var username;
+    var route;
+    var utils;
+    var methodController;
+
+    beforeEach(function() {
+      req = {
+        method: 'GET',
+        params: {
+          username: 'Andrew',
+          '0': 'api/test'
+        },
+        query: {
+          id: '1'
+        }
+      };
+
+      res = {
+        status: sinon.stub().returns({
+          json: sinon.stub()
+        })
+      };
+
+      next = sinon.stub();
+      username = 'Andrew';
+      route = 'api/test';
+
+      utils = require('../../utils');
+      sinon.stub(utils, 'lookForDataPoint');
+      // Set way to return meaningful result
+      utils.lookForDataPoint.withArgs('Andrew')
+        .yields(null);
+      // and way to produce error
+      utils.lookForDataPoint.withArgs('error')
+        .yields('error');
+      sinon.stub(utils, 'removeDataFromDb');
+
+      methodController = require('./methodController');
+      sinon.stub(methodController, 'getData');
+    });
+
+    afterEach(function() {
+      utils.lookForDataPoint.restore();
+      utils.removeDataFromDb.restore();
+      methodController.getData.restore();
+    });
+
+    it('should require query ID to be in request', function() {
+      // modify req
+      delete req.query.id;
+      ctrl._changeDataHandler(req, res, next, username, route, endpoint);
+      expect(reportErrorStub.args[0][3]).to.equal(400);
+
+      // reset req
+      req.query.id = 1;
+    });
+
+
   });
 
 });
