@@ -17,28 +17,8 @@ describe('UNIT: endpointRouterController', function() {
   var reportErrorStub;
   var ctrl = {};
 
-  // Initial scaffolding: mock dependencies, set base fake data
+  // Initial scaffolding: mock dependencies
   before(function() {
-
-    // Standard fake endpoint from db
-    endpoint = {
-      username: 'Andrew',
-      route: 'api/test',
-      methods: {
-        POST: {
-          status: 201,
-          headers: '',
-          data: 'Created'
-        }
-      },
-      persistence: false,
-      schemaDB: {},
-      businessLogic: '',
-      data: [],
-      count: 0,
-      analytics: {}
-    };
-
     // Set up Endpoint db model
     EndpointModelStub = {
       findOne: sinon.stub()
@@ -60,6 +40,27 @@ describe('UNIT: endpointRouterController', function() {
     // Load controller methods for testing
     ctrl.handler = require('./endpointRouterController').handler;
     ctrl._changeDataHandler = require('./endpointRouterController')._changeDataHandler;
+  });
+
+  beforeEach(function() {
+    // Standard fake endpoint from db
+    endpoint = {
+      username: 'Andrew',
+      route: 'api/test',
+      methods: {
+        POST: {
+          status: 201,
+          headers: '',
+          data: 'Created'
+        }
+      },
+      persistence: false,
+      schemaDB: {},
+      businessLogic: '',
+      data: [],
+      count: 0,
+      analytics: {}
+    };
   });
 
   // Refresh stub call counts after each test
@@ -154,11 +155,11 @@ describe('UNIT: endpointRouterController', function() {
     });
 
     describe('after incrementing call count', function() {
-      before(function() {
+      beforeEach(function() {
         // Bypass Endpoint model stub
         EndpointModelStub.findOne.yields(null, endpoint);
       });
-      after(function() {
+      afterEach(function() {
         EndpointModelStub.findOne = sinon.stub();
       });
 
